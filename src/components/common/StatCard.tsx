@@ -1,6 +1,6 @@
 import type { ReactNode } from 'react'
 
-// 统计卡片，样式参考 linux-do/cdk 的 DataCards
+// Thẻ thống kê, kiểu dáng tham khảo DataCards của linux-do/cdk
 export function StatCard({ title, value, icon, desc }: { title: string; value: ReactNode; icon: ReactNode; desc?: string }) {
   return (
     <div className="min-h-[96px] rounded-[20px] bg-muted px-4 py-3">

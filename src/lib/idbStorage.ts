@@ -54,7 +54,7 @@ export async function idbWrite<T>(key: string, value: T): Promise<void> {
       const tx = db.transaction(STORE_NAME, 'readwrite')
       tx.objectStore(STORE_NAME).put(value, key)
       tx.oncomplete = () => resolve()
-      tx.onerror = tx.onabort = () => reject(tx.error || new Error('浏览器存储写入失败'))
+      tx.onerror = tx.onabort = () => reject(tx.error || new Error('Ghi bộ nhớ trình duyệt thất bại'))
     })
   } finally { db.close() }
 }

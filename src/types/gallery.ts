@@ -1,6 +1,6 @@
 export interface PoseItem {
   source?: 'upload'
-  /** 是否使用灰阶深度图（Depth Map）代替素体白模 */
+  /** Có dùng ảnh depth thang xám (Depth Map) thay cho mô hình trắng (素体白模) không */
   useDepth?: boolean
   id: string
   体系: string
@@ -113,9 +113,9 @@ export interface ComfyUiParams {
   poseNodeId: string
   stitchedNodeId: string
   randomizeSeed: boolean
-  /** 单次生成最长等待秒数 */
+  /** Số giây chờ tối đa cho một lần tạo */
   timeoutSec: number
-  /** 配置结构版本，用于迁移旧版默认值 */
+  /** Phiên bản cấu trúc cấu hình, dùng để di chuyển giá trị mặc định của bản cũ */
   configVersion?: number
 }
 

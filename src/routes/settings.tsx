@@ -23,7 +23,7 @@ import { ComfyConnectionStatus } from '@/components/studio/ComfyConnectionStatus
 import { COMFY_CONNECTION_LABELS } from '@/store/useComfyConnection'
 
 export const Route = createFileRoute('/settings')({
-  staticData: { title: 'API 配置' },
+  staticData: { title: 'Cấu hình API' },
   component: SettingsPage,
 })
 
@@ -43,13 +43,13 @@ function SettingsPage() {
     try {
       const found = await detectComfyUi(pCfg.baseUrl, pCfg.apiKey)
       if (!found) {
-        toast.error('未找到可用的 ComfyUI（已尝试当前地址、127.0.0.1:8000、127.0.0.1:8188），请确认已启动并检查跨域设置', {
+        toast.error('Không tìm thấy ComfyUI khả dụng (đã thử địa chỉ hiện tại, 127.0.0.1:8000, 127.0.0.1:8188), hãy xác nhận đã khởi động và kiểm tra cài đặt CORS', {
           duration: 10000,
         })
         return
       }
       updateProviderConfig('comfyui', { baseUrl: found.baseUrl })
-      toast.success(`已识别：${found.info}（${found.baseUrl}）`)
+      toast.success(`Đã nhận diện: ${found.info} (${found.baseUrl})`)
     } finally {
       setTestingComfy(false)
     }
@@ -58,18 +58,18 @@ function SettingsPage() {
   return (
     <>
       <PageHeader
-        title="API 接口配置"
+        title="Cấu hình giao diện API"
         actions={
           <Button size="sm" asChild>
             <Link to="/studio">
               <SparklesIcon className="size-4" />
-              返回合成台
+              Về bàn tổng hợp
             </Link>
           </Button>
         }
       />
 
-      {/* 五大协议切换标签 */}
+      {/* Thẻ chuyển đổi 5 giao thức */}
       <div className="grid grid-cols-2 gap-2 sm:grid-cols-5">
         {PROVIDER_ORDER.map((id) => {
           const itemMeta = PROVIDER_META[id]
@@ -89,13 +89,13 @@ function SettingsPage() {
                   : 'border-border/60 bg-card hover:bg-muted/40'
               }`}
             >
-              <span className="min-w-0"><span className="block truncate text-sm">{itemMeta.name}</span><span className="block text-xs font-normal text-muted-foreground">{id === 'comfyui' ? COMFY_CONNECTION_LABELS[comfyConnection.status] : hasKey ? '已配置' : '未配置 Key'}</span></span>
+              <span className="min-w-0"><span className="block truncate text-sm">{itemMeta.name}</span><span className="block text-xs font-normal text-muted-foreground">{id === 'comfyui' ? COMFY_CONNECTION_LABELS[comfyConnection.status] : hasKey ? 'Đã cấu hình' : 'Chưa cấu hình Key'}</span></span>
               <span
                 aria-hidden="true"
                 className={`size-2 shrink-0 rounded-full ${
                   id === 'comfyui' && comfyConnection.status === 'connected' ? 'bg-emerald-500' : hasKey ? 'bg-amber-500' : 'bg-muted-foreground/30'
                 }`}
-                title={id === 'comfyui' ? COMFY_CONNECTION_LABELS[comfyConnection.status] : hasKey ? '已配置，尚未检测' : '未配置 Key'}
+                title={id === 'comfyui' ? COMFY_CONNECTION_LABELS[comfyConnection.status] : hasKey ? 'Đã cấu hình, chưa kiểm tra' : 'Chưa cấu hình Key'}
               />
             </button>
           )
@@ -104,23 +104,23 @@ function SettingsPage() {
 
       {pid === 'comfyui' && <ComfyConnectionStatus />}
 
-      {/* 当前厂商连接配置 */}
+      {/* Cấu hình kết nối của nhà cung cấp hiện tại */}
       <Section
-        title={`${meta.name} 连接配置`}
+        title={`${meta.name} Cấu hình kết nối`}
         actions={
           <div className="flex items-center gap-1.5">
             {pid === 'comfyui' && (
               <>
                 <Button variant="outline" size="sm" onClick={handleDetectComfy} disabled={testingComfy}>
                   <ScanSearchIcon className="size-3.5" />
-                  自动识别
+                  Tự động nhận diện
                 </Button>
               </>
             )}
             <Button variant="ghost" size="sm" asChild>
               <a href={meta.docUrl} target="_blank" rel="noreferrer">
                 <ExternalLinkIcon className="size-3.5" />
-                文档
+                Tài liệu
               </a>
             </Button>
             <Button
@@ -131,20 +131,20 @@ function SettingsPage() {
                   baseUrl: meta.defaultBaseUrl,
                   model: meta.models[0].value,
                 })
-                toast.success('已恢复默认')
+                toast.success('Đã khôi phục mặc định')
               }}
             >
               <RotateCcwIcon className="size-3.5" />
-              重置
+              Đặt lại
             </Button>
           </div>
         }
       >
         <Field
-          label={pid === 'comfyui' ? 'ComfyUI 地址 (Base URL)' : 'Base URL'}
+          label={pid === 'comfyui' ? 'Địa chỉ ComfyUI (Base URL)' : 'Base URL'}
           hint={
             pid === 'comfyui'
-              ? `本地运行本站时填 /comfy（同源代理，无需改跨域设置）；直连时 ComfyUI 需加启动参数 --enable-cors-header "${typeof window !== 'undefined' ? window.location.origin : '*'}"。Desktop 版默认端口 8000，便携版 8188`
+              ? `Khi chạy trang này cục bộ, điền /comfy (proxy cùng nguồn, không cần đổi cài đặt CORS); khi kết nối trực tiếp, ComfyUI cần thêm tham số khởi động --enable-cors-header "${typeof window !== 'undefined' ? window.location.origin : '*'}". Bản Desktop dùng cổng mặc định 8000, bản portable dùng 8188`
               : undefined
           }
         >
@@ -156,7 +156,7 @@ function SettingsPage() {
           />
         </Field>
 
-        <Field label={pid === 'comfyui' ? 'API Key（可选，本地留空）' : 'API Key'}>
+        <Field label={pid === 'comfyui' ? 'API Key (tùy chọn, để trống khi chạy cục bộ)' : 'API Key'}>
           <div className="relative">
             <Input
               type={showKey ? 'text' : 'password'}
@@ -164,8 +164,8 @@ function SettingsPage() {
               onChange={(e) => updateProviderConfig(pid, { apiKey: e.target.value })}
               placeholder={
                 pid === 'comfyui'
-                  ? '本地 ComfyUI 无需填写，远程鉴权可填 Token'
-                  : '输入 API Key（仅保存在本地浏览器）'
+                  ? 'ComfyUI cục bộ không cần điền, xác thực từ xa có thể điền Token'
+                  : 'Nhập API Key (chỉ lưu trong trình duyệt cục bộ)'
               }
               className="pr-10"
             />
@@ -180,7 +180,7 @@ function SettingsPage() {
         </Field>
 
         {pid !== 'comfyui' && (
-          <Field label="默认模型 ID">
+          <Field label="Model ID mặc định">
             <Select
               value={pCfg.model}
               onValueChange={(v) => updateProviderConfig(pid, { model: v })}
@@ -200,11 +200,11 @@ function SettingsPage() {
         )}
 
         {pid !== 'comfyui' && pCfg.model === 'custom' && (
-          <Field label="自定义模型 ID">
+          <Field label="Model ID tùy chỉnh">
             <Input
               value={pCfg.customModel}
               onChange={(e) => updateProviderConfig(pid, { customModel: e.target.value })}
-              placeholder={pid === 'doubao' ? 'ep-2026xxxx 或模型 ID' : '输入模型 ID'}
+              placeholder={pid === 'doubao' ? 'ep-2026xxxx hoặc model ID' : 'Nhập model ID'}
               className="font-mono text-xs"
             />
           </Field>
@@ -212,13 +212,13 @@ function SettingsPage() {
       </Section>
 
       {pid === 'comfyui' && (
-        <p className="text-sm text-muted-foreground">模型由工作流决定。请返回合成台导入工作流，并设置人像、服装和姿势节点。</p>
+        <p className="text-sm text-muted-foreground">Model do workflow quyết định. Hãy về bàn tổng hợp để nhập workflow và đặt các node chân dung, trang phục và tư thế.</p>
       )}
 
-      {/* 全局传输设置 */}
+      {/* Cài đặt truyền tải toàn cục */}
       {pid !== 'comfyui' && (
-        <Section title="全局请求选项">
-          <Field label="参考图传参方式">
+        <Section title="Tùy chọn yêu cầu toàn cục">
+          <Field label="Cách truyền tham số ảnh tham chiếu">
             <Select
               value={apiConfig.imagePassMode}
               onValueChange={(v) => updateApiConfig({ imagePassMode: v as ImagePassMode })}
@@ -227,19 +227,19 @@ function SettingsPage() {
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
-                <SelectItem value="url">传递图片 URL（免上传文件，推荐）</SelectItem>
-                <SelectItem value="base64">转 Base64 编码传输</SelectItem>
+                <SelectItem value="url">Truyền URL ảnh (không cần tải file lên, nên dùng)</SelectItem>
+                <SelectItem value="base64">Chuyển mã Base64 để truyền</SelectItem>
               </SelectContent>
             </Select>
           </Field>
 
           <Field
-            label="服务端 CORS 代理 (/api/proxy)"
-            hint="默认关闭（浏览器直连）；切换到阿里云百炼 (Qwen) 或火山方舟 (Doubao) 时会自动开启。仅支持白名单域名（可通过服务端环境变量 PROXY_ALLOWED_ORIGINS 扩展）"
+            label="Proxy CORS phía máy chủ (/api/proxy)"
+            hint="Mặc định tắt (trình duyệt kết nối trực tiếp); sẽ tự bật khi chuyển sang Alibaba Cloud Bailian (Qwen) hoặc Volcengine Ark (Doubao). Chỉ hỗ trợ tên miền trong danh sách cho phép (có thể mở rộng qua biến môi trường phía máy chủ PROXY_ALLOWED_ORIGINS)"
           >
             <div className="flex h-9 items-center justify-between rounded-xl border bg-background px-3">
               <span className="text-xs text-muted-foreground">
-                {apiConfig.useProxy ? '已启用（解决跨域限制）' : '已关闭（浏览器直连）'}
+                {apiConfig.useProxy ? 'Đã bật (khắc phục giới hạn CORS)' : 'Đã tắt (trình duyệt kết nối trực tiếp)'}
               </span>
               <Switch
                 checked={apiConfig.useProxy}
@@ -251,9 +251,9 @@ function SettingsPage() {
       )}
 
       <div className="flex justify-end">
-        <Button size="sm" onClick={() => toast.success('配置已保存')}>
+        <Button size="sm" onClick={() => toast.success('Đã lưu cấu hình')}>
           <CheckIcon className="size-4" />
-          保存配置
+          Lưu cấu hình
         </Button>
       </div>
     </>

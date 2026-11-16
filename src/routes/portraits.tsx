@@ -28,7 +28,7 @@ import { cn } from '@/lib/utils'
 import { useStudio } from '@/store/studioStore'
 
 export const Route = createFileRoute('/portraits')({
-  staticData: { title: '人像颜值库' },
+  staticData: { title: 'Thư viện chân dung' },
   loader: ({ context }) => context.queryClient.ensureQueryData(portraitsQuery),
   pendingComponent: () => <Skeleton className="h-[540px] rounded-[22px]" />,
   component: PortraitsPage,
@@ -84,7 +84,7 @@ function PortraitsPage() {
   return (
     <>
       <PageHeader
-        title="人像颜值库"
+        title="Thư viện chân dung"
         actions={
           <Button
             variant={onlyHot ? 'default' : 'outline'}
@@ -95,12 +95,12 @@ function PortraitsPage() {
             }}
           >
             <FlameIcon className="size-3.5 text-orange-500" />
-            Top10 热门
+            Top 10 hot
           </Button>
         }
       />
 
-      {/* 分区与发长切换药丸 */}
+      {/* Nút chuyển phân khu và độ dài tóc */}
       <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:pb-0">
         <button
           type="button"
@@ -117,7 +117,7 @@ function PortraitsPage() {
               : 'bg-muted text-muted-foreground hover:text-foreground'
           )}
         >
-          全部人像 ({portraits.length})
+          Tất cả chân dung ({portraits.length})
         </button>
         {(['正脸参考', '造型氛围'] as const).map((sec) => {
           const cnt = portraits.filter((x) => x.分区 === sec).length
@@ -163,7 +163,7 @@ function PortraitsPage() {
         })}
       </div>
 
-      {/* 搜索与发型细分 */}
+      {/* Tìm kiếm và lọc chi tiết kiểu tóc */}
       <div className="grid gap-3 rounded-[22px] bg-muted p-4 @xl/main:grid-cols-2 @3xl/main:grid-cols-[minmax(0,1fr)_260px_auto]">
         <div className="relative">
           <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -173,7 +173,7 @@ function PortraitsPage() {
               setQuery(e.target.value)
               setShown(60)
             }}
-            placeholder="搜索发型款式、发色或 ID（如：波波头、狼尾、空气刘海、挑染、韩式）…"
+            placeholder="Tìm kiểu tóc, màu tóc hoặc ID (vd: tóc bob, tóc đuôi sói, mái thưa, nhuộm highlight, kiểu Hàn)…"
             className="bg-background pl-9"
           />
         </div>
@@ -186,10 +186,10 @@ function PortraitsPage() {
           }}
         >
           <SelectTrigger className="w-full bg-background">
-            <SelectValue placeholder="全部 51 款日系发型" />
+            <SelectValue placeholder="Tất cả 51 kiểu tóc Nhật" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">全部 51 款日系发型</SelectItem>
+            <SelectItem value="all">Tất cả 51 kiểu tóc Nhật</SelectItem>
             {styleOptions.map((s) => (
               <SelectItem key={s} value={s}>
                 {s}
@@ -212,12 +212,12 @@ function PortraitsPage() {
           }}
         >
           <RotateCcwIcon className="size-3.5" />
-          重置
+          Đặt lại
         </Button>
       </div>
 
       {filtered.length === 0 ? (
-        <EmptyState title="没有找到匹配的人像参考" description="试试更换发型关键词或重置筛选" />
+        <EmptyState title="Không tìm thấy ảnh chân dung tham chiếu phù hợp" description="Thử đổi từ khóa kiểu tóc hoặc đặt lại bộ lọc" />
       ) : (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           {filtered.slice(0, shown).map((item, idx) => {
@@ -262,7 +262,7 @@ function PortraitsPage() {
                     )}
                   >
                     {picked ? <CheckIcon className="size-3" /> : <PlusIcon className="size-3" />}
-                    {picked ? '已选' : '加入配方'}
+                    {picked ? 'Đã chọn' : 'Thêm vào công thức'}
                   </button>
                 </div>
 
@@ -282,12 +282,12 @@ function PortraitsPage() {
       {shown < filtered.length && (
         <div className="flex justify-center pt-2">
           <Button variant="outline" onClick={() => setShown((s) => s + 60)}>
-            加载更多（剩余 {filtered.length - shown} 张）
+            Tải thêm (còn {filtered.length - shown} ảnh)
           </Button>
         </div>
       )}
 
-      {/* 人像大图弹窗 */}
+      {/* Hộp thoại ảnh chân dung lớn */}
       <Dialog open={viewerIndex !== null} onOpenChange={(o) => !o && setViewerIndex(null)}>
         <DialogContent className="max-h-[90dvh] w-[95vw] max-w-4xl overflow-y-auto p-0 sm:max-w-4xl">
           {currentItem && viewerIndex !== null && (() => {
@@ -299,7 +299,7 @@ function PortraitsPage() {
                   <Button
                     variant="secondary"
                     size="icon"
-                    aria-label="上一张图片" className="absolute top-1/2 left-3 min-h-11 min-w-11 -translate-y-1/2 rounded-full shadow"
+                    aria-label="Ảnh trước" className="absolute top-1/2 left-3 min-h-11 min-w-11 -translate-y-1/2 rounded-full shadow"
                     onClick={() => setViewerIndex((viewerIndex - 1 + filtered.length) % filtered.length)}
                   >
                     <ChevronLeftIcon className="size-4" />
@@ -307,7 +307,7 @@ function PortraitsPage() {
                   <Button
                     variant="secondary"
                     size="icon"
-                    aria-label="下一张图片" className="absolute top-1/2 right-3 min-h-11 min-w-11 -translate-y-1/2 rounded-full shadow"
+                    aria-label="Ảnh sau" className="absolute top-1/2 right-3 min-h-11 min-w-11 -translate-y-1/2 rounded-full shadow"
                     onClick={() => setViewerIndex((viewerIndex + 1) % filtered.length)}
                   >
                     <ChevronRightIcon className="size-4" />
@@ -331,7 +331,7 @@ function PortraitsPage() {
                         type="button"
                         onClick={() => {
                           void navigator.clipboard.writeText(currentItem.id)
-                          toast.success('已复制人像 ID')
+                          toast.success('Đã sao chép ID chân dung')
                         }}
                         className="ml-2 shrink-0 text-primary hover:underline"
                       >
@@ -340,33 +340,33 @@ function PortraitsPage() {
                     </div>
 
                     <dl className="grid grid-cols-[72px_1fr] gap-y-1.5 text-xs">
-                      <dt className="text-muted-foreground">发型款式</dt>
+                      <dt className="text-muted-foreground">Kiểu tóc</dt>
                       <dd className="font-medium">{currentItem.发型名称}</dd>
-                      <dt className="text-muted-foreground">原图尺寸</dt>
+                      <dt className="text-muted-foreground">Kích thước ảnh gốc</dt>
                       <dd className="font-medium">
                         {currentItem.宽} × {currentItem.高}
                       </dd>
-                      <dt className="text-muted-foreground">授权协议</dt>
-                      <dd className="font-medium text-emerald-600 dark:text-emerald-400">CC0 1.0 公共领域（可商用）</dd>
+                      <dt className="text-muted-foreground">Giấy phép</dt>
+                      <dd className="font-medium text-emerald-600 dark:text-emerald-400">CC0 1.0 phạm vi công cộng (dùng được cho thương mại)</dd>
                     </dl>
                   </div>
 
                   <div className="flex flex-col gap-2">
                     <Button onClick={() => togglePortrait(currentItem)} variant={picked ? 'secondary' : 'default'}>
                       {picked ? <CheckIcon className="size-4" /> : <PlusIcon className="size-4" />}
-                      {picked ? '已在角色配方中（点击移除）' : '加入角色配方'}
+                      {picked ? 'Đã có trong công thức nhân vật (nhấn để gỡ)' : 'Thêm vào công thức nhân vật'}
                     </Button>
                     <div className="grid grid-cols-2 gap-2">
                       <Button variant="outline" size="sm" asChild>
                         <a href={`/${currentItem.原图}`} download={`${currentItem.id}.webp`}>
                           <DownloadIcon className="size-3.5" />
-                          下载高清原图
+                          Tải ảnh gốc HD
                         </a>
                       </Button>
                       <Button variant="outline" size="sm" asChild>
                         <a href={`/${currentItem.原图}`} target="_blank" rel="noopener noreferrer">
                           <ExternalLinkIcon className="size-3.5" />
-                          新窗口原图
+                          Ảnh gốc trong cửa sổ mới
                         </a>
                       </Button>
                     </div>

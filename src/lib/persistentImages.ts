@@ -4,13 +4,13 @@ import { referenceImageUrl } from './recipeImages'
 export async function durableImage(url: string): Promise<string> {
   if (url.startsWith('data:image/')) return url
   const response = await fetch(referenceImageUrl(url))
-  if (!response.ok) throw new Error('图片下载失败')
+  if (!response.ok) throw new Error('Tải ảnh xuống thất bại')
   const blob = await response.blob()
-  if (!blob.type.startsWith('image/')) throw new Error('引用不是图片')
+  if (!blob.type.startsWith('image/')) throw new Error('Tham chiếu không phải là ảnh')
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
     reader.onload = () => resolve(String(reader.result))
-    reader.onerror = () => reject(new Error('图片读取失败'))
+    reader.onerror = () => reject(new Error('Đọc ảnh thất bại'))
     reader.readAsDataURL(blob)
   })
 }

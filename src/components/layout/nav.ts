@@ -24,25 +24,25 @@ export interface NavGroup {
 
 export const navGroups: NavGroup[] = [
   {
-    label: '工作台',
+    label: 'Bàn làm việc',
     items: [
-      { title: '图库总览', to: '/', icon: LayoutDashboardIcon },
-      { title: 'AI 角色合成台', to: '/studio', icon: SparklesIcon, badge: 'PRO' },
+      { title: 'Tổng quan thư viện', to: '/', icon: LayoutDashboardIcon },
+      { title: 'Bàn tổng hợp nhân vật AI', to: '/studio', icon: SparklesIcon, badge: 'PRO' },
     ],
   },
   {
-    label: '三大参考图库',
+    label: '3 thư viện tham chiếu',
     items: [
-      { title: '动作姿势库', to: '/poses', icon: PersonStandingIcon, badge: '1,439' },
-      { title: '服装穿搭库', to: '/costumes', icon: ShirtIcon, badge: '3,224' },
-      { title: '人像颜值库', to: '/portraits', icon: UserRoundIcon, badge: '1,499' },
+      { title: 'Thư viện tư thế', to: '/poses', icon: PersonStandingIcon, badge: '1,439' },
+      { title: 'Thư viện trang phục', to: '/costumes', icon: ShirtIcon, badge: '3,224' },
+      { title: 'Thư viện chân dung', to: '/portraits', icon: UserRoundIcon, badge: '1,499' },
     ],
   },
   {
-    label: '配置与说明',
+    label: 'Cấu hình & hướng dẫn',
     items: [
-      { title: 'API 接口配置', to: '/settings', icon: KeyRoundIcon },
-      { title: '使用说明与免责声明', to: '/guide', icon: BookOpenIcon },
+      { title: 'Cấu hình API', to: '/settings', icon: KeyRoundIcon },
+      { title: 'Hướng dẫn sử dụng & tuyên bố miễn trừ trách nhiệm', to: '/guide', icon: BookOpenIcon },
     ],
   },
 ]

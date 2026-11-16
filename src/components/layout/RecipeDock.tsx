@@ -17,7 +17,7 @@ export function RecipeDock() {
   const workflowImages = apiConfig.activeProvider === 'comfyui' && recipe.workflowImagesIdentity === workflowIdentity(apiConfig.comfyuiParams.workflowJson) ? Object.values(recipe.workflowImages || {}) : []
   const count = [recipe.portrait, recipe.costume, recipe.pose].filter(Boolean).length + extraCount + workflowImages.length
 
-  // 在合成台、设置页、指南页隐藏底部悬浮栏，避免与页面内组件重复
+  // Ẩn thanh nổi dưới cùng ở bàn tổng hợp, trang cài đặt, trang hướng dẫn để tránh trùng lặp với thành phần trong trang
   if (pathname.startsWith('/studio') || pathname.startsWith('/settings') || pathname.startsWith('/guide')) {
     return null
   }
@@ -38,7 +38,7 @@ export function RecipeDock() {
   const handleCopyPrompt = async () => {
     const text = buildRecipePrompt(recipe, apiConfig.stylePreset, workflowImages)
     await navigator.clipboard.writeText(text)
-    toast.success('已复制提示词')
+    toast.success('Đã sao chép prompt')
   }
 
   return (
@@ -59,7 +59,7 @@ export function RecipeDock() {
                 </div>
                 <button
                   type="button"
-                  aria-label="清除人像参考图"
+                  aria-label="Xóa ảnh tham chiếu chân dung"
                   onClick={() => setPortrait(null)}
                   className="absolute top-1 right-1 shrink-0 rounded-full p-0.5 text-muted-foreground hover:text-foreground @md/main:static"
                 >
@@ -71,7 +71,7 @@ export function RecipeDock() {
                 <div className="flex h-8 w-7 shrink-0 items-center justify-center rounded-md bg-background/80 sm:h-10 sm:w-8">
                   <UserRoundIcon className="size-3.5" />
                 </div>
-                <span className="truncate text-[11px] sm:text-xs">人像</span>
+                <span className="truncate text-[11px] sm:text-xs">Chân dung</span>
               </Link>
             )}
           </div>
@@ -90,7 +90,7 @@ export function RecipeDock() {
                 </div>
                 <button
                   type="button"
-                  aria-label="清除服装参考图"
+                  aria-label="Xóa ảnh tham chiếu trang phục"
                   onClick={() => setCostume(null)}
                   className="absolute top-1 right-1 shrink-0 rounded-full p-0.5 text-muted-foreground hover:text-foreground @md/main:static"
                 >
@@ -102,7 +102,7 @@ export function RecipeDock() {
                 <div className="flex h-8 w-7 shrink-0 items-center justify-center rounded-md bg-background/80 sm:h-10 sm:w-8">
                   <ShirtIcon className="size-3.5" />
                 </div>
-                <span className="truncate text-[11px] sm:text-xs">服装</span>
+                <span className="truncate text-[11px] sm:text-xs">Trang phục</span>
               </Link>
             )}
           </div>
@@ -124,15 +124,15 @@ export function RecipeDock() {
                       onClick={toggleRecipePoseDepth}
                       className="mt-0.5 inline-flex items-center gap-1 rounded bg-background/80 px-1 py-0.5 text-[10px] leading-none text-muted-foreground hover:text-foreground"
                     >
-                      <span className={!recipe.pose.useDepth ? 'font-semibold text-foreground' : ''}>白模</span>
+                      <span className={!recipe.pose.useDepth ? 'font-semibold text-foreground' : ''}>Mẫu trắng</span>
                       <span>/</span>
-                      <span className={recipe.pose.useDepth ? 'font-semibold text-primary' : ''}>深度</span>
+                      <span className={recipe.pose.useDepth ? 'font-semibold text-primary' : ''}>Độ sâu</span>
                     </button>
                   )}
                 </div>
                 <button
                   type="button"
-                  aria-label="清除姿势参考图"
+                  aria-label="Xóa ảnh tham chiếu tư thế"
                   onClick={() => setPose(null)}
                   className="absolute top-1 right-1 shrink-0 rounded-full p-0.5 text-muted-foreground hover:text-foreground @md/main:static"
                 >
@@ -144,7 +144,7 @@ export function RecipeDock() {
                 <div className="flex h-8 w-7 shrink-0 items-center justify-center rounded-md bg-background/80 sm:h-10 sm:w-8">
                   <PersonStandingIcon className="size-3.5" />
                 </div>
-                <span className="truncate text-[11px] sm:text-xs">姿势</span>
+                <span className="truncate text-[11px] sm:text-xs">Tư thế</span>
               </Link>
             )}
           </div>
@@ -153,15 +153,15 @@ export function RecipeDock() {
         <div className="flex flex-wrap items-center justify-end gap-1.5">
           <Button variant="outline" size="sm" className="h-8 px-2.5 text-xs" onClick={handleRandom}>
             <DicesIcon className="size-3.5" />
-            随机
+            Ngẫu nhiên
           </Button>
           {count > 0 && (
             <>
-              <Button variant="outline" size="sm" className="h-8 px-2.5 text-xs" aria-label="复制提示词" onClick={handleCopyPrompt}>
+              <Button variant="outline" size="sm" className="h-8 px-2.5 text-xs" aria-label="Sao chép prompt" onClick={handleCopyPrompt}>
                 <CopyIcon className="size-3.5" />
-                <span className="hidden md:inline">复制词</span>
+                <span className="hidden md:inline">Sao chép prompt</span>
               </Button>
-              <Button variant="ghost" size="icon" className="size-8" aria-label="清空参考图" onClick={clearRecipe}>
+              <Button variant="ghost" size="icon" className="size-8" aria-label="Xóa ảnh tham chiếu" onClick={clearRecipe}>
                 <Trash2Icon className="size-3.5" />
               </Button>
             </>
@@ -171,12 +171,12 @@ export function RecipeDock() {
               {isGenerating ? (
                 <>
                   <LoaderCircleIcon className="size-3.5 animate-spin" />
-                  生成中…
+                  Đang tạo…
                 </>
               ) : (
                 <>
                   <SparklesIcon className="size-3.5" />
-                  合成 ({count})
+                  Tổng hợp ({count})
                 </>
               )}
             </Link>

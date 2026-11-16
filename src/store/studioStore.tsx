@@ -355,7 +355,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       activeTaskRef.current = savedTask || null
       setActiveTask(savedTask || null)
       setIdbHydrated(true)
-    }).catch(() => { if (active) toast.error('无法读取浏览器存储，已暂停生成以保护待确认任务；请恢复存储后刷新') })
+    }).catch(() => { if (active) toast.error('Không đọc được bộ nhớ trình duyệt, đã tạm dừng tạo để bảo vệ nhiệm vụ đang chờ xác nhận; hãy khôi phục bộ nhớ rồi làm mới trang') })
     return () => {
       active = false
     }
@@ -363,7 +363,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
 
   useEffect(() => {
     if (!idbHydrated) return
-    void idbWrite(RECIPE_KEY, recipe).catch(() => toast.error('配方保存失败，请检查浏览器存储空间'))
+    void idbWrite(RECIPE_KEY, recipe).catch(() => toast.error('Lưu công thức thất bại, hãy kiểm tra dung lượng bộ nhớ trình duyệt'))
     try {
       // 上传图片和附图完整保存在 IndexedDB，轻量备份不包含它们。
       localStorage.setItem(
@@ -397,7 +397,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   const confirmUnlockNsfw = () => {
     setSafeMode(false)
     setAgeGateOpen(false)
-    toast.success('已解锁 18+ 完整图库模式')
+    toast.success('Đã mở khóa chế độ thư viện đầy đủ 18+')
     const cb = pendingUnlockCbRef.current
     pendingUnlockCbRef.current = null
     cb?.()
@@ -408,7 +408,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       requestUnlockNsfw()
     } else {
       setSafeMode(true)
-      toast.success('已开启安全模式（已隐藏 18+ 敏感分类）')
+      toast.success('Đã bật chế độ an toàn (đã ẩn các danh mục nhạy cảm 18+)')
     }
   }
 
@@ -427,37 +427,37 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   const toggleRecipePoseDepth = () => {
     const next = !(recipe.pose?.useDepth ?? poseDepthMode)
     setPoseDepthMode(next)
-    toast.success(next ? '已切换姿势图为：深度图 (Depth)' : '已切换姿势图为：素体白模')
+    toast.success(next ? 'Đã chuyển ảnh tư thế sang: ảnh depth (Depth)' : 'Đã chuyển ảnh tư thế sang: mô hình trắng (素体白模)')
   }
 
   const togglePortrait = (item: PortraitItem) => {
     const remove = recipe.portrait?.id === item.id
     setRecipe((r) => ({ ...r, portrait: remove ? null : item }))
-    toast.success(remove ? '已移除人像' : `已选人像：${item.发型名称}`)
+    toast.success(remove ? 'Đã gỡ chân dung' : `Đã chọn chân dung: ${item.发型名称}`)
   }
   const toggleCostume = (item: CostumeItem) => {
     const remove = recipe.costume?.id === item.id && (recipe.costume.selectedView || 'front') === (item.selectedView || 'front')
     setRecipe((r) => ({ ...r, costume: remove ? null : item }))
-    toast.success(remove ? '已移除服装' : `已选服装：${item.服装名称}`)
+    toast.success(remove ? 'Đã gỡ trang phục' : `Đã chọn trang phục: ${item.服装名称}`)
   }
   const togglePose = (item: PoseItem) => {
     const useDepth = item.source === 'upload' ? false : (item.useDepth ?? poseDepthMode)
     const remove = recipe.pose?.id === item.id && Boolean(recipe.pose?.useDepth) === useDepth
     setRecipe((r) => ({ ...r, pose: remove ? null : { ...item, useDepth } }))
-    toast.success(remove ? '已移除姿势' : `已选姿势：${item.姿势名称}（${item.角度}${useDepth ? ' · 深度图' : ''}）`)
+    toast.success(remove ? 'Đã gỡ tư thế' : `Đã chọn tư thế: ${item.姿势名称} (${item.角度}${useDepth ? ' · ảnh depth' : ''})`)
   }
 
   const addExtraImage = (item: { name: string; url: string }) => {
     const newImg: ExtraReferenceImage = {
       id: `${Date.now()}-${Math.random().toString(36).slice(2, 6)}`,
-      name: item.name || '附加参考',
+      name: item.name || 'Tham chiếu bổ sung',
       url: item.url,
     }
     setRecipe((r) => ({
       ...r,
       extraImages: [...(r.extraImages || []), newImg],
     }))
-    toast.success('已添加附加参考图')
+    toast.success('Đã thêm ảnh tham chiếu bổ sung')
   }
 
   const removeExtraImage = (id: string) => {
@@ -504,7 +504,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
 
   const clearRecipe = () => {
     setRecipe({ portrait: null, costume: null, pose: null, extraImages: [] })
-    toast.success('已清空配方')
+    toast.success('Đã xóa công thức')
   }
 
   const randomizeRecipe = (pools: { portraits?: PortraitItem[]; costumes?: CostumeItem[]; poses?: PoseItem[] }) => {
@@ -524,13 +524,13 @@ export function StudioProvider({ children }: { children: ReactNode }) {
         ? { ...posePool[Math.floor(Math.random() * posePool.length)], useDepth: poseDepthMode }
         : prev.pose,
     }))
-    toast.success(safeMode ? '已随机抽取一套角色配方（安全模式）' : '已随机抽取一套角色配方')
+    toast.success(safeMode ? 'Đã rút ngẫu nhiên một bộ công thức nhân vật (chế độ an toàn)' : 'Đã rút ngẫu nhiên một bộ công thức nhân vật')
   }
 
   const randomizeSlot = (slot: ReferenceSlot, scope: RandomScope, pools: ReferencePools, expectedId?: string | null) => {
     const current = randomContext.current
     if (expectedId !== undefined && (current.recipe[slot]?.id ?? null) !== expectedId) {
-      toast.info('参考已更改，本次换样已取消')
+      toast.info('Tham chiếu đã thay đổi, lần đổi mẫu này đã bị hủy')
       return
     }
     const next = randomSlot(current.recipe, slot, scope, {
@@ -539,11 +539,11 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       poses: (pools.poses || []).filter((item) => !current.safeMode || !isNsfwPose(item)),
     }, current.poseDepthMode)
     if (!next) {
-      toast.info(scope === 'similar' ? '没有其他同类素材，可切到“全部”再试' : '没有其他可用素材')
+      toast.info(scope === 'similar' ? 'Không còn mẫu cùng loại, hãy chuyển sang "Tất cả" rồi thử lại' : 'Không còn mẫu nào khác')
       return
     }
     setRecipe((previous) => ({ ...previous, [slot]: next[slot] }))
-    toast.success(`已更换${{ portrait: '人像', costume: '服装', pose: '姿势' }[slot]}，其他参考保持不变`)
+    toast.success(`Đã đổi ${{ portrait: 'chân dung', costume: 'trang phục', pose: 'tư thế' }[slot]}, các tham chiếu khác giữ nguyên`)
   }
 
   const updateApiConfig = (patch: Partial<ApiConfig>) => {
@@ -600,22 +600,22 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     return write
   }
   const addHistory = (item: Omit<GenerationHistoryItem, 'id' | 'createdAt'>) => {
-    void persistHistory((current) => [{ ...item, id: crypto.randomUUID(), createdAt: Date.now() }, ...current].slice(0, 30)).catch(() => toast.error('历史记录保存失败'))
+    void persistHistory((current) => [{ ...item, id: crypto.randomUUID(), createdAt: Date.now() }, ...current].slice(0, 30)).catch(() => toast.error('Lưu lịch sử thất bại'))
   }
   const removeHistoryItem = (id: string) => {
-    void persistHistory((current) => current.filter((x) => x.id !== id)).then(() => toast.success('已删除该条记录')).catch(() => toast.error('删除失败'))
+    void persistHistory((current) => current.filter((x) => x.id !== id)).then(() => toast.success('Đã xóa bản ghi này')).catch(() => toast.error('Xóa thất bại'))
   }
   const clearHistory = () => {
-    void persistHistory(() => []).then(() => { localStorage.removeItem(HISTORY_KEY); toast.success('已清空记录') }).catch(() => toast.error('清空记录失败'))
+    void persistHistory(() => []).then(() => { localStorage.removeItem(HISTORY_KEY); toast.success('Đã xóa toàn bộ bản ghi') }).catch(() => toast.error('Xóa bản ghi thất bại'))
   }
 
   const refreshStitchPreview = async () => {
     try {
       const url = await stitchRecipeCanvas(recipe)
       setPreviewUrl(url)
-      toast.success('已合成参考拼图')
+      toast.success('Đã ghép ảnh tham chiếu')
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : '拼图失败')
+      toast.error(e instanceof Error ? e.message : 'Ghép ảnh thất bại')
     }
   }
 
@@ -636,7 +636,7 @@ export function StudioProvider({ children }: { children: ReactNode }) {
     })
     signal.throwIfAborted()
     await saveActive(null)
-    toast.success('角色图已完成并保存')
+    toast.success('Ảnh nhân vật đã xong và đã lưu')
   }
   const resumeGeneration = async () => {
     const record = activeTaskRef.current
@@ -651,15 +651,15 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       controller.signal.throwIfAborted()
       await completeGeneration(result, record, controller.signal)
     } catch (e) {
-      if (e instanceof ComfySubmissionRejectedError || (e instanceof ComfyTaskError && e.reason === 'failed')) { try { await saveActive(null) } catch { toast.error('任务记录清除失败') } }
-      if (!controller.signal.aborted) setGenerationError(e instanceof Error ? e.message : '无法确认任务状态，记录已保留')
+      if (e instanceof ComfySubmissionRejectedError || (e instanceof ComfyTaskError && e.reason === 'failed')) { try { await saveActive(null) } catch { toast.error('Xóa bản ghi nhiệm vụ thất bại') } }
+      if (!controller.signal.aborted) setGenerationError(e instanceof Error ? e.message : 'Không xác nhận được trạng thái nhiệm vụ, bản ghi đã được giữ lại')
     }
     finally { isGeneratingRef.current = false; setIsGenerating(false) }
   }
   const stopTracking = async () => {
     trackingRef.current?.abort()
-    try { await saveActive(null); setGenerationError('已停止跟踪；后端任务可能仍在执行，请先确认队列再提交新任务') }
-    catch { toast.error('停止跟踪记录保存失败') }
+    try { await saveActive(null); setGenerationError('Đã dừng theo dõi; nhiệm vụ backend có thể vẫn đang chạy, hãy xác nhận hàng đợi trước rồi mới gửi nhiệm vụ mới') }
+    catch { toast.error('Lưu bản ghi dừng theo dõi thất bại') }
   }
   const resumeOnActivation = useEffectEvent(() => { void resumeGeneration() })
   // 刷新、重新激活与恢复联网只查询已有任务，不重新提交。
@@ -676,11 +676,11 @@ export function StudioProvider({ children }: { children: ReactNode }) {
   useEffect(() => () => trackingRef.current?.abort(), [])
   const startGeneration = async (overridePrompt?: string) => {
     if (!idbHydrated || isGeneratingRef.current) return
-    if (activeTaskRef.current) { toast.error('存在待确认任务，请先恢复或明确停止跟踪'); return }
+    if (activeTaskRef.current) { toast.error('Có nhiệm vụ đang chờ xác nhận, hãy khôi phục hoặc dừng theo dõi rõ ràng trước'); return }
     const recipeSnapshot = recipe
     const configSnapshot = apiConfig
     const finalPrompt = overridePrompt ?? customPrompt ?? buildRecipePrompt(recipeSnapshot, configSnapshot.stylePreset, configSnapshot.activeProvider === 'comfyui' && recipeSnapshot.workflowImagesIdentity === workflowIdentity(configSnapshot.comfyuiParams.workflowJson) ? Object.values(recipeSnapshot.workflowImages || {}) : [])
-    let record: ActiveTask = { prompt: finalPrompt, summary: [recipeSnapshot.portrait?.发型名称, recipeSnapshot.costume?.服装名称, recipeSnapshot.pose?.姿势名称].filter(Boolean).join(' + ') || '自定义合成' }
+    let record: ActiveTask = { prompt: finalPrompt, summary: [recipeSnapshot.portrait?.发型名称, recipeSnapshot.costume?.服装名称, recipeSnapshot.pose?.姿势名称].filter(Boolean).join(' + ') || 'Tổng hợp tùy chỉnh' }
     isGeneratingRef.current = true
     setIsGenerating(true)
     setGeneratingModel(configSnapshot.activeProvider)
@@ -711,9 +711,9 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       await completeGeneration(result, record, controller.signal)
     } catch (e) {
       if (e instanceof ComfySubmissionRejectedError || (e instanceof ComfyTaskError && e.reason === 'failed')) {
-        try { await saveActive(null) } catch { toast.error('任务失败记录未能清除，请停止跟踪后重试') }
+        try { await saveActive(null) } catch { toast.error('Không xóa được bản ghi nhiệm vụ thất bại, hãy dừng theo dõi rồi thử lại') }
       }
-      const msg = e instanceof Error ? e.message : '调用失败'
+      const msg = e instanceof Error ? e.message : 'Gọi thất bại'
       setGenerationError(msg)
       toast.error(msg.split('\n')[0])
     } finally { isGeneratingRef.current = false; setIsGenerating(false) }
@@ -774,20 +774,20 @@ export function StudioProvider({ children }: { children: ReactNode }) {
       <AlertDialog open={ageGateOpen} onOpenChange={setAgeGateOpen}>
         <AlertDialogContent>
           <AlertDialogHeader>
-            <AlertDialogTitle>🔞 年龄确认与免责声明（NSFW 18+）</AlertDialogTitle>
+            <AlertDialogTitle>🔞 Xác nhận tuổi và tuyên bố miễn trừ trách nhiệm (NSFW 18+)</AlertDialogTitle>
             <AlertDialogDescription className="space-y-2 text-left leading-relaxed">
               <span className="block">
-                关闭「安全模式 (SFW)」后，图库将显示包含成人向艺术参考的敏感分类：
+                Sau khi tắt "Chế độ an toàn (SFW)", thư viện sẽ hiển thị các danh mục nhạy cảm chứa tài liệu tham khảo nghệ thuật người lớn:
               </span>
               <span className="block rounded-lg bg-muted p-2.5 text-xs text-foreground">
-                • <strong>动作姿势库</strong>：全身单人・性感系（399 张）、双人缠绵（275 张）
-                <br />• <strong>服装穿搭库</strong>：内衣・睡衣（199 套）、性感穿搭（140 套）
+                • <strong>Thư viện tư thế</strong>: 全身单人・性感系 (399 ảnh), 双人缠绵 (275 ảnh)
+                <br />• <strong>Thư viện trang phục</strong>: 内衣・睡衣 (199 bộ), 性感穿搭 (140 bộ)
               </span>
               <span className="block text-xs">
-                <strong>免责声明</strong>：
-                <br />1. <strong>年龄限制</strong>：未满 18 周岁的未成年人严禁关闭安全模式或浏览上述敏感分类。
-                <br />2. <strong>来源说明</strong>：原有图鉴素材来自 ギア（@giaaibusi）；二次元服装来自 たき AI · CharaDB，适用独立来源条件，禁止真人、未成年人用途及图片再分发，首次使用须确认。
-                <br />3. <strong>合法使用</strong>：本工具与素材<strong>仅供 AI 绘画学习与合法艺术创作使用，严禁用于任何违法违规、色情传播或侵害他人肖像权（如未经授权的真人换脸）等用途</strong>，使用者须自行承担一切法律责任。
+                <strong>Tuyên bố miễn trừ trách nhiệm</strong>:
+                <br />1. <strong>Giới hạn tuổi</strong>: người chưa đủ 18 tuổi tuyệt đối không được tắt chế độ an toàn hoặc xem các danh mục nhạy cảm trên.
+                <br />2. <strong>Ghi chú nguồn</strong>: tư liệu gốc từ ギア (@giaaibusi); trang phục 2D từ たき AI · CharaDB, áp dụng điều kiện nguồn riêng, cấm dùng cho người thật, trẻ vị thành niên và cấm phát tán lại ảnh, lần đầu dùng phải xác nhận.
+                <br />3. <strong>Sử dụng hợp pháp</strong>: công cụ và tư liệu này chỉ dùng để học vẽ AI và sáng tạo nghệ thuật hợp pháp, <strong>nghiêm cấm dùng cho bất kỳ mục đích vi phạm pháp luật, phát tán nội dung khiêu dâm hoặc xâm phạm quyền chân dung của người khác (ví dụ hoán đổi khuôn mặt người thật khi chưa được phép)</strong>, người dùng tự chịu mọi trách nhiệm pháp lý.
               </span>
             </AlertDialogDescription>
           </AlertDialogHeader>
@@ -797,10 +797,10 @@ export function StudioProvider({ children }: { children: ReactNode }) {
                 pendingUnlockCbRef.current = null
               }}
             >
-              保持安全模式
+              Giữ chế độ an toàn
             </AlertDialogCancel>
             <AlertDialogAction onClick={confirmUnlockNsfw}>
-              我已年满 18 岁并同意免责声明
+              Tôi đã đủ 18 tuổi và đồng ý với tuyên bố miễn trừ trách nhiệm
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

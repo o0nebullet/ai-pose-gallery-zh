@@ -1,7 +1,7 @@
 import type { ReactNode } from 'react'
 import { cn } from '@/lib/utils'
 
-// 设置页的分组卡片
+// Thẻ nhóm của trang cài đặt
 export function Section({ title, desc, actions, children, className }: { title: string; desc?: string; actions?: ReactNode; children: ReactNode; className?: string }) {
   return (
     <section className="@container/section min-w-0 rounded-[22px] bg-muted p-4 sm:p-6">
@@ -17,7 +17,7 @@ export function Section({ title, desc, actions, children, className }: { title: 
   )
 }
 
-// 表单项：标签 + 输入框 + 提示
+// Mục biểu mẫu: nhãn + ô nhập + gợi ý
 export function Field({ label, htmlFor, hint, badge, children }: { label: string; htmlFor?: string; hint?: string; badge?: ReactNode; children: ReactNode }) {
   return (
     <div className="grid min-w-0 content-start gap-2">

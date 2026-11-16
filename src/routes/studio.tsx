@@ -73,7 +73,7 @@ import type {
 } from '@/types/gallery'
 
 export const Route = createFileRoute('/studio')({
-  staticData: { title: 'AI 合成台' },
+  staticData: { title: 'Bàn tổng hợp AI' },
   component: StudioPage,
 })
 
@@ -160,10 +160,10 @@ function StudioPage() {
       workflowJson: JSON.stringify(tpl.workflow, null, 2),
       ...tpl.defaults,
     })
-    toast.success(`已切换为：${tpl.label}`)
+    toast.success(`Đã chuyển sang: ${tpl.label}`)
   }
 
-  // 自动识别 ComfyUI 地址 + 检测工作流所需节点/模型是否在本机存在
+  // Tự động nhận diện địa chỉ ComfyUI + kiểm tra node/model mà workflow cần có trên máy cục bộ không
   const handleCheckComfy = async () => {
     setCheckingComfy(true)
     setComfyCheck(null)
@@ -174,7 +174,7 @@ function StudioPage() {
         setComfyCheck({
           ok: false,
           errors: [
-            `未找到可用的 ComfyUI 服务（已尝试：${cfg.baseUrl || '默认地址'}、127.0.0.1:8000、127.0.0.1:8188）。请确认 ComfyUI 已启动，并检查跨域 (CORS) 设置。`,
+            `Không tìm thấy dịch vụ ComfyUI khả dụng (đã thử: ${cfg.baseUrl || 'địa chỉ mặc định'}, 127.0.0.1:8000, 127.0.0.1:8188). Hãy xác nhận ComfyUI đã khởi động và kiểm tra cài đặt CORS.`,
           ],
           warnings: [],
           fixes: [],
@@ -183,7 +183,7 @@ function StudioPage() {
       }
       if (found.baseUrl !== cfg.baseUrl.trim().replace(/\/+$/, '')) {
         updateProviderConfig('comfyui', { baseUrl: found.baseUrl })
-        toast.success(`已自动识别 ComfyUI 地址：${found.baseUrl}`)
+        toast.success(`Đã tự động nhận diện địa chỉ ComfyUI: ${found.baseUrl}`)
       }
       const cp = apiConfig.comfyuiParams
       const result = await checkComfyWorkflow(found.baseUrl, cfg.apiKey, cp.workflowJson, [
@@ -192,10 +192,10 @@ function StudioPage() {
         cp.poseNodeId,
         cp.stitchedNodeId,
       ])
-      // 自动修复仅用于提交副本，保留导入的原始 API。
-      setComfyCheck({ ...result, info: `${found.info}（${found.baseUrl}）` })
+      // Tự sửa chỉ dùng cho bản sao gửi đi, giữ nguyên API gốc đã nhập.
+      setComfyCheck({ ...result, info: `${found.info} (${found.baseUrl})` })
     } catch (e) {
-      setComfyCheck({ ok: false, errors: [e instanceof Error ? e.message : '检测失败'], warnings: [], fixes: [] })
+      setComfyCheck({ ok: false, errors: [e instanceof Error ? e.message : 'Kiểm tra thất bại'], warnings: [], fixes: [] })
     } finally {
       setCheckingComfy(false)
     }
@@ -209,7 +209,7 @@ function StudioPage() {
       const text = await file.text()
       const info = parseComfyWorkflowNodes(text)
       if (!info.valid) {
-        toast.error(info.error || '工作流 JSON 无效')
+        toast.error(info.error || 'Workflow JSON không hợp lệ')
         return
       }
       const detected = autoDetectComfyMappings(text)
@@ -221,10 +221,10 @@ function StudioPage() {
       })
       setShowAdvanced(true)
       toast.success(
-        `已导入工作流：识别到 ${info.imageNodes.length} 个图片节点、${info.promptNodes.length} 个提示词节点`
+        `Đã nhập workflow: nhận diện được ${info.imageNodes.length} node ảnh, ${info.promptNodes.length} node prompt`
       )
     } catch {
-      toast.error('读取 JSON 文件失败')
+      toast.error('Đọc file JSON thất bại')
     }
   }
 
@@ -249,9 +249,9 @@ function StudioPage() {
       a.download = `comfyui-workflow-${Date.now()}.api.json`
       a.click()
       URL.revokeObjectURL(url)
-      toast.success('已导出 ComfyUI API 工作流 JSON')
+      toast.success('Đã xuất workflow JSON API ComfyUI')
     } catch {
-      toast.error('当前工作流 JSON 格式有误，无法导出')
+      toast.error('Định dạng workflow JSON hiện tại sai, không thể xuất')
     }
   }
 
@@ -261,7 +261,7 @@ function StudioPage() {
     e.target.value = ''
     if (!file) return
     if (!file.type.startsWith('image/')) {
-      toast.error('请选择图片文件')
+      toast.error('Hãy chọn file ảnh')
       return
     }
     setUploadingSlot(slot)
@@ -270,13 +270,13 @@ function StudioPage() {
       const image = new Image()
       image.src = url
       await image.decode()
-      const name = file.name.replace(/\.[^.]+$/, '') || '上传图片'
+      const name = file.name.replace(/\.[^.]+$/, '') || 'Ảnh tải lên'
       const items = uploadedReferences(name, url, image.width, image.height, file.size)
       if (slot === 'portrait') setPortrait(items.portrait)
       if (slot === 'costume') setCostume(items.costume)
       if (slot === 'pose') setPose(items.pose)
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : '图片读取失败')
+      toast.error(err instanceof Error ? err.message : 'Đọc ảnh thất bại')
     } finally {
       setUploadingSlot(null)
     }
@@ -299,14 +299,14 @@ function StudioPage() {
       for (const file of imgFiles) {
         const dataUrl = await fileToDataUrl(file)
         const baseName = file.name.replace(/\.[^.]+$/, '').slice(0, 16)
-        addExtraImage({ name: baseName || '附加图', url: dataUrl })
+        addExtraImage({ name: baseName || 'Ảnh đính kèm', url: dataUrl })
       }
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : '图片读取失败')
+      toast.error(err instanceof Error ? err.message : 'Đọc ảnh thất bại')
     }
   }
 
-  // 支持在合成台直接 Cmd+V / Ctrl+V 粘贴剪贴板图片作为附加参考图
+  // Hỗ trợ dán trực tiếp ảnh từ clipboard bằng Cmd+V / Ctrl+V trên bàn tổng hợp làm ảnh tham chiếu đính kèm
   useEffect(() => {
     const onPaste = (e: ClipboardEvent) => {
       const target = e.target as HTMLElement | null
@@ -347,7 +347,7 @@ function StudioPage() {
         : { poses: (await qc.ensureQueryData(posesQuery)).items }
       randomizeSlot(slot, randomScopes[slot], pools, expectedId)
     } catch {
-      toast.error('素材库加载失败，请稍后重试')
+      toast.error('Tải thư viện tư liệu thất bại, hãy thử lại sau')
     } finally {
       setRandomizingSlot(null)
     }
@@ -355,11 +355,11 @@ function StudioPage() {
 
   const randomControls = (slot: ReferenceSlot, label: string) => <div className="flex basis-full flex-wrap items-center gap-2 border-t pt-2">
     <Select value={randomScopes[slot]} onValueChange={(value) => setRandomScopes((current) => ({ ...current, [slot]: value as RandomScope }))}>
-      <SelectTrigger aria-label={`${label}换样范围`} className="min-h-11 w-24"><SelectValue /></SelectTrigger>
-      <SelectContent><SelectItem value="similar">同类</SelectItem><SelectItem value="all">全部</SelectItem></SelectContent>
+      <SelectTrigger aria-label={`${label} phạm vi đổi mẫu`} className="min-h-11 w-24"><SelectValue /></SelectTrigger>
+      <SelectContent><SelectItem value="similar">Cùng loại</SelectItem><SelectItem value="all">Tất cả</SelectItem></SelectContent>
     </Select>
-    <Button type="button" variant="outline" className="min-h-11" disabled={uploadingSlot !== null || randomizingSlot !== null} onClick={() => void handleRandomSlot(slot)} aria-label={`${label}换一个`}>
-      {randomizingSlot === slot ? <LoaderCircleIcon className="size-4 animate-spin motion-reduce:animate-none" /> : <DicesIcon className="size-4" />}换一个
+    <Button type="button" variant="outline" className="min-h-11" disabled={uploadingSlot !== null || randomizingSlot !== null} onClick={() => void handleRandomSlot(slot)} aria-label={`${label} đổi một cái khác`}>
+      {randomizingSlot === slot ? <LoaderCircleIcon className="size-4 animate-spin motion-reduce:animate-none" /> : <DicesIcon className="size-4" />}Đổi một cái
     </Button>
   </div>
 
@@ -380,10 +380,10 @@ function StudioPage() {
     const trimmed = extraUrlInput.trim()
     if (!trimmed) return
     if (!/^https?:\/\//i.test(trimmed) && !trimmed.startsWith('data:image/')) {
-      toast.error('请输入有效的 http(s):// 图片链接')
+      toast.error('Hãy nhập liên kết ảnh http(s):// hợp lệ')
       return
     }
-    addExtraImage({ name: '外部参考图', url: trimmed })
+    addExtraImage({ name: 'Ảnh tham chiếu ngoài', url: trimmed })
     setExtraUrlInput('')
     setShowUrlInput(false)
   }
@@ -393,7 +393,7 @@ function StudioPage() {
       const url = await stitchRecipeCanvas(recipe)
       setStitchModalUrl(url)
     } catch (e) {
-      toast.error(e instanceof Error ? e.message : '拼图失败')
+      toast.error(e instanceof Error ? e.message : 'Ghép ảnh thất bại')
     }
   }
 
@@ -416,19 +416,19 @@ function StudioPage() {
   return (
     <>
       <PageHeader
-        title="AI 角色合成台"
+        title="Bàn tổng hợp nhân vật AI"
         actions={
           activeProvider === 'comfyui' ? <ComfyConnectionStatus compact /> : <Button variant="outline" size="sm" asChild>
             <Link to="/settings">
               <KeyRoundIcon className="size-4" />
-              {providerCfg.apiKey.trim() ? `${providerMeta.shortName} 已配置` : '配置 API Key'}
+              {providerCfg.apiKey.trim() ? `${providerMeta.shortName} đã cấu hình` : 'Cấu hình API Key'}
             </Link>
           </Button>
         }
       />
 
       <div className="grid grid-cols-1 gap-4 lg:grid-cols-12 lg:gap-6">
-        {/* 左栏：参考图、模型参数与 Prompt */}
+        {/* Cột trái: ảnh tham chiếu, tham số model và prompt */}
         <div
           className="flex min-w-0 flex-col gap-4 lg:col-span-7"
           onDragOver={(e) => {
@@ -438,9 +438,9 @@ function StudioPage() {
           onDragLeave={() => setIsDragging(false)}
           onDrop={handleDropFiles}
         >
-          {/* 1. 参考图组合 */}
+          {/* 1. Kết hợp ảnh tham chiếu */}
           <Section
-            title="1. 参考图组合"
+            title="1. Kết hợp ảnh tham chiếu"
             className="@lg/section:grid-cols-1"
             actions={
               <div className="flex flex-wrap items-center gap-1.5">
@@ -459,7 +459,7 @@ function StudioPage() {
                   onClick={handleRandom}
                 >
                   <DicesIcon className="size-3.5" />
-                  随机
+                  Ngẫu nhiên
                 </Button>
                 {hasAnyRef && hasStitchRefs && (
                   <Button
@@ -469,7 +469,7 @@ function StudioPage() {
                     onClick={handleOpenStitchModal}
                   >
                     <LayoutGridIcon className="size-3.5" />
-                    参考拼图
+                    Ảnh ghép tham chiếu
                   </Button>
                 )}
               </div>
@@ -479,16 +479,16 @@ function StudioPage() {
             <input ref={slotInputRef} type="file" accept="image/*" className="hidden" onChange={handleSlotUpload} />
             {showReferenceErrors && missingReferences.length > 0 && (
               <div id="reference-errors" ref={referenceErrorsRef} role="alert" tabIndex={-1} className="rounded-lg border border-destructive/50 bg-destructive/5 p-3 text-sm text-destructive focus-visible:outline-2">
-                请先选择或上传：{missingReferences.join('、')}。这些槽位已绑定工作流节点。
+                Hãy chọn hoặc tải lên trước: {missingReferences.join('、')}. Các ô này đã liên kết với node workflow.
               </div>
             )}
-            {/* 3 个核心图库槽位：手机端单列舒展展示，平板/桌面端三列并排 */}
+            {/* 3 ô thư viện chính: một cột thoáng trên điện thoại, ba cột song song trên máy tính bảng/máy tính */}
             <div className="grid min-w-0 grid-cols-1 gap-2 @min-[42rem]/section:grid-cols-3">
-              {/* 人像槽 */}
+              {/* Ô chân dung */}
               <div className={`relative flex min-w-0 flex-wrap items-start gap-2.5 rounded-xl bg-background p-2.5 ${showReferenceErrors && missingReferences.includes('人像') ? 'ring-1 ring-destructive' : ''}`}>
                 {recipe.portrait ? (
                   <>
-                    <button type="button" aria-label="放大人像参考图" className="shrink-0 cursor-zoom-in overflow-hidden rounded-lg transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-ring" onClick={() => {
+                    <button type="button" aria-label="Phóng to ảnh tham chiếu chân dung" className="shrink-0 cursor-zoom-in overflow-hidden rounded-lg transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-ring" onClick={() => {
                       const item = recipe.portrait
                       if (item) setZoomImageUrl(referenceImageUrl(item.原图 || item.缩略图))
                     }}>
@@ -500,10 +500,10 @@ function StudioPage() {
                     </button>
                     <div className="flex min-h-12 min-w-0 flex-1 flex-col justify-between gap-1">
                       <div className="flex items-center justify-between gap-1">
-                        <span className="shrink-0 text-[11px] text-muted-foreground">人像</span>
+                        <span className="shrink-0 text-[11px] text-muted-foreground">Chân dung</span>
                         <button
                           type="button"
-                          aria-label="清除人像参考图"
+                          aria-label="Xóa ảnh tham chiếu chân dung"
                           onClick={() => setPortrait(null)}
                           className="-mr-0.5 -mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
                         >
@@ -524,22 +524,22 @@ function StudioPage() {
                       <div className="flex h-10 w-8 shrink-0 items-center justify-center rounded-lg bg-muted">
                         <UserRoundIcon className="size-4" />
                       </div>
-                      <span className="truncate text-xs">+ 选人像</span>
+                      <span className="truncate text-xs">+ Chọn chân dung</span>
                     </Link>
-                    <Button type="button" variant="ghost" size="sm" aria-label="上传人像参考图" aria-describedby={showReferenceErrors && missingReferences.includes('人像') ? 'reference-errors' : undefined} aria-busy={uploadingSlot === 'portrait'} disabled={uploadingSlot !== null || randomizingSlot !== null} className="h-12 shrink-0 border-l px-2 text-xs" onClick={() => { uploadSlotRef.current = 'portrait'; slotInputRef.current?.click() }}>
+                    <Button type="button" variant="ghost" size="sm" aria-label="Tải lên ảnh tham chiếu chân dung" aria-describedby={showReferenceErrors && missingReferences.includes('人像') ? 'reference-errors' : undefined} aria-busy={uploadingSlot === 'portrait'} disabled={uploadingSlot !== null || randomizingSlot !== null} className="h-12 shrink-0 border-l px-2 text-xs" onClick={() => { uploadSlotRef.current = 'portrait'; slotInputRef.current?.click() }}>
                       {uploadingSlot === 'portrait' ? <LoaderCircleIcon className="size-3.5 animate-spin motion-reduce:animate-none" /> : <ImagePlusIcon className="size-3.5" />}
-                      {uploadingSlot === 'portrait' ? '处理中' : '上传'}
+                      {uploadingSlot === 'portrait' ? 'Đang xử lý' : 'Tải lên'}
                     </Button>
                   </>
                 )}
-                {randomControls('portrait', '人像')}
+                {randomControls('portrait', 'Chân dung')}
               </div>
 
-              {/* 服装槽 */}
+              {/* Ô trang phục */}
               <div className={`relative flex min-w-0 flex-wrap items-start gap-2.5 rounded-xl bg-background p-2.5 ${showReferenceErrors && missingReferences.includes('服装') ? 'ring-1 ring-destructive' : ''}`}>
                 {recipe.costume ? (
                   <>
-                    <button type="button" aria-label="放大服装参考图" className="shrink-0 cursor-zoom-in overflow-hidden rounded-lg transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-ring" onClick={() => {
+                    <button type="button" aria-label="Phóng to ảnh tham chiếu trang phục" className="shrink-0 cursor-zoom-in overflow-hidden rounded-lg transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-ring" onClick={() => {
                       const item = recipe.costume
                       if (item) setZoomImageUrl(referenceImageUrl(item.预览图 || item.原图 || item.缩略图))
                     }}>
@@ -551,10 +551,10 @@ function StudioPage() {
                     </button>
                     <div className="flex min-h-12 min-w-0 flex-1 flex-col justify-between gap-1">
                       <div className="flex items-center justify-between gap-1">
-                        <span className="shrink-0 text-[11px] text-muted-foreground">服装</span>
+                        <span className="shrink-0 text-[11px] text-muted-foreground">Trang phục</span>
                         <button
                           type="button"
-                          aria-label="清除服装参考图"
+                          aria-label="Xóa ảnh tham chiếu trang phục"
                           onClick={() => setCostume(null)}
                           className="-mr-0.5 -mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
                         >
@@ -571,7 +571,7 @@ function StudioPage() {
                           if (recipe.costume && uploadingSlot === null && randomizingSlot === null) setCostume(selectCostumeView(recipe.costume, value))
                         }}
                       >
-                        <SelectTrigger aria-label="已选服装视角" className="h-8 w-full text-xs"><SelectValue /></SelectTrigger>
+                        <SelectTrigger aria-label="Góc nhìn trang phục đã chọn" className="h-8 w-full text-xs"><SelectValue /></SelectTrigger>
                         <SelectContent>{costumeViews.map((view) => <SelectItem key={view.id} value={view.id}>{view.label}</SelectItem>)}</SelectContent>
                       </Select>}
                     </div>
@@ -585,22 +585,22 @@ function StudioPage() {
                       <div className="flex h-10 w-8 shrink-0 items-center justify-center rounded-lg bg-muted">
                         <ShirtIcon className="size-4" />
                       </div>
-                      <span className="truncate text-xs">+ 选服装</span>
+                      <span className="truncate text-xs">+ Chọn trang phục</span>
                     </Link>
-                    <Button type="button" variant="ghost" size="sm" aria-label="上传服装参考图" aria-describedby={showReferenceErrors && missingReferences.includes('服装') ? 'reference-errors' : undefined} aria-busy={uploadingSlot === 'costume'} disabled={uploadingSlot !== null || randomizingSlot !== null} className="h-12 shrink-0 border-l px-2 text-xs" onClick={() => { uploadSlotRef.current = 'costume'; slotInputRef.current?.click() }}>
+                    <Button type="button" variant="ghost" size="sm" aria-label="Tải lên ảnh tham chiếu trang phục" aria-describedby={showReferenceErrors && missingReferences.includes('服装') ? 'reference-errors' : undefined} aria-busy={uploadingSlot === 'costume'} disabled={uploadingSlot !== null || randomizingSlot !== null} className="h-12 shrink-0 border-l px-2 text-xs" onClick={() => { uploadSlotRef.current = 'costume'; slotInputRef.current?.click() }}>
                       {uploadingSlot === 'costume' ? <LoaderCircleIcon className="size-3.5 animate-spin motion-reduce:animate-none" /> : <ImagePlusIcon className="size-3.5" />}
-                      {uploadingSlot === 'costume' ? '处理中' : '上传'}
+                      {uploadingSlot === 'costume' ? 'Đang xử lý' : 'Tải lên'}
                     </Button>
                   </>
                 )}
-                {randomControls('costume', '服装')}
+                {randomControls('costume', 'Trang phục')}
               </div>
 
-              {/* 姿势槽 */}
+              {/* Ô tư thế */}
               <div className={`relative flex min-w-0 flex-wrap items-start gap-2.5 rounded-xl bg-background p-2.5 ${showReferenceErrors && missingReferences.includes('姿势') ? 'ring-1 ring-destructive' : ''}`}>
                 {recipe.pose ? (
                   <>
-                    <button type="button" aria-label="放大姿势参考图" className="shrink-0 cursor-zoom-in overflow-hidden rounded-lg transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-ring" onClick={() => {
+                    <button type="button" aria-label="Phóng to ảnh tham chiếu tư thế" className="shrink-0 cursor-zoom-in overflow-hidden rounded-lg transition-opacity hover:opacity-80 focus-visible:outline-2 focus-visible:outline-ring" onClick={() => {
                       const item = recipe.pose
                       if (item) setZoomImageUrl(referenceImageUrl(poseImagePath(item)))
                     }}>
@@ -613,11 +613,11 @@ function StudioPage() {
                     <div className="flex min-h-12 min-w-0 flex-1 flex-col justify-between gap-1">
                       <div className="flex items-center justify-between gap-1">
                         <div className="flex min-w-0 flex-wrap items-center gap-1.5">
-                          <span className="shrink-0 text-[11px] text-muted-foreground">姿势</span>
+                          <span className="shrink-0 text-[11px] text-muted-foreground">Tư thế</span>
                           {recipe.pose.source !== 'upload' && (
                             <div
                               role="group"
-                              aria-label="切换素体白模或深度图"
+                              aria-label="Chuyển mẫu trắng hoặc ảnh depth"
                               className="inline-flex shrink-0 items-center rounded-md border border-border/70 bg-muted/70 p-0.5 text-[10px] leading-none"
                             >
                               <button
@@ -631,7 +631,7 @@ function StudioPage() {
                                     : 'text-muted-foreground hover:text-foreground'
                                 }`}
                               >
-                                白模
+                                Mẫu trắng
                               </button>
                               <button
                                 type="button"
@@ -644,14 +644,14 @@ function StudioPage() {
                                     : 'text-muted-foreground hover:text-foreground'
                                 }`}
                               >
-                                深度
+                                Depth
                               </button>
                             </div>
                           )}
                         </div>
                         <button
                           type="button"
-                          aria-label="清除姿势参考图"
+                          aria-label="Xóa ảnh tham chiếu tư thế"
                           onClick={() => setPose(null)}
                           className="-mr-0.5 -mt-0.5 flex size-5 shrink-0 items-center justify-center rounded-full text-muted-foreground transition-colors hover:bg-muted hover:text-foreground focus-visible:outline-2 focus-visible:outline-ring"
                         >
@@ -675,19 +675,19 @@ function StudioPage() {
                       <div className="flex h-10 w-8 shrink-0 items-center justify-center rounded-lg bg-muted">
                         <PersonStandingIcon className="size-4" />
                       </div>
-                      <span className="truncate text-xs">+ 选姿势</span>
+                      <span className="truncate text-xs">+ Chọn tư thế</span>
                     </Link>
-                    <Button type="button" variant="ghost" size="sm" aria-label="上传姿势参考图" aria-describedby={showReferenceErrors && missingReferences.includes('姿势') ? 'reference-errors' : undefined} aria-busy={uploadingSlot === 'pose'} disabled={uploadingSlot !== null || randomizingSlot !== null} className="h-12 shrink-0 border-l px-2 text-xs" onClick={() => { uploadSlotRef.current = 'pose'; slotInputRef.current?.click() }}>
+                    <Button type="button" variant="ghost" size="sm" aria-label="Tải lên ảnh tham chiếu tư thế" aria-describedby={showReferenceErrors && missingReferences.includes('姿势') ? 'reference-errors' : undefined} aria-busy={uploadingSlot === 'pose'} disabled={uploadingSlot !== null || randomizingSlot !== null} className="h-12 shrink-0 border-l px-2 text-xs" onClick={() => { uploadSlotRef.current = 'pose'; slotInputRef.current?.click() }}>
                       {uploadingSlot === 'pose' ? <LoaderCircleIcon className="size-3.5 animate-spin motion-reduce:animate-none" /> : <ImagePlusIcon className="size-3.5" />}
-                      {uploadingSlot === 'pose' ? '处理中' : '上传'}
+                      {uploadingSlot === 'pose' ? 'Đang xử lý' : 'Tải lên'}
                     </Button>
                   </>
                 )}
-                {randomControls('pose', '姿势')}
+                {randomControls('pose', 'Tư thế')}
               </div>
             </div>
 
-            {/* 附加参考图列表 + 可视化拖拽/粘贴上传框 */}
+            {/* Danh sách ảnh tham chiếu đính kèm + khung tải lên kéo-thả/dán trực quan */}
             <div className="space-y-2 pt-1">
               {extraImages.length > 0 && (
                 <div className="grid min-w-0 grid-cols-1 gap-2 @min-[42rem]/section:grid-cols-3">
@@ -702,12 +702,12 @@ function StudioPage() {
                         className="h-11 w-9 shrink-0 rounded-lg object-cover"
                       />
                       <div className="min-w-0 flex-1">
-                        <div className="text-[10px] text-muted-foreground">附图 #{idx + 1}</div>
+                        <div className="text-[10px] text-muted-foreground">Ảnh đính kèm #{idx + 1}</div>
                         <input
                           type="text"
                           value={img.name}
                           onChange={(e) => updateExtraImageName(img.id, e.target.value)}
-                          placeholder="备注(如:配饰/背景)"
+                          placeholder="Ghi chú (vd: phụ kiện/nền)"
                           className="w-full truncate bg-transparent text-xs font-medium outline-none focus:underline"
                         />
                       </div>
@@ -723,7 +723,7 @@ function StudioPage() {
                 </div>
               )}
 
-              {/* 显式虚线上传/拖拽/粘贴提示区 */}
+              {/* Vùng nhắc tải lên/kéo-thả/dán bằng đường đứt nét */}
               <div
                 onClick={() => fileInputRef.current?.click()}
                 className={`flex cursor-pointer flex-col items-center justify-center gap-1 rounded-xl border border-dashed px-3 py-2.5 text-center transition sm:flex-row sm:justify-between ${
@@ -736,8 +736,8 @@ function StudioPage() {
                   <ImagePlusIcon className="size-4 shrink-0" />
                   <span>
                     {isDragging
-                      ? '松开鼠标添加附加参考图'
-                      : '添加附加参考图：点击上传、拖拽图片至此，或直接按 Ctrl+V / ⌘V 粘贴'}
+                      ? 'Thả chuột để thêm ảnh tham chiếu đính kèm'
+                      : 'Thêm ảnh tham chiếu đính kèm: nhấn để tải lên, kéo thả ảnh vào đây, hoặc nhấn trực tiếp Ctrl+V / ⌘V để dán'}
                   </span>
                 </div>
                 <button
@@ -749,7 +749,7 @@ function StudioPage() {
                   className="inline-flex shrink-0 items-center gap-1 rounded-md px-2 py-0.5 text-[11px] font-medium text-primary hover:bg-primary/10"
                 >
                   <LinkIcon className="size-3" />
-                  输入图片 URL
+                  Nhập URL ảnh
                 </button>
               </div>
 
@@ -758,25 +758,25 @@ function StudioPage() {
                   <Input
                     value={extraUrlInput}
                     onChange={(e) => setExtraUrlInput(e.target.value)}
-                    placeholder="粘贴 https://... 图片地址"
+                    placeholder="Dán địa chỉ ảnh https://..."
                     className="bg-background text-xs"
                     onKeyDown={(e) => e.key === 'Enter' && handleAddUrl()}
                   />
                   <Button size="sm" onClick={handleAddUrl}>
-                    添加
+                    Thêm
                   </Button>
                 </div>
               )}
             </div>
           </Section>
 
-          {/* 2. 协议、模型与可折叠高级参数 */}
+          {/* 2. Giao thức, model và tham số nâng cao có thể thu gọn */}
           <Section
-            title="2. 模型与参数"
+            title="2. Model và tham số"
             actions={
               <Button variant="ghost" size="sm" onClick={() => setShowAdvanced((v) => !v)}>
                 <SlidersHorizontalIcon className="size-3.5" />
-                高级参数
+                Tham số nâng cao
                 {showAdvanced ? (
                   <ChevronUpIcon className="size-3.5" />
                 ) : (
@@ -785,7 +785,7 @@ function StudioPage() {
               </Button>
             }
           >
-            <Field label="接口协议">
+            <Field label="Giao thức API">
               <Select
                 value={activeProvider}
                 onValueChange={(v) => updateApiConfig({ activeProvider: v as ImageProviderId })}
@@ -804,7 +804,7 @@ function StudioPage() {
             </Field>
 
             {activeProvider === 'comfyui' ? (
-              <Field label="工作流模板 (API 格式)">
+              <Field label="Mẫu workflow (định dạng API)">
                 <div className="space-y-2">
                   <Select
                     value={apiConfig.comfyuiParams.workflowPreset}
@@ -822,7 +822,7 @@ function StudioPage() {
                         </SelectItem>
                       ))}
                       <SelectItem value="custom" className="text-xs">
-                        自定义工作流 (已导入 JSON)
+                        Workflow tùy chỉnh (đã nhập JSON)
                       </SelectItem>
                     </SelectContent>
                   </Select>
@@ -842,7 +842,7 @@ function StudioPage() {
                       onClick={() => comfyFileInputRef.current?.click()}
                     >
                       <FileUpIcon className="size-3.5" />
-                      导入 .json
+                      Nhập .json
                     </Button>
                     <Button
                       type="button"
@@ -852,7 +852,7 @@ function StudioPage() {
                       onClick={() => setShowComfyJsonModal(true)}
                     >
                       <CodeXmlIcon className="size-3.5" />
-                      编辑 JSON
+                      Sửa JSON
                     </Button>
                     <Button
                       type="button"
@@ -862,7 +862,7 @@ function StudioPage() {
                       onClick={() => void handleExportComfyJson()}
                     >
                       <DownloadIcon className="size-3.5" />
-                      导出 .json
+                      Xuất .json
                     </Button>
                     <Button
                       type="button"
@@ -877,7 +877,7 @@ function StudioPage() {
                       ) : (
                         <ScanSearchIcon className="size-3.5" />
                       )}
-                      检测本机模型
+                      Kiểm tra model trên máy
                     </Button>
                   </div>
                   {comfyCheck && (
@@ -894,7 +894,7 @@ function StudioPage() {
                         ) : (
                           <CircleAlertIcon className="size-3.5" />
                         )}
-                        {comfyCheck.ok ? '工作流与本机模型/节点匹配，可以生成' : '检测未通过'}
+                        {comfyCheck.ok ? 'Workflow khớp với model/node trên máy, có thể tạo' : 'Kiểm tra chưa đạt'}
                       </div>
                       {comfyCheck.info && <div className="opacity-80">{comfyCheck.info}</div>}
                       {comfyCheck.errors.map((m, i) => (
@@ -918,7 +918,7 @@ function StudioPage() {
               </Field>
             ) : (
               <>
-                <Field label="模型 ID">
+                <Field label="Model ID">
                   <Select
                     value={providerCfg.model}
                     onValueChange={(v) => updateProviderConfig(activeProvider, { model: v })}
@@ -937,13 +937,13 @@ function StudioPage() {
                 </Field>
 
                 {providerCfg.model === 'custom' && (
-                  <Field label="自定义模型 ID">
+                  <Field label="Model ID tùy chỉnh">
                     <Input
                       value={providerCfg.customModel}
                       onChange={(e) =>
                         updateProviderConfig(activeProvider, { customModel: e.target.value })
                       }
-                      placeholder="输入模型 ID"
+                      placeholder="Nhập model ID"
                       className="bg-background font-mono text-xs"
                     />
                   </Field>
@@ -951,7 +951,7 @@ function StudioPage() {
               </>
             )}
 
-            <Field label="画风预设">
+            <Field label="Preset phong cách vẽ">
               <Select
                 value={apiConfig.stylePreset}
                 onValueChange={(v) => updateApiConfig({ stylePreset: v })}
@@ -977,7 +977,7 @@ function StudioPage() {
                   </div>
                 )}
 
-                <Field label="人像图节点 (LoadImage)">
+                <Field label="Node ảnh chân dung (LoadImage)">
                   <Select
                     value={apiConfig.comfyuiParams.portraitNodeId}
                     onValueChange={(v) => updateComfyUiParams({ portraitNodeId: v })}
@@ -986,7 +986,7 @@ function StudioPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="none">不绑定</SelectItem>
+                      <SelectItem value="none">Không liên kết</SelectItem>
                       {parsedComfyNodes.imageNodes.map((n) => (
                         <SelectItem key={n.id} value={n.id} className="text-xs">
                           #{n.id} {n.title}
@@ -996,7 +996,7 @@ function StudioPage() {
                   </Select>
                 </Field>
 
-                <Field label="服装图节点 (LoadImage)">
+                <Field label="Node ảnh trang phục (LoadImage)">
                   <Select
                     value={apiConfig.comfyuiParams.costumeNodeId}
                     onValueChange={(v) => updateComfyUiParams({ costumeNodeId: v })}
@@ -1005,7 +1005,7 @@ function StudioPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="none">不绑定</SelectItem>
+                      <SelectItem value="none">Không liên kết</SelectItem>
                       {parsedComfyNodes.imageNodes.map((n) => (
                         <SelectItem key={n.id} value={n.id} className="text-xs">
                           #{n.id} {n.title}
@@ -1015,7 +1015,7 @@ function StudioPage() {
                   </Select>
                 </Field>
 
-                <Field label="姿势图节点 (LoadImage)">
+                <Field label="Node ảnh tư thế (LoadImage)">
                   <Select
                     value={apiConfig.comfyuiParams.poseNodeId}
                     onValueChange={(v) => updateComfyUiParams({ poseNodeId: v })}
@@ -1024,7 +1024,7 @@ function StudioPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="none">不绑定</SelectItem>
+                      <SelectItem value="none">Không liên kết</SelectItem>
                       {parsedComfyNodes.imageNodes.map((n) => (
                         <SelectItem key={n.id} value={n.id} className="text-xs">
                           #{n.id} {n.title}
@@ -1034,7 +1034,7 @@ function StudioPage() {
                   </Select>
                 </Field>
 
-                <Field label="正向提示词节点 (Prompt)">
+                <Field label="Node prompt thuận (Prompt)">
                   <Select
                     value={apiConfig.comfyuiParams.promptNodeId}
                     onValueChange={(v) => updateComfyUiParams({ promptNodeId: v })}
@@ -1043,7 +1043,7 @@ function StudioPage() {
                       <SelectValue />
                     </SelectTrigger>
                     <SelectContent>
-                      <SelectItem value="none">保留工作流原提示词</SelectItem>
+                      <SelectItem value="none">Giữ prompt gốc của workflow</SelectItem>
                       {parsedComfyNodes.promptNodes.map((n) => (
                         <SelectItem key={n.id} value={n.id} className="text-xs">
                           #{n.id} {n.title} ({n.field})
@@ -1057,12 +1057,12 @@ function StudioPage() {
 
             {activeProvider === 'comfyui' && showAdvanced && <WorkflowParameters onPreview={setZoomImageUrl} onUploadingChange={setUploadingSlot} />}
 
-            {/* 展开的高级协议专属参数 */}
+            {/* Tham số riêng của giao thức nâng cao đã mở rộng */}
             {showAdvanced && (
               <>
                 {activeProvider === 'gemini' && (
                   <>
-                    <Field label="Gemini 协议模式">
+                    <Field label="Chế độ giao thức Gemini">
                       <Select
                         value={apiConfig.geminiParams.endpointMode}
                         onValueChange={(v) =>
@@ -1078,7 +1078,7 @@ function StudioPage() {
                         </SelectContent>
                       </Select>
                     </Field>
-                    <Field label="宽高比 (aspectRatio)">
+                    <Field label="Tỉ lệ khung hình (aspectRatio)">
                       <Select
                         value={apiConfig.geminiParams.aspectRatio}
                         onValueChange={(v) =>
@@ -1097,7 +1097,7 @@ function StudioPage() {
                         </SelectContent>
                       </Select>
                     </Field>
-                    <Field label="分辨率 (imageSize)">
+                    <Field label="Độ phân giải (imageSize)">
                       <Select
                         value={apiConfig.geminiParams.imageSize}
                         onValueChange={(v) =>
@@ -1119,7 +1119,7 @@ function StudioPage() {
 
                 {activeProvider === 'gpt' && (
                   <>
-                    <Field label="调用端点 (endpointMode)">
+                    <Field label="Endpoint gọi (endpointMode)">
                       <Select
                         value={apiConfig.gptParams.endpointMode}
                         onValueChange={(v) =>
@@ -1137,7 +1137,7 @@ function StudioPage() {
                         </SelectContent>
                       </Select>
                     </Field>
-                    <Field label="输出尺寸 (size)">
+                    <Field label="Kích thước đầu ra (size)">
                       <Select
                         value={apiConfig.gptParams.size}
                         onValueChange={(v) => updateGptParams({ size: v as GptParams['size'] })}
@@ -1153,7 +1153,7 @@ function StudioPage() {
                         </SelectContent>
                       </Select>
                     </Field>
-                    <Field label="渲染质量 (quality)">
+                    <Field label="Chất lượng render (quality)">
                       <Select
                         value={apiConfig.gptParams.quality}
                         onValueChange={(v) => updateGptParams({ quality: v as GptParams['quality'] })}
@@ -1171,7 +1171,7 @@ function StudioPage() {
                         </SelectContent>
                       </Select>
                     </Field>
-                    <Field label="参考还原度 (input_fidelity)">
+                    <Field label="Độ bám tham chiếu (input_fidelity)">
                       <Select
                         value={apiConfig.gptParams.inputFidelity}
                         onValueChange={(v) =>
@@ -1187,7 +1187,7 @@ function StudioPage() {
                         </SelectContent>
                       </Select>
                     </Field>
-                    <Field label="背景模式 (background)">
+                    <Field label="Chế độ nền (background)">
                       <Select
                         value={apiConfig.gptParams.background}
                         onValueChange={(v) =>
@@ -1204,7 +1204,7 @@ function StudioPage() {
                         </SelectContent>
                       </Select>
                     </Field>
-                    <Field label="图片格式 (output_format)">
+                    <Field label="Định dạng ảnh (output_format)">
                       <Select
                         value={apiConfig.gptParams.outputFormat}
                         onValueChange={(v) =>
@@ -1226,7 +1226,7 @@ function StudioPage() {
 
                 {activeProvider === 'qwen' && (
                   <>
-                    <Field label="输出尺寸 (size)">
+                    <Field label="Kích thước đầu ra (size)">
                       <Select
                         value={apiConfig.qwenParams.size}
                         onValueChange={(v) => updateQwenParams({ size: v as QwenParams['size'] })}
@@ -1242,10 +1242,10 @@ function StudioPage() {
                         </SelectContent>
                       </Select>
                     </Field>
-                    <Field label="提示词扩写 (prompt_extend)">
+                    <Field label="Mở rộng prompt (prompt_extend)">
                       <div className="flex h-9 items-center justify-between rounded-xl border bg-background px-3">
                         <span className="text-xs text-muted-foreground">
-                          {apiConfig.qwenParams.promptExtend ? '开启' : '关闭'}
+                          {apiConfig.qwenParams.promptExtend ? 'Bật' : 'Tắt'}
                         </span>
                         <Switch
                           checked={apiConfig.qwenParams.promptExtend}
@@ -1253,11 +1253,11 @@ function StudioPage() {
                         />
                       </div>
                     </Field>
-                    <Field label="反向提示词 (negative_prompt)">
+                    <Field label="Prompt phủ định (negative_prompt)">
                       <Input
                         value={apiConfig.qwenParams.negativePrompt}
                         onChange={(e) => updateQwenParams({ negativePrompt: e.target.value })}
-                        placeholder="低分辨率，多余手指，扭曲"
+                        placeholder="độ phân giải thấp, ngón tay thừa, méo mó"
                         className="bg-background text-xs"
                       />
                     </Field>
@@ -1266,7 +1266,7 @@ function StudioPage() {
 
                 {activeProvider === 'doubao' && (
                   <>
-                    <Field label="输出尺寸 (size)">
+                    <Field label="Kích thước đầu ra (size)">
                       <Select
                         value={apiConfig.doubaoParams.size}
                         onValueChange={(v) =>
@@ -1286,7 +1286,7 @@ function StudioPage() {
                         </SelectContent>
                       </Select>
                     </Field>
-                    <Field label="组图模式 (sequential)">
+                    <Field label="Chế độ ảnh nhóm (sequential)">
                       <Select
                         value={apiConfig.doubaoParams.sequentialImageGeneration}
                         onValueChange={(v) =>
@@ -1300,12 +1300,12 @@ function StudioPage() {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="disabled">disabled (单张)</SelectItem>
-                          <SelectItem value="auto">auto (组图)</SelectItem>
+                          <SelectItem value="disabled">disabled (từng ảnh)</SelectItem>
+                          <SelectItem value="auto">auto (ảnh nhóm)</SelectItem>
                         </SelectContent>
                       </Select>
                     </Field>
-                    <Field label="返回格式 (response_format)">
+                    <Field label="Định dạng trả về (response_format)">
                       <Select
                         value={apiConfig.doubaoParams.responseFormat}
                         onValueChange={(v) =>
@@ -1328,7 +1328,7 @@ function StudioPage() {
 
                 {activeProvider === 'comfyui' && (
                   <>
-                    <Field label="三合一拼图节点 (可选)">
+                    <Field label="Node ghép ba-trong-một (tùy chọn)">
                       <Select
                         value={apiConfig.comfyuiParams.stitchedNodeId}
                         onValueChange={(v) => updateComfyUiParams({ stitchedNodeId: v })}
@@ -1337,7 +1337,7 @@ function StudioPage() {
                           <SelectValue />
                         </SelectTrigger>
                         <SelectContent>
-                          <SelectItem value="none">不绑定</SelectItem>
+                          <SelectItem value="none">Không liên kết</SelectItem>
                           {parsedComfyNodes.imageNodes.map((n) => (
                             <SelectItem key={n.id} value={n.id} className="text-xs">
                               #{n.id} {n.title}
@@ -1346,7 +1346,7 @@ function StudioPage() {
                         </SelectContent>
                       </Select>
                     </Field>
-                    <Field label="最长等待时间（秒）">
+                    <Field label="Thời gian chờ tối đa (giây)">
                       <Input
                         type="number"
                         min={60}
@@ -1358,10 +1358,10 @@ function StudioPage() {
                         className="bg-background text-xs"
                       />
                     </Field>
-                    <Field label="随机种子 (seed)">
+                    <Field label="Seed ngẫu nhiên (seed)">
                       <div className="flex h-9 items-center justify-between rounded-xl border bg-background px-3">
                         <span className="text-xs text-muted-foreground">
-                          {apiConfig.comfyuiParams.randomizeSeed ? '每次随机种子' : '固定工作流种子'}
+                          {apiConfig.comfyuiParams.randomizeSeed ? 'Seed ngẫu nhiên mỗi lần' : 'Seed workflow cố định'}
                         </span>
                         <Switch
                           checked={apiConfig.comfyuiParams.randomizeSeed}
@@ -1374,7 +1374,7 @@ function StudioPage() {
 
                 {activeProvider !== 'comfyui' && (
                   <>
-                    <Field label="图片传参方式">
+                    <Field label="Cách truyền tham số ảnh">
                       <Select
                         value={apiConfig.imagePassMode}
                         onValueChange={(v) => updateApiConfig({ imagePassMode: v as ImagePassMode })}
@@ -1389,10 +1389,10 @@ function StudioPage() {
                       </Select>
                     </Field>
 
-                    <Field label="附带合成拼图">
+                    <Field label="Kèm ảnh ghép tổng hợp">
                       <div className="flex h-9 items-center justify-between rounded-xl border bg-background px-3">
                         <span className="text-xs text-muted-foreground">
-                          {apiConfig.sendStitchedSheet ? '同时发送拼图' : '仅发单图序列'}
+                          {apiConfig.sendStitchedSheet ? 'Đồng thời gửi ảnh ghép' : 'Chỉ gửi chuỗi ảnh đơn'}
                         </span>
                         <Switch
                           checked={apiConfig.sendStitchedSheet}
@@ -1406,26 +1406,26 @@ function StudioPage() {
             )}
           </Section>
 
-          {/* 3. 提示词与生成按钮 */}
+          {/* 3. Prompt và nút tạo */}
           <Section
-            title="3. 提示词 (Prompt)"
+            title="3. Prompt"
             className="@lg/section:grid-cols-1"
             actions={
               <div className="flex items-center gap-1.5">
                 <Button variant="ghost" size="sm" onClick={() => setCustomPrompt(null)}>
                   <RotateCcwIcon className="size-3.5" />
-                  重置
+                  Đặt lại
                 </Button>
                 <Button
                   variant="outline"
                   size="sm"
                   onClick={() => {
                     void navigator.clipboard.writeText(prompt)
-                    toast.success('已复制')
+                    toast.success('Đã sao chép')
                   }}
                 >
                   <CopyIcon className="size-3.5" />
-                  复制
+                  Sao chép
                 </Button>
               </div>
             }
@@ -1445,35 +1445,35 @@ function StudioPage() {
               {isGenerating ? (
                 <>
                   <LoaderCircleIcon className="size-4 animate-spin" />
-                  生成中…
+                  Đang tạo…
                 </>
               ) : (
                 <>
                   <SparklesIcon className="size-4" />
-                  生成角色图
+                  Tạo ảnh nhân vật
                 </>
               )}
             </Button>
           </Section>
         </div>
 
-        {/* 右栏：专注展示 AI 生成结果与生成状态 */}
+        {/* Cột phải: tập trung hiển thị kết quả tạo AI và trạng thái tạo */}
         <div className="min-w-0 space-y-4 lg:col-span-5">
           <Section
-            title="生成结果"
+            title="Kết quả tạo"
             className="@lg/section:grid-cols-1"
             actions={
               previewUrl && !isGenerating ? (
                 <Button variant="outline" size="sm" asChild>
                   <a href={previewUrl} download="image.png">
                     <DownloadIcon className="size-3.5" />
-                    下载图片
+                    Tải ảnh xuống
                   </a>
                 </Button>
               ) : null
             }
           >
-            {previewResult && !isGenerating && <Button className="min-h-11" variant="outline" onClick={() => setComparisonResult(previewResult)}>对比参考</Button>}
+            {previewResult && !isGenerating && <Button className="min-h-11" variant="outline" onClick={() => setComparisonResult(previewResult)}>So sánh tham chiếu</Button>}
             <div className="relative flex min-h-[340px] items-center justify-center overflow-hidden rounded-2xl bg-background p-4 sm:min-h-[460px]">
               {isGenerating ? (
                 <div className="flex flex-col items-center gap-3 text-center">
@@ -1481,7 +1481,7 @@ function StudioPage() {
                     <LoaderCircleIcon className="size-6 animate-spin" />
                   </div>
                   <div className="space-y-1">
-                    <div className="text-sm font-semibold">正在生成角色图…</div>
+                    <div className="text-sm font-semibold">Đang tạo ảnh nhân vật…</div>
                     {generatingModel && (
                       <Badge variant="secondary" className="font-mono text-[11px]">
                         {generatingModel}
@@ -1490,7 +1490,7 @@ function StudioPage() {
                     {generationProgress && (
                       <div className="w-56 max-w-full space-y-1.5 pt-1">
                         <div className="text-xs text-foreground/80">{generationProgress.message}</div>
-                        {generationProgress.connection && <p className="text-xs text-muted-foreground">连接：{{connecting: 'WebSocket 连接中', connected: 'WebSocket 已连接', reconnecting: 'WebSocket 重连中，HTTP 保底跟踪', degraded: 'WebSocket 暂不可用，HTTP 保底跟踪'}[generationProgress.connection]}</p>}
+                        {generationProgress.connection && <p className="text-xs text-muted-foreground">Kết nối: {{connecting: 'Đang kết nối WebSocket', connected: 'Đã kết nối WebSocket', reconnecting: 'Đang kết nối lại WebSocket, theo dõi dự phòng bằng HTTP', degraded: 'WebSocket tạm không khả dụng, theo dõi dự phòng bằng HTTP'}[generationProgress.connection]}</p>}
                         {generationProgress.percent !== undefined && (
                           <div className="h-1.5 overflow-hidden rounded-full bg-muted">
                             <div
@@ -1502,52 +1502,52 @@ function StudioPage() {
                       </div>
                     )}
                     <p className="pt-1 text-xs text-muted-foreground">
-                      切换页面不会中断当前任务
+                      Chuyển trang sẽ không làm gián đoạn tác vụ hiện tại
                     </p>
                   </div>
                 </div>
               ) : generationError ? (
                 <div className="flex max-w-md flex-col items-center gap-2 text-center">
                   <CircleAlertIcon className="size-7 text-destructive" />
-                  <div className="text-sm font-semibold text-destructive">生成失败</div>
+                  <div className="text-sm font-semibold text-destructive">Tạo thất bại</div>
                   <p className="whitespace-pre-wrap break-all text-left text-xs leading-relaxed text-muted-foreground">
                     {generationError}
                   </p>
                   {previewUrl && (
                     <Button variant="ghost" size="sm" onClick={() => setZoomImageUrl(previewUrl)}>
-                      查看上一张结果
+                      Xem kết quả trước đó
                     </Button>
                   )}
                 </div>
               ) : previewUrl ? (
-                <button type="button" aria-label="放大生成结果" onClick={() => setZoomImageUrl(previewUrl)} className="cursor-zoom-in rounded-xl focus-visible:outline-2 focus-visible:outline-ring"><img src={previewUrl} alt="生成结果" className="max-h-[480px] w-auto rounded-xl object-contain transition hover:opacity-95" /></button>
+                <button type="button" aria-label="Phóng to kết quả tạo" onClick={() => setZoomImageUrl(previewUrl)} className="cursor-zoom-in rounded-xl focus-visible:outline-2 focus-visible:outline-ring"><img src={previewUrl} alt="Kết quả tạo" className="max-h-[480px] w-auto rounded-xl object-contain transition hover:opacity-95" /></button>
               ) : (
                 <div className="flex flex-col items-center gap-2 text-center text-muted-foreground">
                   <SparklesIcon className="size-7 opacity-35" />
-                  <span className="text-xs">点击「生成角色图」后在此处展示生成结果</span>
+                  <span className="text-xs">Nhấn «Tạo ảnh nhân vật» để hiển thị kết quả tạo tại đây</span>
                 </div>
               )}
             </div>
           </Section>
-          {activeTask && <Section title="待确认任务" className="@lg/section:grid-cols-1">
-            <p className="break-all text-xs">{activeTask.task ? `任务 ${activeTask.task.promptId}：刷新后查询原任务，不重复提交。` : '提交结果未知或提交前被中断，请核对后端队列；不会自动重试提交。'}</p>
+          {activeTask && <Section title="Tác vụ chờ xác nhận" className="@lg/section:grid-cols-1">
+            <p className="break-all text-xs">{activeTask.task ? `Tác vụ ${activeTask.task.promptId}: sau khi làm mới sẽ tra cứu tác vụ gốc, không gửi lại.` : 'Kết quả gửi chưa rõ hoặc đã bị gián đoạn trước khi gửi, hãy đối chiếu hàng đợi phía backend; sẽ không tự gửi lại.'}</p>
             <div className="flex flex-wrap gap-2">
-              <Button disabled={isGenerating || !activeTask.task} onClick={() => void resumeGeneration()}>恢复跟踪</Button>
-              <Button variant="outline" onClick={() => void stopTracking()}>停止跟踪（不取消后端）</Button>
+              <Button disabled={isGenerating || !activeTask.task} onClick={() => void resumeGeneration()}>Tiếp tục theo dõi</Button>
+              <Button variant="outline" onClick={() => void stopTracking()}>Dừng theo dõi (không hủy phía backend)</Button>
             </div>
           </Section>}
         </div>
       </div>
 
-      {/* 生成历史记录 */}
+      {/* Lịch sử tạo */}
       {history.length > 0 && (
         <Section
-          title={`生成记录 (${history.length})`}
+          title={`Lịch sử tạo (${history.length})`}
           className="grid-cols-2 @lg/section:grid-cols-3 @3xl/section:grid-cols-4"
           actions={
             <Button variant="ghost" size="sm" onClick={clearHistory}>
               <Trash2Icon className="size-3.5" />
-              清空
+              Xóa hết
             </Button>
           }
         >
@@ -1557,7 +1557,7 @@ function StudioPage() {
               className="group flex flex-col justify-between overflow-hidden rounded-2xl bg-background p-2"
             >
               <div className="relative aspect-3/4 overflow-hidden rounded-xl bg-muted">
-                <button type="button" aria-label={`查看生成记录：${h.recipeSummary}`} onClick={() => setZoomImageUrl(h.imageUrl)} className="block h-full w-full cursor-zoom-in focus-visible:outline-2 focus-visible:outline-ring">
+                <button type="button" aria-label={`Xem lịch sử tạo: ${h.recipeSummary}`} onClick={() => setZoomImageUrl(h.imageUrl)} className="block h-full w-full cursor-zoom-in focus-visible:outline-2 focus-visible:outline-ring">
                 <img
                   src={h.imageUrl}
                   alt={h.recipeSummary}
@@ -1573,7 +1573,7 @@ function StudioPage() {
                     e.stopPropagation()
                     removeHistoryItem(h.id)
                   }}
-                  title="删除此记录"
+                  title="Xóa bản ghi này"
                   className="absolute top-1.5 right-1.5 rounded-full bg-black/65 p-1 text-white opacity-85 transition hover:bg-destructive hover:opacity-100"
                 >
                   <XIcon className="size-3" />
@@ -1582,24 +1582,24 @@ function StudioPage() {
 
               <div className="mt-2 space-y-1.5 px-0.5">
                 <div className="truncate text-xs font-medium">{h.recipeSummary}</div>
-                <Button variant="outline" className="min-h-11 w-full" onClick={() => setComparisonResult(h)}>对比参考</Button>
+                <Button variant="outline" className="min-h-11 w-full" onClick={() => setComparisonResult(h)}>So sánh tham chiếu</Button>
                 <div className="grid grid-cols-2 gap-1.5">
                   <button
                     type="button"
                     onClick={() => {
                       setCustomPrompt(h.prompt)
-                      toast.success('已恢复该图提示词')
+                      toast.success('Đã khôi phục prompt của ảnh này')
                     }}
                     className="flex h-7 items-center justify-center rounded-lg bg-muted text-[11px] font-medium whitespace-nowrap text-foreground transition hover:bg-muted/70"
                   >
-                    复用词
+                    Dùng lại prompt
                   </button>
                   <a
                     href={h.imageUrl}
                     download={`character-${h.id}.png`}
                     className="flex h-7 items-center justify-center rounded-lg bg-primary/10 text-[11px] font-medium whitespace-nowrap text-primary transition hover:bg-primary/20"
                   >
-                    下载
+                    Tải xuống
                   </a>
                 </div>
               </div>
@@ -1609,19 +1609,19 @@ function StudioPage() {
       )}
 
       <ReferenceComparisonDialog result={comparisonResult} open={comparisonResult !== null} onOpenChange={(open) => !open && setComparisonResult(null)} />
-      {/* 生成结果全屏放大灯箱 */}
+      {/* Hộp đèn phóng to toàn màn hình cho kết quả tạo */}
       <ImageViewer imageUrl={zoomImageUrl || ''} open={Boolean(zoomImageUrl)} onOpenChange={(open) => !open && setZoomImageUrl(null)} />
 
-      {/* 参考拼图独立弹窗（不占用主画布） */}
+      {/* Hộp thoại riêng cho ảnh ghép tham chiếu (không chiếm canvas chính) */}
       <Dialog open={Boolean(stitchModalUrl)} onOpenChange={(o) => !o && setStitchModalUrl(null)}>
         <DialogContent className="max-h-[90dvh] w-[95vw] max-w-3xl overflow-y-auto p-4 sm:max-w-3xl">
           <DialogHeader className="flex flex-row flex-wrap items-center justify-between gap-3 pr-8">
-            <DialogTitle className="text-base">参考图拼合卡片</DialogTitle>
+            <DialogTitle className="text-base">Thẻ ghép ảnh tham chiếu</DialogTitle>
             {stitchModalUrl && (
               <Button size="sm" variant="outline" asChild>
                 <a href={stitchModalUrl} download="reference-sheet.jpg">
                   <DownloadIcon className="size-3.5" />
-                  下载拼图
+                  Tải ảnh ghép xuống
                 </a>
               </Button>
             )}
@@ -1630,7 +1630,7 @@ function StudioPage() {
             <div className="mt-2 flex items-center justify-center overflow-hidden rounded-xl bg-muted p-2">
               <img
                 src={stitchModalUrl}
-                alt="参考拼图"
+                alt="Ảnh ghép tham chiếu"
                 className="max-h-[70dvh] w-auto rounded-lg object-contain"
               />
             </div>
@@ -1638,34 +1638,34 @@ function StudioPage() {
         </DialogContent>
       </Dialog>
 
-      {/* ComfyUI API 工作流 JSON 编辑器弹窗 */}
+      {/* Hộp thoại trình sửa workflow JSON API ComfyUI */}
       <Dialog open={showComfyJsonModal} onOpenChange={setShowComfyJsonModal}>
         <DialogContent className="max-h-[90dvh] w-[95vw] max-w-3xl overflow-y-auto p-4 sm:max-w-3xl">
           <DialogHeader className="flex flex-row flex-wrap items-center justify-between gap-3 pr-8">
-            <DialogTitle className="text-base">ComfyUI API 工作流 JSON</DialogTitle>
+            <DialogTitle className="text-base">Workflow JSON API ComfyUI</DialogTitle>
             <Button
               size="sm"
               variant="outline"
               onClick={() => {
                 const info = parseComfyWorkflowNodes(apiConfig.comfyuiParams.workflowJson)
                 if (!info.valid) {
-                  toast.error(info.error || '工作流 JSON 无效')
+                  toast.error(info.error || 'Workflow JSON không hợp lệ')
                   return
                 }
                 const detected = autoDetectComfyMappings(apiConfig.comfyuiParams.workflowJson)
                 updateComfyUiParams(detected)
                 toast.success(
-                  `已自动重新识别节点：${info.imageNodes.length} 个图片节点、${info.promptNodes.length} 个提示词节点`
+                  `Đã tự động nhận diện lại node: ${info.imageNodes.length} node ảnh, ${info.promptNodes.length} node prompt`
                 )
               }}
             >
-              自动识别节点
+              Tự động nhận diện node
             </Button>
           </DialogHeader>
           <p className="text-xs text-muted-foreground">
-            请在 ComfyUI 设置中开启「启用开发模式选项」，点击菜单中的「导出 (API)」获取 JSON 并粘贴于下方。
+            Hãy bật «Bật tùy chọn chế độ nhà phát triển» trong cài đặt ComfyUI, nhấn «Xuất (API)» trong menu để lấy JSON rồi dán vào bên dưới.
           </p>
-          <Button type="button" size="sm" variant="outline" onClick={() => void handleExportComfyJson(true)}>导出原始 API</Button>
+          <Button type="button" size="sm" variant="outline" onClick={() => void handleExportComfyJson(true)}>Xuất API gốc</Button>
           <Textarea
             value={apiConfig.comfyuiParams.workflowJson}
             onChange={(e) =>

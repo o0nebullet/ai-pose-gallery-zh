@@ -4,36 +4,36 @@ import { api } from "../../scripts/api.js";
 const LIBRARIES = {
   pose: {
     key: "pose",
-    label: "姿势库 (1,439)",
-    shortLabel: "姿势",
+    label: "Thư viện tư thế (1,439)",
+    shortLabel: "Tư thế",
     defaultId: "full_single_P001_front",
     titleField: "姿势名称",
     primaryField: "分类",
     secondaryField: "角度",
-    primaryPlaceholder: "全部动作分类",
-    secondaryPlaceholder: "全部视角",
+    primaryPlaceholder: "Tất cả loại động tác",
+    secondaryPlaceholder: "Tất cả góc nhìn",
   },
   costume: {
     key: "costume",
-    label: "服装库 (3,224)",
-    shortLabel: "服装",
+    label: "Thư viện trang phục (3,224)",
+    shortLabel: "Trang phục",
     defaultId: "SPR-0001",
     titleField: "服装名称",
     primaryField: "一级分类",
     secondaryField: "分类",
-    primaryPlaceholder: "全部 · 现实 / 二次元",
-    secondaryPlaceholder: "全部服装分类",
+    primaryPlaceholder: "Tất cả · Thực tế / 2D",
+    secondaryPlaceholder: "Tất cả loại trang phục",
   },
   portrait: {
     key: "portrait",
-    label: "人像库 (1,499)",
-    shortLabel: "人像",
+    label: "Thư viện chân dung (1,499)",
+    shortLabel: "Chân dung",
     defaultId: "f71f980dde3",
     titleField: "发型名称",
     primaryField: "发长",
     secondaryField: "分区",
-    primaryPlaceholder: "全部发长",
-    secondaryPlaceholder: "全部分区",
+    primaryPlaceholder: "Tất cả độ dài tóc",
+    secondaryPlaceholder: "Tất cả khu vực",
   },
 };
 
@@ -62,7 +62,7 @@ async function fetchCatalogue(lib) {
     `/pose_character_atlas/catalogue?library=${encodeURIComponent(lib)}`
   );
   if (!resp.ok) {
-    throw new Error(`加载 ${lib} 图库失败: HTTP ${resp.status}`);
+    throw new Error(`Tải thư viện ${lib} thất bại: HTTP ${resp.status}`);
   }
   const data = await resp.json();
   catalogueCache[lib] = (data.items || []).map((item) => lib === "costume" ? { ...item, 一级分类: item["一级分类"] || "现实" } : item);
@@ -186,22 +186,22 @@ class PoseAtlasModal {
         <div class="pca-header">
           <div class="pca-title-group">
             <div>
-              <h3 class="pca-title">AI 角色三合一参考图集 (ComfyUI 选图器)</h3>
-              <div class="pca-subtitle">6,162 条中文参考索引 · Shisei / wquguru CC0 · 二次元图片需联网 · <a href="https://github.com/taki-ttt/charadb/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">CharaDB来源条款</a></div>
+              <h3 class="pca-title">Thư viện tham chiếu 3-trong-1 nhân vật AI (Bộ chọn ảnh ComfyUI)</h3>
+              <div class="pca-subtitle">6.162 chỉ mục tham chiếu tiếng Trung · Shisei / wquguru CC0 · Ảnh 2D cần có mạng · <a href="https://github.com/taki-ttt/charadb/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Điều khoản nguồn CharaDB</a></div>
             </div>
           </div>
           <div class="pca-tabs" id="pca-tabs"></div>
-          <button class="pca-btn" id="pca-close-btn">关闭 ✕</button>
+          <button class="pca-btn" id="pca-close-btn">Đóng ✕</button>
         </div>
         <div class="pca-toolbar">
-          <input class="pca-search-input" id="pca-search" type="text" placeholder="搜索中文标题、动作、服装、发型、编号 (如: 坐姿 / 水手服 / 双马尾 / SPR-0001)..." />
+          <input class="pca-search-input" id="pca-search" type="text" placeholder="Tìm kiếm tiêu đề tiếng Trung, động tác, trang phục, kiểu tóc, mã số (vd: tư thế ngồi / đồng phục thủy thủ / tóc hai đuôi / SPR-0001)..." />
           <select class="pca-select" id="pca-filter-primary"></select>
           <select class="pca-select" id="pca-filter-secondary"></select>
-          <select class="pca-select" aria-label="服装来源" id="pca-filter-source"><option value="">全部来源</option><option value="gia">ギア · 写实</option><option value="gia-anime">ギア · 动漫</option><option value="charadb">CharaDB</option><option value="shisei">Shisei · 中国历代</option></select>
-          <button class="pca-btn" id="pca-depth-btn">${this.useDepth ? "🌗 深度图 (Depth)" : "🗿 素体白模"}</button>
-          <button class="pca-btn" id="pca-sfw-btn">${this.safeMode ? "🛡️ 安全模式 (SFW)" : "🔞 18+ 完整模式"}</button>
-          <button class="pca-btn" id="pca-random-btn">🎲 随机抽一张</button>
-          <button class="pca-btn" id="pca-reset-btn">重置筛选</button>
+          <select class="pca-select" aria-label="Nguồn trang phục" id="pca-filter-source"><option value="">Tất cả nguồn</option><option value="gia">ギア · Thực tế</option><option value="gia-anime">ギア · Anime</option><option value="charadb">CharaDB</option><option value="shisei">Shisei · Các triều đại Trung Quốc</option></select>
+          <button class="pca-btn" id="pca-depth-btn">${this.useDepth ? "🌗 Ảnh độ sâu (Depth)" : "🗿 Mẫu trắng"}</button>
+          <button class="pca-btn" id="pca-sfw-btn">${this.safeMode ? "🛡️ Chế độ an toàn (SFW)" : "🔞 Chế độ đầy đủ 18+"}</button>
+          <button class="pca-btn" id="pca-random-btn">🎲 Rút ngẫu nhiên 1 ảnh</button>
+          <button class="pca-btn" id="pca-reset-btn">Đặt lại bộ lọc</button>
         </div>
         <div class="pca-grid-wrap">
           <div class="pca-grid" id="pca-grid"></div>
@@ -209,10 +209,10 @@ class PoseAtlasModal {
         <div class="pca-footer">
           <div class="pca-recipe-slots" id="pca-recipe-slots"></div>
           <div style="display:flex;align-items:center;gap:8px;">
-            <button class="pca-btn" id="pca-prev-page">上一页</button>
+            <button class="pca-btn" id="pca-prev-page">Trang trước</button>
             <span id="pca-page-info" style="font-size:12px;color:#9ca3af;">1 / 1</span>
-            <button class="pca-btn" id="pca-next-page">下一页</button>
-            <button class="pca-btn pca-btn-primary" id="pca-apply-btn">确认应用到节点</button>
+            <button class="pca-btn" id="pca-next-page">Trang sau</button>
+            <button class="pca-btn pca-btn-primary" id="pca-apply-btn">Xác nhận áp dụng vào node</button>
           </div>
         </div>
       </div>
@@ -258,7 +258,7 @@ class PoseAtlasModal {
     const depthBtn = backdrop.querySelector("#pca-depth-btn");
     depthBtn.addEventListener("click", () => {
       this.useDepth = !this.useDepth;
-      depthBtn.textContent = this.useDepth ? "🌗 深度图 (Depth)" : "🗿 素体白模";
+      depthBtn.textContent = this.useDepth ? "🌗 Ảnh độ sâu (Depth)" : "🗿 Mẫu trắng";
       if (this.targetNode) {
         setWidgetValue(this.targetNode, "costume_view", this.costumeView);
       setWidgetValue(this.targetNode, "use_depth", this.useDepth);
@@ -270,14 +270,14 @@ class PoseAtlasModal {
     const sfwBtn = backdrop.querySelector("#pca-sfw-btn");
     sfwBtn.addEventListener("click", () => {
       if (this.safeMode) {
-        if (!window.confirm("是否关闭安全模式并显示 18+ 敏感参考分类（性感姿势、双人缠绵、内衣穿搭）？请确认您已年满 18 周岁。")) {
+        if (!window.confirm("Có tắt chế độ an toàn và hiển thị các loại tham chiếu nhạy cảm 18+ (tư thế gợi cảm, tư thế đôi quấn quýt, đồ lót) không? Hãy xác nhận bạn đã đủ 18 tuổi.")) {
           return;
         }
         this.safeMode = false;
       } else {
         this.safeMode = true;
       }
-      sfwBtn.textContent = this.safeMode ? "🛡️ 安全模式 (SFW)" : "🔞 18+ 完整模式";
+      sfwBtn.textContent = this.safeMode ? "🛡️ Chế độ an toàn (SFW)" : "🔞 Chế độ đầy đủ 18+";
       this.page = 1;
       this.populateFilters();
       this.renderGrid();
@@ -343,7 +343,7 @@ class PoseAtlasModal {
     this.renderTabs();
 
     const gridEl = this.backdrop.querySelector("#pca-grid");
-    gridEl.innerHTML = `<div style="padding:40px;color:#9ca3af;">正在加载 ${LIBRARIES[lib].label}...</div>`;
+    gridEl.innerHTML = `<div style="padding:40px;color:#9ca3af;">Đang tải ${LIBRARIES[lib].label}...</div>`;
 
     await fetchCatalogue(lib);
     this.populateFilters();
@@ -438,7 +438,7 @@ class PoseAtlasModal {
     const slice = filtered.slice(start, start + PAGE_SIZE);
 
     const pageInfo = this.backdrop.querySelector("#pca-page-info");
-    pageInfo.textContent = `第 ${this.page} / ${totalPages} 页（共 ${filtered.length} 项）`;
+    pageInfo.textContent = `Trang ${this.page} / ${totalPages} (tổng ${filtered.length} mục)`;
 
     const gridEl = this.backdrop.querySelector("#pca-grid");
     gridEl.innerHTML = "";
@@ -477,7 +477,7 @@ class PoseAtlasModal {
       if (original.views?.length) {
         const select = document.createElement("select");
         select.className = "pca-select";
-        select.setAttribute("aria-label", "服装视角");
+        select.setAttribute("aria-label", "Góc nhìn trang phục");
         original.views.forEach((view) => {
           const option = document.createElement("option");
           option.value = view.id; option.textContent = view.label;
@@ -595,28 +595,28 @@ function attachNodePreviewWidget(node, nodeKind) {
       const slots = [
         {
           lib: "portrait",
-          label: "人像",
+          label: "Chân dung",
           val:
             findWidget(node, "portrait_id")?.value ||
             LIBRARIES.portrait.defaultId,
         },
         {
           lib: "costume",
-          label: "服装",
+          label: "Trang phục",
           val:
             findWidget(node, "costume_id")?.value ||
             LIBRARIES.costume.defaultId,
         },
         {
           lib: "pose",
-          label: useDepth ? "姿势(深度)" : "姿势",
+          label: useDepth ? "Tư thế (độ sâu)" : "Tư thế",
           val: findWidget(node, "pose_id")?.value || LIBRARIES.pose.defaultId,
         },
       ];
       slots.forEach((s) => {
         const card = document.createElement("div");
         card.className = "pca-node-thumb-card";
-        card.title = `点击更换${s.label}参考图`;
+        card.title = `Bấm để thay ảnh tham chiếu ${s.label}`;
         card.innerHTML = `
           <img src="${(s.lib === "costume" ? `/pose_character_atlas/image?library=costume&id=${encodeURIComponent(s.val)}&kind=thumb&view=${encodeURIComponent(findWidget(node, "costume_view")?.value || "front")}` : getThumbUrl(s.lib, s.val, null, useDepth))}" alt="${s.val}" />
           <div class="pca-node-thumb-label">${s.label} #${s.val}</div>
@@ -631,10 +631,10 @@ function attachNodePreviewWidget(node, nodeKind) {
         findWidget(node, "image_id")?.value || LIBRARIES[nodeKind].defaultId;
       const card = document.createElement("div");
       card.className = "pca-node-thumb-card";
-      card.title = "点击打开图库选图";
+      card.title = "Bấm để mở bộ chọn ảnh thư viện";
       card.innerHTML = `
         <img src="${(nodeKind === "costume" ? `/pose_character_atlas/image?library=costume&id=${encodeURIComponent(id)}&kind=thumb&view=${encodeURIComponent(findWidget(node, "costume_view")?.value || "front")}` : getThumbUrl(nodeKind, id, null, useDepth))}" alt="${id}" />
-        <div class="pca-node-thumb-label">${LIBRARIES[nodeKind].shortLabel}${nodeKind === "pose" && useDepth ? "(深度)" : ""} #${id}</div>
+        <div class="pca-node-thumb-label">${LIBRARIES[nodeKind].shortLabel}${nodeKind === "pose" && useDepth ? " (độ sâu)" : ""} #${id}</div>
       `;
       card.addEventListener("click", () => {
         modalInstance.open({ node, initialLib: nodeKind, mode: "single" });
@@ -680,8 +680,8 @@ app.registerExtension({
 
       const btnLabel =
         nodeKind === "recipe"
-          ? "🎨 打开三合一选图器"
-          : `🖼️ 打开${LIBRARIES[nodeKind].shortLabel}图库选图`;
+          ? "🎨 Mở bộ chọn ảnh 3-trong-1"
+          : `🖼️ Mở bộ chọn ảnh thư viện ${LIBRARIES[nodeKind].shortLabel}`;
 
       this.addWidget("button", btnLabel, null, () => {
         modalInstance.open({

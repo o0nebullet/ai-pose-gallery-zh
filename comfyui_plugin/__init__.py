@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-"""AI 角色三合一参考图集 ComfyUI 插件核心模块。"""
+"""Mô-đun lõi của plugin ComfyUI Thư viện tham chiếu 3-trong-1 nhân vật AI."""
 
 from .nodes import NODE_CLASS_MAPPINGS, NODE_DISPLAY_NAME_MAPPINGS
 from .routes import register_routes

@@ -68,7 +68,7 @@ export function AppHeader() {
           variant={safeMode ? 'outline' : 'secondary'}
           size="sm"
           onClick={toggleSafeMode}
-          title={safeMode ? '当前已开启安全模式（已隐藏 18+ 敏感内容），点击可解锁完整图库' : '当前已显示 18+ 完整图库，点击可切回安全模式'}
+          title={safeMode ? 'Hiện đang bật chế độ an toàn (đã ẩn nội dung nhạy cảm 18+), bấm để mở khóa toàn bộ thư viện' : 'Hiện đang hiển thị toàn bộ thư viện 18+, bấm để quay lại chế độ an toàn'}
           className={
             safeMode
               ? 'border-emerald-500/30 bg-emerald-500/5 text-emerald-700 hover:bg-emerald-500/10 dark:text-emerald-400'
@@ -76,17 +76,17 @@ export function AppHeader() {
           }
         >
           <ShieldCheckIcon className="size-3.5" />
-          <span className="hidden @2xl/header:inline">{safeMode ? '安全模式 (SFW)' : '18+ 完整模式'}</span>
+          <span className="hidden @2xl/header:inline">{safeMode ? 'Chế độ an toàn (SFW)' : 'Chế độ đầy đủ 18+'}</span>
           <span className="@2xl/header:hidden">{safeMode ? 'SFW' : '18+'}</span>
         </Button>
         <Button variant="outline" size="sm" onClick={handleRandom} className="hidden @3xl/header:inline-flex">
           <DicesIcon className="size-3.5" />
-          随机捏人
+          Tạo nhân vật ngẫu nhiên
         </Button>
         <Button size="sm" asChild>
-          <Link to="/studio" aria-label={`AI 合成台，已选 ${selectedCount} 项参考图`}>
+          <Link to="/studio" aria-label={`Bàn tổng hợp AI, đã chọn ${selectedCount} ảnh tham chiếu`}>
             <SparklesIcon className="size-3.5" />
-            <span className="hidden @lg/header:inline">AI 合成台</span>
+            <span className="hidden @lg/header:inline">Bàn tổng hợp AI</span>
             {selectedCount > 0 && (
               <span className="ml-1 rounded-full bg-primary-foreground/20 px-1.5 py-0.2 text-[11px] font-bold">
                 {selectedCount}/3

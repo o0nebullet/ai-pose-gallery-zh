@@ -1,4 +1,4 @@
-/* AI 角色三合一参考图集 ComfyUI 前端插件样式 */
+/* Kiểu dáng plugin frontend ComfyUI của Thư viện tham chiếu 3-trong-1 nhân vật AI */
 .pca-modal-backdrop {
   position: fixed;
   inset: 0;
@@ -275,7 +275,7 @@
   border-radius: 4px;
 }
 
-/* 节点内缩略图预览组件 */
+/* Thành phần xem trước ảnh thu nhỏ trong node */
 .pca-node-preview {
   display: flex;
   gap: 6px;

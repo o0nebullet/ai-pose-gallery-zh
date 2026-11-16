@@ -10,7 +10,7 @@ export type ComfyConnectionState = {
 }
 
 export const COMFY_CONNECTION_LABELS: Record<ComfyConnectionState['status'], string> = {
-  notconfigured: '未配置地址', unchecked: '尚未检测', checking: '检测中…', connected: 'HTTP 可达', error: '连接失败', offline: '浏览器离线',
+  notconfigured: 'Chưa cấu hình địa chỉ', unchecked: 'Chưa kiểm tra', checking: 'Đang kiểm tra…', connected: 'HTTP truy cập được', error: 'Kết nối thất bại', offline: 'Trình duyệt ngoại tuyến',
 }
 const TOAST_ID = 'comfy-connection-test'
 const isOffline = () => navigator.onLine === false
@@ -46,33 +46,33 @@ export function useComfyConnection(baseUrl: string, apiKey: string, enabled: boo
     const startedEpoch = epoch.current
     request.current = { controller, epoch: startedEpoch, manual }
     setSaved((previous) => ({ scope, value: { ...(previous?.scope === scope ? previous.value : {}), status: 'checking', error: undefined } }))
-    if (manual) toast.loading('正在检测 ComfyUI HTTP 连接…', { id: TOAST_ID })
+    if (manual) toast.loading('Đang kiểm tra kết nối HTTP ComfyUI…', { id: TOAST_ID })
     const timeout = setTimeout(() => controller.abort('timeout'), 8000)
     const publish = (value: ComfyConnectionState) => {
       if (epoch.current !== startedEpoch) return
       setSaved({ scope, value })
       if (manual) {
-        if (value.status === 'connected') toast.success(`HTTP 连接成功：${value.info}`, { id: TOAST_ID })
+        if (value.status === 'connected') toast.success(`Kết nối HTTP thành công: ${value.info}`, { id: TOAST_ID })
         else toast.error(value.error || COMFY_CONNECTION_LABELS[value.status], { id: TOAST_ID, duration: 10000 })
       }
     }
     try {
       const response = await comfyFetch(normalizeComfyBase(baseUrl), '/system_stats', { signal: controller.signal }, apiKey, 8000)
       if (!response.ok) {
-        publish({ status: 'error', checkedAt: Date.now(), error: response.status === 401 || response.status === 403 ? `鉴权失败（HTTP ${response.status}），请检查 API Key / 鉴权设置` : `HTTP ${response.status}，请检查 ComfyUI 服务与代理` })
+        publish({ status: 'error', checkedAt: Date.now(), error: response.status === 401 || response.status === 403 ? `Xác thực thất bại (HTTP ${response.status}), hãy kiểm tra API Key / cài đặt xác thực` : `HTTP ${response.status}, hãy kiểm tra dịch vụ ComfyUI và proxy` })
         return
       }
       const data = await response.json()
       controller.signal.throwIfAborted()
       if (!data?.system || typeof data.system !== 'object' || Array.isArray(data.system)) {
-        publish({ status: 'error', checkedAt: Date.now(), error: '响应不是 ComfyUI system_stats 格式，请检查地址' })
+        publish({ status: 'error', checkedAt: Date.now(), error: 'Phản hồi không đúng định dạng system_stats của ComfyUI, hãy kiểm tra địa chỉ' })
         return
       }
       // 只展示允许的版本字符，避免后端响应或错误文本带出凭据。
-      const version = typeof data.system.comfyui_version === 'string' && /^[\d.a-zA-Z_-]{1,40}$/.test(data.system.comfyui_version) && (!apiKey.trim() || !data.system.comfyui_version.includes(apiKey.trim())) ? data.system.comfyui_version : '未知版本'
+      const version = typeof data.system.comfyui_version === 'string' && /^[\d.a-zA-Z_-]{1,40}$/.test(data.system.comfyui_version) && (!apiKey.trim() || !data.system.comfyui_version.includes(apiKey.trim())) ? data.system.comfyui_version : 'Phiên bản không rõ'
       publish({ status: 'connected', checkedAt: Date.now(), info: `ComfyUI ${version}` })
     } catch {
-      publish({ status: isOffline() ? 'offline' : 'error', checkedAt: Date.now(), error: controller.signal.reason === 'timeout' ? '连接检测超时（8 秒），请检查 ComfyUI 是否忙碌或无响应' : '无法读取 ComfyUI 状态，请检查服务、地址、跨域和本地网络访问权限' })
+      publish({ status: isOffline() ? 'offline' : 'error', checkedAt: Date.now(), error: controller.signal.reason === 'timeout' ? 'Kiểm tra kết nối hết thời gian chờ (8 giây), hãy kiểm tra ComfyUI có đang bận hoặc không phản hồi không' : 'Không đọc được trạng thái ComfyUI, hãy kiểm tra dịch vụ, địa chỉ, CORS và quyền truy cập mạng cục bộ' })
     } finally {
       clearTimeout(timeout)
       if (request.current?.epoch === startedEpoch) request.current = null

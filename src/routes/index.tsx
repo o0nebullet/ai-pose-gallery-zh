@@ -20,7 +20,7 @@ import { useStudio } from '@/store/studioStore'
 import { referenceImageUrl } from '@/lib/recipeImages'
 
 export const Route = createFileRoute('/')({
-  staticData: { title: '图库总览' },
+  staticData: { title: 'Tổng quan thư viện' },
   loader: ({ context }) =>
     Promise.all([
       context.queryClient.ensureQueryData(posesQuery),
@@ -42,44 +42,44 @@ function DashboardPage() {
 
   return (
     <>
-      <PageHeader title="AI 角色参考库" />
+      <PageHeader title="Thư viện tham chiếu nhân vật AI" />
 
-      {/* 核心数据指标卡片 */}
+      {/* Thẻ chỉ số dữ liệu chính */}
       <div className="grid grid-cols-2 gap-3 lg:grid-cols-4">
         <StatCard
-          title="总参考图"
+          title="Tổng ảnh tham chiếu"
           value={totalImages.toLocaleString('zh-CN')}
           icon={<LayersIcon />}
-          desc="11,568 本地高清图"
+          desc="11,568 ảnh HD cục bộ"
         />
         <StatCard
-          title="动作姿势 (Pose)"
-          value={`${posesData.groups.length} 组`}
+          title="Tư thế (Pose)"
+          value={`${posesData.groups.length} nhóm`}
           icon={<PersonStandingIcon />}
-          desc={`${posesData.items.length} 张 · 白模/深度`}
+          desc={`${posesData.items.length} ảnh · Mẫu trắng/Depth`}
         />
         <StatCard
-          title="服装穿搭 (Costume)"
-          value={`${costumes.length.toLocaleString('zh-CN')} 套`}
+          title="Trang phục (Costume)"
+          value={`${costumes.length.toLocaleString('zh-CN')} bộ`}
           icon={<ShirtIcon />}
-          desc="现实 1,407 · 二次元 440"
+          desc="Thực tế 1,407 · 2D 440"
         />
         <StatCard
-          title="人像颜值 (Portrait)"
-          value={`${portraits.length.toLocaleString('zh-CN')} 张`}
+          title="Chân dung (Portrait)"
+          value={`${portraits.length.toLocaleString('zh-CN')} ảnh`}
           icon={<UserRoundIcon />}
-          desc="CC0 协议 · 51 款发型"
+          desc="Giấy phép CC0 · 51 kiểu tóc"
         />
       </div>
 
-      {/* 三大核心图库入口卡片 */}
+      {/* Thẻ lối vào 3 thư viện chính */}
       <div className="grid gap-3 sm:grid-cols-3 sm:gap-4">
         <Link
           to="/poses"
           className="group flex flex-col justify-between rounded-[20px] bg-muted p-4 transition hover:bg-muted/70"
         >
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-semibold">🕺 动作姿势库</h2>
+            <h2 className="text-base font-semibold">🕺 Thư viện tư thế</h2>
             <Badge variant="secondary">1,439</Badge>
           </div>
           <div className="mt-3 grid grid-cols-4 gap-1.5">
@@ -100,7 +100,7 @@ function DashboardPage() {
           className="group flex flex-col justify-between rounded-[20px] bg-muted p-4 transition hover:bg-muted/70"
         >
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-semibold">👗 服装穿搭库</h2>
+            <h2 className="text-base font-semibold">👗 Thư viện trang phục</h2>
             <Badge variant="secondary">{costumes.length.toLocaleString('zh-CN')}</Badge>
           </div>
           <div className="mt-3 grid grid-cols-4 gap-1.5">
@@ -121,7 +121,7 @@ function DashboardPage() {
           className="group flex flex-col justify-between rounded-[20px] bg-muted p-4 transition hover:bg-muted/70"
         >
           <div className="flex items-center justify-between">
-            <h2 className="text-base font-semibold">👤 人像颜值库</h2>
+            <h2 className="text-base font-semibold">👤 Thư viện chân dung</h2>
             <Badge variant="secondary">1,499</Badge>
           </div>
           <div className="mt-3 grid grid-cols-4 gap-1.5">
@@ -138,16 +138,16 @@ function DashboardPage() {
         </Link>
       </div>
 
-      {/* 热门人像 Top10 速选区 */}
+      {/* Khu vực chọn nhanh chân dung hot Top 10 */}
       <section className="rounded-[20px] bg-muted p-4">
         <div className="flex items-center justify-between gap-2">
           <h2 className="flex items-center gap-1.5 text-sm font-semibold sm:text-base">
             <FlameIcon className="size-4 text-orange-500" />
-            热门人像 Top 10
+            Chân dung hot Top 10
           </h2>
           <Button variant="ghost" size="sm" asChild>
             <Link to="/portraits">
-              全部
+              Tất cả
               <ArrowRightIcon className="size-3.5" />
             </Link>
           </Button>
@@ -189,10 +189,10 @@ function DashboardPage() {
         </div>
       </section>
 
-      {/* 底部免责声明提示条 */}
+      {/* Thanh nhắc tuyên bố miễn trừ trách nhiệm ở cuối trang */}
       <footer className="rounded-[18px] border border-border/60 bg-muted/50 px-4 py-3 text-xs leading-relaxed text-muted-foreground">
-        <strong className="text-foreground">⚠️ 免责声明：</strong>
-        本站原有姿势与现实服饰参考图源自 X 创作者{' '}
+        <strong className="text-foreground">⚠️ Tuyên bố miễn trừ trách nhiệm:</strong>
+        Ảnh tham chiếu tư thế và trang phục thực tế gốc của trang này lấy từ nhà sáng tạo trên X{' '}
         <a
           href="https://x.com/giaaibusi"
           target="_blank"
@@ -201,10 +201,10 @@ function DashboardPage() {
         >
           ギア (@giaaibusi)
         </a>{' '}
-        公开分享。新增二次元服装来自 たき AI · CharaDB，仅收录元数据，图片从来源站点读取，各素材适用各自条件。默认已开启「安全模式 (SFW)」隐藏 18+ 敏感分类，未满 18 周岁请勿关闭。本工具与素材
-        <strong className="text-foreground">仅供个人学习与合法艺术创作使用，严禁用于任何违法违规或侵害他人肖像权用途</strong>。{' '}
+        chia sẻ công khai. Trang phục 2D mới bổ sung lấy từ たき AI · CharaDB, chỉ thu thập metadata, ảnh được đọc từ trang nguồn, mỗi tư liệu áp dụng điều kiện riêng. Mặc định đã bật «Chế độ an toàn (SFW)» để ẩn các danh mục nhạy cảm 18+, người chưa đủ 18 tuổi không được tắt. Công cụ và tư liệu này
+        <strong className="text-foreground">chỉ dùng cho học tập cá nhân và sáng tạo nghệ thuật hợp pháp, nghiêm cấm dùng cho bất kỳ mục đích vi phạm pháp luật hay xâm phạm quyền chân dung của người khác</strong>。{' '}
         <Link to="/guide" className="font-medium text-primary underline">
-          查看完整免责声明 →
+          Xem toàn bộ tuyên bố miễn trừ trách nhiệm →
         </Link>
       </footer>
     </>

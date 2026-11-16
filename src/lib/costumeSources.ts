@@ -9,10 +9,10 @@ export const SHISEI_SOURCE_URLS = {
 }
 
 export const COSTUME_SOURCES = [
-  { id: 'gia', label: 'ギア · 写实', url: 'https://ai-costume-gallery.pages.dev/', notice: 'ギア（@giaaibusi）AI 服装参考。' },
-  { id: 'gia-anime', label: 'ギア · 动漫', url: 'https://ai-costume-anime-gallery.pages.dev/', notice: '仅收录元数据，图片由ギア原站提供；使用请遵守原站说明。' },
-  { id: 'charadb', label: 'たき AI · CharaDB', url: 'https://github.com/taki-ttt/charadb/blob/main/LICENSE', notice: '仅供参考，须遵守原作者限制；请阅读来源条款。' },
-  { id: 'shisei', label: 'Shisei · 中国历代', url: 'https://github.com/wquguru/shisei', notice: 'wquguru 的 AI 生成服装参考，CC0；标注来源。并非专业历史服饰复原。' },
+  { id: 'gia', label: 'ギア · Thực tế', url: 'https://ai-costume-gallery.pages.dev/', notice: 'Tham chiếu trang phục AI của ギア (@giaaibusi).' },
+  { id: 'gia-anime', label: 'ギア · Anime', url: 'https://ai-costume-anime-gallery.pages.dev/', notice: 'Chỉ thu thập metadata, ảnh do trang gốc của ギア cung cấp; khi dùng hãy tuân thủ hướng dẫn của trang gốc.' },
+  { id: 'charadb', label: 'たき AI · CharaDB', url: 'https://github.com/taki-ttt/charadb/blob/main/LICENSE', notice: 'Chỉ để tham khảo, phải tuân thủ giới hạn của tác giả gốc; hãy đọc điều khoản nguồn.' },
+  { id: 'shisei', label: 'Shisei · Trung Quốc các triều đại', url: 'https://github.com/wquguru/shisei', notice: 'Tham chiếu trang phục do AI tạo của wquguru, CC0; ghi rõ nguồn. Không phải phục dựng trang phục lịch sử chuyên nghiệp.' },
 ] as const
 
 export function costumeSourceId(item: CostumeItem): string {

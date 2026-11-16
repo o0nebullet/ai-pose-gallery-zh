@@ -29,7 +29,7 @@ import { useStudio } from '@/store/studioStore'
 import type { PoseGroup, PoseItem } from '@/types/gallery'
 
 export const Route = createFileRoute('/poses')({
-  staticData: { title: '动作姿势库' },
+  staticData: { title: 'Thư viện tư thế' },
   loader: ({ context }) => context.queryClient.ensureQueryData(posesQuery),
   pendingComponent: () => <Skeleton className="h-[540px] rounded-[22px]" />,
   component: PosesPage,
@@ -139,10 +139,10 @@ function PosesPage() {
   return (
     <>
       <PageHeader
-        title="动作姿势库"
+        title="Thư viện tư thế"
         actions={
           <div className="flex flex-wrap items-center gap-2">
-            {/* 素体白模 / 深度图 切换 */}
+            {/* Chuyển đổi mẫu trắng / ảnh depth */}
             <div className="inline-flex items-center rounded-lg border border-border/70 bg-muted p-0.5">
               <button
                 type="button"
@@ -154,7 +154,7 @@ function PosesPage() {
                     : 'text-muted-foreground hover:text-foreground'
                 )}
               >
-                素体白模
+                Mẫu trắng
               </button>
               <button
                 type="button"
@@ -166,7 +166,7 @@ function PosesPage() {
                     : 'text-muted-foreground hover:text-foreground'
                 )}
               >
-                深度图 (Depth)
+                Ảnh depth (Depth)
               </button>
             </div>
 
@@ -179,7 +179,7 @@ function PosesPage() {
                   setShown(60)
                 }}
               >
-                分组
+                Theo nhóm
               </Button>
               <Button
                 variant={viewMode === 'single' ? 'default' : 'outline'}
@@ -189,14 +189,14 @@ function PosesPage() {
                   setShown(96)
                 }}
               >
-                单张
+                Từng ảnh
               </Button>
             </div>
           </div>
         }
       />
 
-      {/* 体系切换药丸 */}
+      {/* Nút chuyển hệ */}
       <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:pb-0">
         <button
           type="button"
@@ -210,7 +210,7 @@ function PosesPage() {
             activeLine === '' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:text-foreground'
           )}
         >
-          全部 ({baseItems.length})
+          Tất cả ({baseItems.length})
         </button>
         {visibleLines.map((l) => {
           const cnt = data.items.filter((x) => x.体系 === l).length
@@ -245,12 +245,12 @@ function PosesPage() {
             }
             className="shrink-0 rounded-full border border-dashed border-rose-500/40 bg-rose-500/5 px-3.5 py-1.5 text-sm font-medium text-rose-600 transition-colors hover:bg-rose-500/10 dark:text-rose-400"
           >
-            🔒 解锁 18+ 性感/双人系 ({hiddenNsfwCount})
+            🔒 Mở khóa 18+ hệ gợi cảm/đôi ({hiddenNsfwCount})
           </button>
         )}
       </div>
 
-      {/* 搜索与筛选面板 */}
+      {/* Bảng tìm kiếm và lọc */}
       <div className="grid gap-3 rounded-[22px] bg-muted p-4 @xl/main:grid-cols-2 @4xl/main:grid-cols-[minmax(0,1fr)_200px_minmax(0,auto)_auto]">
         <div className="relative">
           <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -260,7 +260,7 @@ function PosesPage() {
               setQuery(e.target.value)
               setShown(60)
             }}
-            placeholder="搜索姿势名称、编号 (如 P001)、分类或 ID…"
+            placeholder="Tìm tên tư thế, mã số (vd P001), danh mục hoặc ID…"
             className="bg-background pl-9"
           />
         </div>
@@ -273,10 +273,10 @@ function PosesPage() {
           }}
         >
           <SelectTrigger className="w-full bg-background">
-            <SelectValue placeholder="动作分类" />
+            <SelectValue placeholder="Danh mục động tác" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">全部动作分类</SelectItem>
+            <SelectItem value="all">Tất cả danh mục động tác</SelectItem>
             {categories.map((c) => (
               <SelectItem key={c} value={c}>
                 {c}
@@ -299,20 +299,20 @@ function PosesPage() {
                 angle === a ? 'bg-primary text-primary-foreground' : 'text-muted-foreground hover:text-foreground'
               )}
             >
-              {a || '全部视角'}
+              {a || 'Tất cả góc nhìn'}
             </button>
           ))}
         </div>
 
         <Button variant="ghost" size="sm" onClick={resetFilters} className="h-9">
           <RotateCcwIcon className="size-3.5" />
-          重置
+          Đặt lại
         </Button>
       </div>
 
-      {/* 列表区 */}
+      {/* Khu vực danh sách */}
       {totalCount === 0 ? (
-        <EmptyState title="没有找到匹配的姿势" description="试试更换搜索词或重置筛选条件" />
+        <EmptyState title="Không tìm thấy tư thế phù hợp" description="Thử đổi từ khóa tìm kiếm hoặc đặt lại điều kiện lọc" />
       ) : viewMode === 'group' ? (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           {filteredGroups.slice(0, shown).map((group, gIdx) => {
@@ -353,7 +353,7 @@ function PosesPage() {
                     )}
                   >
                     {picked ? <CheckIcon className="size-3" /> : <PlusIcon className="size-3" />}
-                    {picked ? '已选' : '加入配方'}
+                    {picked ? 'Đã chọn' : 'Thêm vào công thức'}
                   </button>
                 </div>
 
@@ -365,7 +365,7 @@ function PosesPage() {
                   </div>
                 </div>
 
-                {/* 5 角度缩略图切换条 */}
+                {/* Thanh chuyển 5 ảnh thu nhỏ theo góc nhìn */}
                 <div className="mt-auto grid grid-cols-5 gap-1 pt-1">
                   {ANGLES.map((ang) => {
                     const angItem = group.angles[ang]
@@ -437,7 +437,7 @@ function PosesPage() {
                     )}
                   >
                     {picked ? <CheckIcon className="size-3" /> : <PlusIcon className="size-3" />}
-                    {picked ? '已选' : '加入配方'}
+                    {picked ? 'Đã chọn' : 'Thêm vào công thức'}
                   </button>
                 </div>
                 <div className="px-1.5 pt-2 pb-1">
@@ -453,12 +453,12 @@ function PosesPage() {
       {shown < totalCount && (
         <div className="flex justify-center pt-2">
           <Button variant="outline" onClick={() => setShown((s) => s + 60)}>
-            加载更多（剩余 {totalCount - shown} {viewMode === 'group' ? '组' : '张'}）
+            Tải thêm (còn {totalCount - shown} {viewMode === 'group' ? 'nhóm' : 'ảnh'})
           </Button>
         </div>
       )}
 
-      {/* 高清大图预览弹窗 */}
+      {/* Hộp thoại xem trước ảnh lớn HD */}
       <Dialog open={Boolean(viewer)} onOpenChange={(o) => !o && setViewer(null)}>
         <DialogContent className="max-h-[90dvh] w-[95vw] max-w-4xl overflow-y-auto p-0 sm:max-w-4xl">
           {viewer && (() => {
@@ -475,7 +475,7 @@ function PosesPage() {
                       <Button
                         variant="secondary"
                         size="icon"
-                        aria-label="上一张图片" className="absolute top-1/2 left-3 min-h-11 min-w-11 -translate-y-1/2 rounded-full shadow"
+                        aria-label="Ảnh trước" className="absolute top-1/2 left-3 min-h-11 min-w-11 -translate-y-1/2 rounded-full shadow"
                         onClick={() => {
                           const idx = grp.order.findIndex((x) => x.id === it.id)
                           const next = grp.order[(idx - 1 + grp.order.length) % grp.order.length]
@@ -487,7 +487,7 @@ function PosesPage() {
                       <Button
                         variant="secondary"
                         size="icon"
-                        aria-label="下一张图片" className="absolute top-1/2 right-3 min-h-11 min-w-11 -translate-y-1/2 rounded-full shadow"
+                        aria-label="Ảnh sau" className="absolute top-1/2 right-3 min-h-11 min-w-11 -translate-y-1/2 rounded-full shadow"
                         onClick={() => {
                           const idx = grp.order.findIndex((x) => x.id === it.id)
                           const next = grp.order[(idx + 1) % grp.order.length]
@@ -515,7 +515,7 @@ function PosesPage() {
                               !poseDepthMode ? 'bg-background text-foreground shadow-2xs' : 'text-muted-foreground'
                             )}
                           >
-                            白模
+                            Mẫu trắng
                           </button>
                           <button
                             type="button"
@@ -525,7 +525,7 @@ function PosesPage() {
                               poseDepthMode ? 'bg-primary text-primary-foreground shadow-2xs' : 'text-muted-foreground'
                             )}
                           >
-                            深度图
+                            Ảnh depth
                           </button>
                         </div>
                       </div>
@@ -538,7 +538,7 @@ function PosesPage() {
                         type="button"
                         onClick={() => {
                           void navigator.clipboard.writeText(it.id)
-                          toast.success('已复制姿势 ID')
+                          toast.success('Đã sao chép ID tư thế')
                         }}
                         className="ml-2 shrink-0 text-primary hover:underline"
                       >
@@ -548,7 +548,7 @@ function PosesPage() {
 
                     {grp && (
                       <div>
-                        <div className="mb-1.5 text-xs font-medium text-muted-foreground">切换视角（← / →）</div>
+                        <div className="mb-1.5 text-xs font-medium text-muted-foreground">Đổi góc nhìn (← / →)</div>
                         <div className="grid grid-cols-5 gap-1.5">
                           {ANGLES.map((ang) => {
                             const angItem = grp.angles[ang]
@@ -573,13 +573,13 @@ function PosesPage() {
                     )}
 
                     <dl className="grid grid-cols-[68px_1fr] gap-y-1.5 text-xs">
-                      <dt className="text-muted-foreground">所属体系</dt>
+                      <dt className="text-muted-foreground">Hệ thuộc về</dt>
                       <dd className="font-medium">{it.体系}</dd>
-                      <dt className="text-muted-foreground">动作分类</dt>
+                      <dt className="text-muted-foreground">Danh mục động tác</dt>
                       <dd className="font-medium">{it.分类}</dd>
-                      <dt className="text-muted-foreground">当前模式</dt>
-                      <dd className="font-medium">{poseDepthMode ? '深度图 (Depth Map)' : '3D 素体白模'}</dd>
-                      <dt className="text-muted-foreground">原图尺寸</dt>
+                      <dt className="text-muted-foreground">Chế độ hiện tại</dt>
+                      <dd className="font-medium">{poseDepthMode ? 'Ảnh depth (Depth Map)' : 'Mẫu trắng 3D'}</dd>
+                      <dt className="text-muted-foreground">Kích thước ảnh gốc</dt>
                       <dd className="font-medium">900 × 1200 {poseDepthMode ? 'WebP' : 'PNG'}</dd>
                     </dl>
                   </div>
@@ -587,19 +587,19 @@ function PosesPage() {
                   <div className="flex flex-col gap-2">
                     <Button onClick={() => togglePose(it)} variant={picked ? 'secondary' : 'default'}>
                       {picked ? <CheckIcon className="size-4" /> : <PlusIcon className="size-4" />}
-                      {picked ? '已在角色配方中（点击移除）' : `加入角色配方（${poseDepthMode ? '深度图' : '白模'}）`}
+                      {picked ? 'Đã có trong công thức nhân vật (nhấn để gỡ)' : `Thêm vào công thức nhân vật (${poseDepthMode ? 'ảnh depth' : 'mẫu trắng'})`}
                     </Button>
                     <div className="grid grid-cols-2 gap-2">
                       <Button variant="outline" size="sm" asChild>
                         <a href={`/${activeImgPath}`} download={`${it.id}${poseDepthMode ? '_depth.webp' : '.png'}`}>
                           <DownloadIcon className="size-3.5" />
-                          下载{poseDepthMode ? '深度图' : ' PNG'}
+                          Tải xuống{poseDepthMode ? ' ảnh depth' : ' PNG'}
                         </a>
                       </Button>
                       <Button variant="outline" size="sm" asChild>
                         <a href={`/${activeImgPath}`} target="_blank" rel="noopener noreferrer">
                           <ExternalLinkIcon className="size-3.5" />
-                          新窗口原图
+                          Ảnh gốc trong cửa sổ mới
                         </a>
                       </Button>
                     </div>

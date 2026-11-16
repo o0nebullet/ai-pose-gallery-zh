@@ -17,14 +17,14 @@ function ParameterField({ control, value, overridden, onChange, onReset }: { con
   return <div className="min-w-0 space-y-2">
     <div className="flex flex-wrap items-center justify-between gap-2">
       <label htmlFor={id} className="min-w-0 flex-1 break-words text-xs font-medium">{control.group && <span className="mb-1 block font-normal text-muted-foreground">{control.group}</span>}{control.label}</label>
-      <Button type="button" size="sm" variant="ghost" className="min-h-11 shrink-0" aria-label={`恢复${control.label}默认值`} disabled={!overridden} onClick={onReset}>恢复默认</Button>
+      <Button type="button" size="sm" variant="ghost" className="min-h-11 shrink-0" aria-label={`Khôi phục mặc định của ${control.label}`} disabled={!overridden} onClick={onReset}>Khôi phục mặc định</Button>
     </div>
     {control.type === 'boolean' ? <Switch id={id} checked={Boolean(value)} onCheckedChange={onChange} />
       : control.type === 'enum' ? <select id={id} className={inputClass} value={JSON.stringify(value)} onChange={(event) => onChange(JSON.parse(event.target.value))}>{control.options?.map((option) => <option key={JSON.stringify(option)} value={JSON.stringify(option)}>{control.optionLabels?.[JSON.stringify(option)] || String(option)}</option>)}</select>
-      : control.type === 'number' ? <Input id={id} className="min-h-11" type="number" min={control.min} max={control.max} step={control.step ?? 'any'} value={numberDraft} onChange={(event) => setNumberDraft(event.target.value)} onBlur={() => { const parsed = numberDraft.trim() ? Number(numberDraft) : NaN; if (validControlValue(control, parsed)) onChange(parsed); else { setNumberDraft(String(value)); toast.error('请输入参数允许范围内的数字') } }} />
+      : control.type === 'number' ? <Input id={id} className="min-h-11" type="number" min={control.min} max={control.max} step={control.step ?? 'any'} value={numberDraft} onChange={(event) => setNumberDraft(event.target.value)} onBlur={() => { const parsed = numberDraft.trim() ? Number(numberDraft) : NaN; if (validControlValue(control, parsed)) onChange(parsed); else { setNumberDraft(String(value)); toast.error('Hãy nhập số trong phạm vi cho phép của tham số') } }} />
       : control.multiline ? <Textarea id={id} value={String(value)} rows={3} onChange={(event) => onChange(event.target.value)} />
       : <Input id={id} className="min-h-11" value={String(value)} onChange={(event) => onChange(event.target.value)} />}
-    <p className="break-words text-xs text-muted-foreground">{control.description || (overridden ? '已覆盖工作流默认值' : '沿用工作流默认值')}{overridden && <span className="mt-1 block font-medium text-primary">已修改</span>}</p>
+    <p className="break-words text-xs text-muted-foreground">{control.description || (overridden ? 'Đã ghi đè giá trị mặc định của workflow' : 'Dùng giá trị mặc định của workflow')}{overridden && <span className="mt-1 block font-medium text-primary">Đã sửa</span>}</p>
   </div>
 }
 
@@ -39,7 +39,7 @@ export function WorkflowParameters({ onPreview, onUploadingChange }: { onPreview
   const [uploading, setUploading] = useState<string | null>(null)
   useEffect(() => {
     currentIdentityRef.current = identity
-    // 工作流切换使正在读取的文件失效，同时解除生成按钮的占用。
+    // Khi chuyển workflow, file đang đọc sẽ hết hiệu lực, đồng thời giải phóng nút tạo đang bị chiếm.
     // oxlint-disable-next-line react/set-state-in-effect
     setUploading(null)
     onUploadingChange(null)
@@ -56,7 +56,7 @@ export function WorkflowParameters({ onPreview, onUploadingChange }: { onPreview
   })
   const images = getWorkflowImages(cp.workflowJson, [cp.portraitNodeId, cp.costumeNodeId, cp.poseNodeId, cp.stitchedNodeId], schemas)
   const excluded = new Set<string>()
-  // 图片和主提示词由各自上传、编辑入口管理。
+  // Ảnh và prompt chính do từng cổng tải lên/chỉnh sửa quản lý.
   for (const image of images) excluded.add(`${image.nodeId}.image`)
   for (const nodeId of [cp.portraitNodeId, cp.costumeNodeId, cp.poseNodeId, cp.stitchedNodeId]) excluded.add(`${nodeId}.image`)
   for (const input of ['prompt', 'text', 'string', 'positive']) excluded.add(`${cp.promptNodeId}.${input}`)
@@ -76,7 +76,7 @@ export function WorkflowParameters({ onPreview, onUploadingChange }: { onPreview
     event.target.value = ''
     if (!file) return
     if (uploading !== null) return
-    if (!file.type.startsWith('image/')) { toast.error('请选择图片文件'); return }
+    if (!file.type.startsWith('image/')) { toast.error('Hãy chọn file ảnh'); return }
     const startedIdentity = identity
     const startedEpoch = ++readEpoch.current
     setUploading(nodeId)
@@ -86,31 +86,31 @@ export function WorkflowParameters({ onPreview, onUploadingChange }: { onPreview
       if (currentIdentityRef.current !== startedIdentity || startedEpoch !== readEpoch.current) return
       setWorkflowImage(nodeId, { id: crypto.randomUUID(), name: file.name, url, role }, startedIdentity)
     } catch {
-      if (currentIdentityRef.current === startedIdentity && startedEpoch === readEpoch.current) toast.error('图片读取失败，已保留原图，请重新选择')
+      if (currentIdentityRef.current === startedIdentity && startedEpoch === readEpoch.current) toast.error('Đọc ảnh thất bại, đã giữ lại ảnh gốc, hãy chọn lại')
     } finally {
       if (currentIdentityRef.current === startedIdentity && startedEpoch === readEpoch.current) { setUploading(null); onUploadingChange(null) }
     }
   }
   return <div className="col-span-full min-w-0 space-y-4 break-words rounded-xl border p-3">
-    <div className="flex flex-wrap items-center justify-between gap-2"><h3 className="text-sm font-medium">工作流高级参数</h3><Button type="button" size="sm" variant="ghost" className="min-h-11" disabled={!Object.keys(saved).length} onClick={() => updateComfyUiParams({ parameterOverrides: { workflowId: identity, values: {} } })}>全部恢复默认</Button></div>
-    <p className="text-xs text-muted-foreground">按当前 ComfyUI 节点定义显示；未修改的参数沿用导入 API。</p>
+    <div className="flex flex-wrap items-center justify-between gap-2"><h3 className="text-sm font-medium">Tham số nâng cao của workflow</h3><Button type="button" size="sm" variant="ghost" className="min-h-11" disabled={!Object.keys(saved).length} onClick={() => updateComfyUiParams({ parameterOverrides: { workflowId: identity, values: {} } })}>Khôi phục tất cả về mặc định</Button></div>
+    <p className="text-xs text-muted-foreground">Hiển thị theo định nghĩa node ComfyUI hiện tại; tham số chưa sửa dùng giá trị đã import từ API.</p>
     {images.length > 0 && <div className="grid gap-4 sm:grid-cols-2">{images.map((image) => {
       const selected = workflowImages[image.nodeId]
       const inputId = `workflow-image-${image.nodeId}`
       return <div key={image.nodeId} className="min-w-0 space-y-2 rounded-xl bg-background p-3" onDrop={(event) => { event.preventDefault(); event.stopPropagation() }}>
-        <div className="block text-sm font-medium">{image.label}{image.optional ? '（可选）' : '（可替换）'}</div>
-        {selected && <button type="button" className="block w-full cursor-zoom-in" onClick={() => onPreview(selected.url)} aria-label={`预览${image.label}`}><img src={selected.url} alt={image.label} className="h-28 w-full rounded-lg object-contain" /></button>}
-        <input id={inputId} ref={(element) => { imageInputs.current[image.nodeId] = element }} hidden type="file" accept="image/*" disabled={uploading !== null} onChange={(event) => void upload(event, image.nodeId, image.role)} aria-label={`选择${image.label}`} />
-        <Button type="button" variant="outline" className="min-h-11" disabled={uploading !== null} onClick={() => imageInputs.current[image.nodeId]?.click()}>{selected ? '替换图片' : '选择图片'}</Button>
-        {selected && <><p className="break-all text-xs" title={selected.name}>{selected.name}</p><p className="text-xs text-muted-foreground">已选择，生成时上传</p></>}
-        {uploading === image.nodeId && <p role="status" className="text-xs">正在读取图片…</p>}
-        {selected ? <Button type="button" variant="ghost" size="sm" className="min-h-11" disabled={uploading !== null} aria-label={`清除${image.label}`} onClick={() => setWorkflowImage(image.nodeId, null, identity)}>清除图片</Button> : <p className="text-xs text-muted-foreground">{image.optional ? '未选择（可选），可添加参考图片。' : '默认沿用工作流原图；选择后替换，清除后恢复原图。'}{image.role === 'character_sheet' && ' 可选择完整角色设定集，人物身份与外观以此图为准。'}</p>}
+        <div className="block text-sm font-medium">{image.label}{image.optional ? ' (tùy chọn)' : ' (có thể thay)'}</div>
+        {selected && <button type="button" className="block w-full cursor-zoom-in" onClick={() => onPreview(selected.url)} aria-label={`Xem trước ${image.label}`}><img src={selected.url} alt={image.label} className="h-28 w-full rounded-lg object-contain" /></button>}
+        <input id={inputId} ref={(element) => { imageInputs.current[image.nodeId] = element }} hidden type="file" accept="image/*" disabled={uploading !== null} onChange={(event) => void upload(event, image.nodeId, image.role)} aria-label={`Chọn ${image.label}`} />
+        <Button type="button" variant="outline" className="min-h-11" disabled={uploading !== null} onClick={() => imageInputs.current[image.nodeId]?.click()}>{selected ? 'Thay ảnh' : 'Chọn ảnh'}</Button>
+        {selected && <><p className="break-all text-xs" title={selected.name}>{selected.name}</p><p className="text-xs text-muted-foreground">Đã chọn, sẽ tải lên khi tạo</p></>}
+        {uploading === image.nodeId && <p role="status" className="text-xs">Đang đọc ảnh…</p>}
+        {selected ? <Button type="button" variant="ghost" size="sm" className="min-h-11" disabled={uploading !== null} aria-label={`Xóa ${image.label}`} onClick={() => setWorkflowImage(image.nodeId, null, identity)}>Xóa ảnh</Button> : <p className="text-xs text-muted-foreground">{image.optional ? 'Chưa chọn (tùy chọn), có thể thêm ảnh tham chiếu.' : 'Mặc định dùng ảnh gốc của workflow; chọn xong sẽ thay thế, xóa xong sẽ khôi phục ảnh gốc.'}{image.role === 'character_sheet' && ' Có thể chọn character sheet đầy đủ, danh tính và ngoại hình nhân vật lấy theo ảnh này.'}</p>}
       </div>
     })}</div>}
-    {isPending && identity && <p role="status" className="text-xs text-muted-foreground">正在读取节点参数…</p>}
-    {error && <div role="status" className="text-xs text-destructive">节点参数读取失败：{error.message}<Button type="button" size="sm" variant="ghost" className="min-h-11" onClick={() => void refetch()}>重试</Button></div>}
+    {isPending && identity && <p role="status" className="text-xs text-muted-foreground">Đang đọc tham số node…</p>}
+    {error && <div role="status" className="text-xs text-destructive">Đọc tham số node thất bại: {error.message}<Button type="button" size="sm" variant="ghost" className="min-h-11" onClick={() => void refetch()}>Thử lại</Button></div>}
     {controls.some((control) => control.recommended) && <div className="grid gap-4 sm:grid-cols-2">{controls.filter((control) => control.recommended).map(renderControl)}</div>}
-    {controls.some((control) => !control.recommended) && <details><summary className="min-h-11 cursor-pointer py-2 text-sm">其他可调参数（{controls.filter((control) => !control.recommended).length}）</summary><div className="grid gap-4 pt-3 sm:grid-cols-2">{controls.filter((control) => !control.recommended).map(renderControl)}</div></details>}
-    {schemas && !controls.length && <p className="text-xs text-muted-foreground">此工作流没有可编辑的普通参数。</p>}
+    {controls.some((control) => !control.recommended) && <details><summary className="min-h-11 cursor-pointer py-2 text-sm">Tham số khác có thể chỉnh ({controls.filter((control) => !control.recommended).length})</summary><div className="grid gap-4 pt-3 sm:grid-cols-2">{controls.filter((control) => !control.recommended).map(renderControl)}</div></details>}
+    {schemas && !controls.length && <p className="text-xs text-muted-foreground">Workflow này không có tham số thường nào có thể chỉnh.</p>}
   </div>
 }

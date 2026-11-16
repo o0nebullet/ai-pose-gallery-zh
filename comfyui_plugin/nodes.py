@@ -1,35 +1,35 @@
 # -*- coding: utf-8 -*-
-"""ComfyUI 自定义节点：AI 角色三合一参考图集（姿势 + 服装 + 人像 + 三合一合成配方）。"""
+"""Node tùy chỉnh ComfyUI: Thư viện tham chiếu 3-trong-1 nhân vật AI (tư thế + trang phục + chân dung + công thức tổng hợp 3-trong-1)."""
 
 from __future__ import annotations
 
 from typing import TYPE_CHECKING
 
-from .routes import find_item, open_reference_image, select_costume_view
+from.routes import find_item, open_reference_image, select_costume_view
 
 if TYPE_CHECKING:
     from PIL import Image
 
 RESIZE_MODES = [
-    "原图尺寸",
-    "指定尺寸（居中裁剪）",
-    "指定尺寸（留白填充）",
+    "Kích thước gốc",
+    "Kích thước chỉ định (cắt giữa)",
+    "Kích thước chỉ định (chèn lề trắng)",
 ]
 
 STYLE_PRESETS = {
-    "高清日系动漫": (
+    "Anime Nhật nét cao": (
         "日系二次元动漫插画风格，精致五官，赛璐璐与厚涂结合，光影通透，高画质杰作",
         "anime illustration, cel shading and soft lighting, clean lineart, masterpiece, best quality",
     ),
-    "写实摄影人像": (
+    "Chân dung chụp ảnh thực tế": (
         "电影级写实人像摄影，85mm定焦镜头，真实皮肤质感，自然景深与柔美布光，8K超清",
         "photorealistic portrait photography, 85mm lens, realistic skin texture, cinematic lighting, 8k",
     ),
-    "韩系半厚涂插画": (
+    "Minh họa bán dày kiểu Hàn": (
         "韩系唯美半厚涂角色立绘，细腻丝滑高光，柔美体积感，高级色彩搭配",
         "semi-realistic anime character art, smooth rendering, luminous highlights, refined color palette",
     ),
-    "干净角色设定图": (
+    "Ảnh thiết lập nhân vật sạch": (
         "游戏角色立绘设定图，干净浅灰/纯白背景，轮廓清晰，服装材质与褶皱细节丰富",
         "character design reference sheet, clean light background, crisp silhouette, detailed fabric folds",
     ),
@@ -47,7 +47,7 @@ def _pil_to_comfy_tensor(img: Image.Image):
 
 def _load_pil_image(
     rel_path: str,
-    resize_mode: str = "原图尺寸",
+    resize_mode: str = "Kích thước gốc",
     width: int = 1024,
     height: int = 1280,
     flip_horizontal: bool = False,
@@ -63,9 +63,9 @@ def _load_pil_image(
     target_w = max(64, int(width))
     target_h = max(64, int(height))
 
-    if resize_mode == "指定尺寸（居中裁剪）":
+    if resize_mode == "Kích thước chỉ định (cắt giữa)":
         img = ImageOps.fit(img, (target_w, target_h), method=Image.Resampling.LANCZOS)
-    elif resize_mode == "指定尺寸（留白填充）":
+    elif resize_mode == "Kích thước chỉ định (chèn lề trắng)":
         img = ImageOps.pad(
             img,
             (target_w, target_h),
@@ -108,13 +108,13 @@ def _build_portrait_prompts(item: dict) -> tuple[str, str]:
 def _pose_image_rel_path(item: dict, use_depth: bool = False) -> str:
     raw = str(item.get("原图", "")).lstrip("/")
     if use_depth and raw.startswith("img/") and not raw.startswith("img/depth/"):
-        stem = raw[len("img/") :].rsplit(".", 1)[0]
+        stem = raw[len("img/"):].rsplit(".", 1)[0]
         return f"img/depth/{stem}.webp"
     return raw
 
 
 class PoseGalleryNode:
-    """从 1,439 张 3D 素体姿势库中选择姿势参考图并输出 IMAGE 与提示词。"""
+    """Chọn ảnh tham chiếu tư thế từ thư viện 1.439 tư thế mẫu 3D và xuất IMAGE cùng prompt."""
 
     @classmethod
     def INPUT_TYPES(cls):
@@ -124,7 +124,7 @@ class PoseGalleryNode:
                     "STRING",
                     {"default": "full_single_P001_front", "multiline": False},
                 ),
-                "resize_mode": (RESIZE_MODES, {"default": "原图尺寸"}),
+                "resize_mode": (RESIZE_MODES, {"default": "Kích thước gốc"}),
                 "width": ("INT", {"default": 1024, "min": 64, "max": 4096, "step": 8}),
                 "height": ("INT", {"default": 1280, "min": 64, "max": 4096, "step": 8}),
                 "flip_horizontal": ("BOOLEAN", {"default": False}),
@@ -135,14 +135,14 @@ class PoseGalleryNode:
         }
 
     RETURN_TYPES = ("IMAGE", "STRING", "STRING")
-    RETURN_NAMES = ("姿势图", "图片ID", "姿势提示词")
+    RETURN_NAMES = ("Ảnh tư thế", "ID ảnh", "Prompt tư thế")
     FUNCTION = "load_pose"
-    CATEGORY = "AI角色三合一参考图集"
+    CATEGORY = "Thư viện tham chiếu 3-trong-1 nhân vật AI"
 
     def load_pose(
         self,
         image_id: str = "full_single_P001_front",
-        resize_mode: str = "原图尺寸",
+        resize_mode: str = "Kích thước gốc",
         width: int = 1024,
         height: int = 1280,
         flip_horizontal: bool = False,
@@ -161,14 +161,14 @@ class PoseGalleryNode:
 
 
 class CostumeGalleryNode:
-    """从穿搭服装库选择服装及有效视角，输出 IMAGE 与中英文服装 Prompt。"""
+    """Chọn trang phục và góc nhìn hợp lệ từ thư viện trang phục, xuất IMAGE cùng Prompt trang phục tiếng Trung và tiếng Anh."""
 
     @classmethod
     def INPUT_TYPES(cls):
         return {
             "required": {
                 "image_id": ("STRING", {"default": "SPR-0001", "multiline": False}),
-                "resize_mode": (RESIZE_MODES, {"default": "原图尺寸"}),
+                "resize_mode": (RESIZE_MODES, {"default": "Kích thước gốc"}),
                 "width": ("INT", {"default": 1024, "min": 64, "max": 4096, "step": 8}),
                 "height": ("INT", {"default": 1280, "min": 64, "max": 4096, "step": 8}),
                 "flip_horizontal": ("BOOLEAN", {"default": False}),
@@ -177,14 +177,14 @@ class CostumeGalleryNode:
         }
 
     RETURN_TYPES = ("IMAGE", "STRING", "STRING", "STRING")
-    RETURN_NAMES = ("服装图", "图片ID", "中文服装描述", "英文服装Prompt")
+    RETURN_NAMES = ("Ảnh trang phục", "ID ảnh", "Mô tả trang phục tiếng Trung", "Prompt trang phục tiếng Anh")
     FUNCTION = "load_costume"
-    CATEGORY = "AI角色三合一参考图集"
+    CATEGORY = "Thư viện tham chiếu 3-trong-1 nhân vật AI"
 
     def load_costume(
         self,
         image_id: str = "SPR-0001",
-        resize_mode: str = "原图尺寸",
+        resize_mode: str = "Kích thước gốc",
         width: int = 1024,
         height: int = 1280,
         flip_horizontal: bool = False,
@@ -203,14 +203,14 @@ class CostumeGalleryNode:
 
 
 class PortraitGalleryNode:
-    """从 1,499 张精细人像与发型库中选择人像参考图并输出 IMAGE 与发型描述。"""
+    """Chọn ảnh tham chiếu chân dung từ thư viện 1.499 chân dung và kiểu tóc tinh xảo, xuất IMAGE cùng mô tả kiểu tóc."""
 
     @classmethod
     def INPUT_TYPES(cls):
         return {
             "required": {
                 "image_id": ("STRING", {"default": "f71f980dde3", "multiline": False}),
-                "resize_mode": (RESIZE_MODES, {"default": "原图尺寸"}),
+                "resize_mode": (RESIZE_MODES, {"default": "Kích thước gốc"}),
                 "width": ("INT", {"default": 1024, "min": 64, "max": 4096, "step": 8}),
                 "height": ("INT", {"default": 1280, "min": 64, "max": 4096, "step": 8}),
                 "flip_horizontal": ("BOOLEAN", {"default": False}),
@@ -218,14 +218,14 @@ class PortraitGalleryNode:
         }
 
     RETURN_TYPES = ("IMAGE", "STRING", "STRING")
-    RETURN_NAMES = ("人像图", "图片ID", "人像发型描述")
+    RETURN_NAMES = ("Ảnh chân dung", "ID ảnh", "Mô tả kiểu tóc chân dung")
     FUNCTION = "load_portrait"
-    CATEGORY = "AI角色三合一参考图集"
+    CATEGORY = "Thư viện tham chiếu 3-trong-1 nhân vật AI"
 
     def load_portrait(
         self,
         image_id: str = "f71f980dde3",
-        resize_mode: str = "原图尺寸",
+        resize_mode: str = "Kích thước gốc",
         width: int = 1024,
         height: int = 1280,
         flip_horizontal: bool = False,
@@ -243,7 +243,7 @@ class PortraitGalleryNode:
 
 
 class CharacterRecipeNode:
-    """三合一角色合成配方节点：同时输出人像图、服装图、姿势图、三合一横向拼图，以及自动组装的中英文合成 Prompt。"""
+    """Node công thức tổng hợp 3-trong-1 nhân vật: đồng thời xuất ảnh chân dung, ảnh trang phục, ảnh tư thế, ảnh ghép 3-trong-1 ngang, cùng Prompt tổng hợp tiếng Trung và tiếng Anh được ghép tự động."""
 
     @classmethod
     def INPUT_TYPES(cls):
@@ -260,17 +260,17 @@ class CharacterRecipeNode:
                 ),
                 "style_preset": (
                     list(STYLE_PRESETS.keys()),
-                    {"default": "高清日系动漫"},
+                    {"default": "Anime Nhật nét cao"},
                 ),
                 "extra_prompt": (
                     "STRING",
                     {
                         "default": "",
                         "multiline": True,
-                        "placeholder": "可选补充提示词（例如：银色双眸、教室窗边逆光、微风吹拂发丝）",
+                        "placeholder": "Prompt bổ sung tùy chọn (ví dụ: mắt bạc, ngược sáng bên cửa sổ lớp học, gió nhẹ thổi tóc)",
                     },
                 ),
-                "resize_mode": (RESIZE_MODES, {"default": "指定尺寸（居中裁剪）"}),
+                "resize_mode": (RESIZE_MODES, {"default": "Kích thước chỉ định (cắt giữa)"}),
                 "width": ("INT", {"default": 1024, "min": 64, "max": 4096, "step": 8}),
                 "height": ("INT", {"default": 1280, "min": 64, "max": 4096, "step": 8}),
                 "flip_pose_horizontal": ("BOOLEAN", {"default": False}),
@@ -283,24 +283,24 @@ class CharacterRecipeNode:
 
     RETURN_TYPES = ("IMAGE", "IMAGE", "IMAGE", "IMAGE", "STRING", "STRING")
     RETURN_NAMES = (
-        "人像图",
-        "服装图",
-        "姿势图",
-        "三合一拼图",
-        "中文合成Prompt",
-        "英文合成Prompt",
+        "Ảnh chân dung",
+        "Ảnh trang phục",
+        "Ảnh tư thế",
+        "Ảnh ghép 3-trong-1",
+        "Prompt tổng hợp tiếng Trung",
+        "Prompt tổng hợp tiếng Anh",
     )
     FUNCTION = "build_recipe"
-    CATEGORY = "AI角色三合一参考图集"
+    CATEGORY = "Thư viện tham chiếu 3-trong-1 nhân vật AI"
 
     def build_recipe(
         self,
         portrait_id: str = "f71f980dde3",
         costume_id: str = "SPR-0001",
         pose_id: str = "full_single_P001_front",
-        style_preset: str = "高清日系动漫",
+        style_preset: str = "Anime Nhật nét cao",
         extra_prompt: str = "",
-        resize_mode: str = "指定尺寸（居中裁剪）",
+        resize_mode: str = "Kích thước chỉ định (cắt giữa)",
         width: int = 1024,
         height: int = 1280,
         flip_pose_horizontal: bool = False,
@@ -325,7 +325,7 @@ class CharacterRecipeNode:
             flip_horizontal=flip_pose_horizontal,
         )
 
-        # 生成三合一横向参考拼图（人像 | 服装 | 姿势）
+        # Tạo ảnh ghép tham chiếu 3-trong-1 ngang (chân dung | trang phục | tư thế)
         from PIL import Image, ImageOps
 
         panel_h = max(256, int(height))
@@ -347,18 +347,18 @@ class CharacterRecipeNode:
         costume_zh, costume_en = _build_costume_prompts(costume_item)
         pose_zh, pose_en = _build_pose_prompts(pose_item)
         style_zh, style_en = STYLE_PRESETS.get(
-            style_preset, STYLE_PRESETS["高清日系动漫"]
+            style_preset, STYLE_PRESETS["Anime Nhật nét cao"]
         )
 
         extra_clean = (extra_prompt or "").strip()
         zh_parts = [
             f"请融合参考图生成一张完整的角色立绘：{style_zh}。",
-            f"【人像与发型】{portrait_zh}；",
-            f"【服装与配饰】{costume_zh}；",
-            f"【身体姿势与构图】{pose_zh}。",
+            f"{portrait_zh}；",
+            f"{costume_zh}；",
+            f"{pose_zh}。",
         ]
         if extra_clean:
-            zh_parts.append(f"【补充细节】{extra_clean}。")
+            zh_parts.append(f"{extra_clean}。")
         zh_parts.append(
             "要求人物面部自然生动，服装穿戴贴合身体动态，肢体透视与手部结构准确，光影和谐统一。"
         )
@@ -390,8 +390,8 @@ NODE_CLASS_MAPPINGS = {
 }
 
 NODE_DISPLAY_NAME_MAPPINGS = {
-    "PoseGalleryNode": "AI 姿势参考图 (Pose Gallery)",
-    "CostumeGalleryNode": "AI 服装参考图 (Costume Gallery)",
-    "PortraitGalleryNode": "AI 人像参考图 (Portrait Gallery)",
-    "CharacterRecipeNode": "AI 角色三合一合成配方 (3-in-1 Recipe)",
+    "PoseGalleryNode": "Ảnh tham chiếu tư thế AI (Pose Gallery)",
+    "CostumeGalleryNode": "Ảnh tham chiếu trang phục AI (Costume Gallery)",
+    "PortraitGalleryNode": "Ảnh tham chiếu chân dung AI (Portrait Gallery)",
+    "CharacterRecipeNode": "Công thức tổng hợp 3-trong-1 nhân vật AI (3-in-1 Recipe)",
 }

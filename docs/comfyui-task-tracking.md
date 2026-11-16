@@ -1,30 +1,30 @@
-# ComfyUI 任务连接与恢复
+# Kết nối & khôi phục task ComfyUI
 
-工作台将一次生成提交为一个 ComfyUI prompt，并保存任务编号。刷新页面、重新联网或恢复标签页时，查询原任务；不会重新提交 `/prompt`。提交响应丢失时，后端可能已经接收任务，需要先人工核对队列，不能把网络错误当作安全重试的依据。
+Bàn làm việc gửi 1 lần tạo thành 1 ComfyUI prompt, và lưu mã task. Khi làm mới trang, kết nối mạng lại hoặc khôi phục tab, nó sẽ truy vấn task gốc; không gửi lại `/prompt`. Khi mất phản hồi gửi, backend có thể đã nhận task, cần kiểm tra hàng đợi thủ công trước, không được coi lỗi mạng là căn cứ để thử lại an toàn.
 
-## 实时连接与 HTTP 保底
+## Kết nối thời gian thực & dự phòng HTTP
 
-- 提交前启动 WebSocket，使用与 `/prompt` 的 `client_id` 相同的 `clientId`。连接失败不会阻断提交。
-- 拿到 `prompt_id` 并保存恢复记录后立即查询 history，补齐订阅前已结束、全部缓存等快任务。
-- WebSocket 正常时，生命周期与采样事件更新进度，history 每 30 秒核对一次。`status` 仅触发队列查询，最多每 3 秒一次，不把共享队列总数当成当前任务状态。
-- WebSocket 断开时，HTTP 每 3 秒查询；连接恢复、重新联网和页面重新可见时立即核对。HTTP 临时失败也在 3 秒后重试；HTTP 401/403 会停止当前跟踪并保留任务记录，修正凭据后可恢复。
-- 完成、出错、中断及 `executing` 的空节点事件立即触发 history 查询。完成事件可能早于 history 写入，先按 500 毫秒间隔短暂重试，再继续保底查询。
-- history 确认产出后下载图片；单个 `executed` 节点事件不代表整项任务成功。所有 HTTP 核对串行执行，避免事件密集时堆积请求。
+- Trước khi gửi, khởi động WebSocket, dùng `clientId` giống `client_id` của `/prompt`. Kết nối thất bại không chặn việc gửi.
+- Sau khi lấy `prompt_id` và lưu bản ghi khôi phục, truy vấn history ngay để bù các task nhanh đã kết thúc trước khi đăng ký, task toàn cache, v.v.
+- Khi WebSocket bình thường, vòng đời và sự kiện sampling cập nhật tiến độ, history đối soát mỗi 30 giây. `status` chỉ kích hoạt truy vấn hàng đợi, tối đa mỗi 3 giây 1 lần, không coi tổng số hàng đợi dùng chung là trạng thái của task hiện tại.
+- Khi WebSocket ngắt, HTTP truy vấn mỗi 3 giây; khi kết nối khôi phục, mạng trở lại và trang hiện lại thì đối soát ngay. HTTP lỗi tạm thời cũng thử lại sau 3 giây; HTTP 401/403 sẽ dừng theo dõi hiện tại và giữ bản ghi task, sửa lại credential là khôi phục được.
+- Sự kiện hoàn thành, lỗi, ngắt và `executing` với node trống sẽ kích hoạt truy vấn history ngay. Sự kiện hoàn thành có thể tới trước khi history ghi xong, thử lại ngắn theo khoảng 500 ms trước, rồi tiếp tục truy vấn dự phòng.
+- Sau khi history xác nhận có đầu ra thì tải ảnh; 1 sự kiện node `executed` riêng lẻ không có nghĩa là cả task đã thành công. Mọi lần đối soát HTTP chạy nối tiếp, tránh dồn request khi sự kiện dày.
 
-节点进度百分比只代表当前节点。部分节点没有采样事件，长时间没有进度消息不表示任务失败。浏览器后台计时器可能受到节流，重新激活页面会立即核对状态。
+Phần trăm tiến độ node chỉ đại diện cho node hiện tại. Một số node không có sự kiện sampling, lâu không có tin tiến độ không có nghĩa là task thất bại. Bộ đếm thời gian nền của trình duyệt có thể bị tiết chế, kích hoạt lại trang sẽ đối soát trạng thái ngay.
 
-只接收与当前 `prompt_id` 匹配的执行事件。ComfyUI 重连时可能发送不带 `prompt_id` 的当前节点消息，这类消息不用于确认任务归属，由 HTTP 对账补齐。
+Chỉ nhận sự kiện thực thi khớp với `prompt_id` hiện tại. Khi ComfyUI kết nối lại có thể gửi tin node hiện tại không kèm `prompt_id`, loại tin này không dùng để xác nhận task thuộc về ai, phần thiếu do HTTP đối soát bù lại.
 
-## 浏览器保存与恢复
+## Lưu & khôi phục trên trình duyệt
 
-未决任务和生成历史保存在当前浏览器的 IndexedDB；事务提交成功后才更新已保存状态。参考图和生成结果会转成可持久保存的数据，避免临时 Blob URL 在刷新后失效。生成快照保存配方、参数和实际提交的工作流，不复制提供方配置中的 API Key 与端点。
+Task chưa xong và lịch sử tạo lưu trong IndexedDB của trình duyệt hiện tại; chỉ sau khi transaction gửi thành công mới cập nhật trạng thái đã lưu. Ảnh tham chiếu và kết quả tạo sẽ chuyển thành dạng lưu bền được, tránh URL Blob tạm thời hết hiệu lực sau khi làm mới. Ảnh chụp nhanh lúc tạo lưu công thức, tham số và workflow thực tế đã gửi, không sao chép API Key và endpoint trong cấu hình của nhà cung cấp.
 
-存储不可用时暂停生成，避免覆盖未知任务。超时或停止等待不代表取消后端执行；主动点击“停止跟踪（不取消后端）”会清除当前未决记录，后端任务仍可能继续，下一次提交前应核对队列。服务重启或历史被清理时，可能无法找到原任务，工作台不会自动重新提交。
+Khi bộ nhớ không dùng được thì tạm dừng tạo, tránh ghi đè task chưa rõ. Hết thời gian chờ hoặc dừng đợi không có nghĩa là đã hủy thực thi ở backend; bấm "Dừng theo dõi (không hủy backend)" sẽ xóa bản ghi chưa xong hiện tại, task backend vẫn có thể tiếp tục, trước lần gửi sau nên kiểm tra hàng đợi. Khi service khởi động lại hoặc history bị xóa, có thể không tìm được task gốc, bàn làm việc sẽ không tự gửi lại.
 
-## 原生 ComfyUI 与可选网关
+## ComfyUI gốc & gateway tùy chọn
 
-原生 ComfyUI 使用 `/ws?clientId=...` 发送任务事件。本项目未给 ComfyUI 后端增加远程鉴权协议。
+ComfyUI gốc dùng `/ws?clientId=...` để gửi sự kiện task. Dự án này không thêm giao thức xác thực từ xa cho backend ComfyUI.
 
-如果访问地址前部署了自行维护的鉴权网关，浏览器无法直接为 WebSocket 设置 Authorization 请求头；可选约定为请求子协议 `comfyui` 与 `comfyui-auth.<token>`，网关验证凭据和 Origin 后仅回显固定子协议 `comfyui`，并向后端剥离凭据。这是网关与网页之间的约定，不是原生 ComfyUI 能力，需自行配置网关支持。HTTP 请求继续使用 Bearer Authorization。
+Nếu trước địa chỉ truy cập có triển khai gateway xác thực tự duy trì, trình duyệt không thể đặt trực tiếp header Authorization cho WebSocket; quy ước tùy chọn là subprotocol `comfyui` và `comfyui-auth.<token>`, gateway xác minh credential và Origin rồi chỉ echo lại subprotocol cố định `comfyui`, và bóc credential trước khi chuyển tới backend. Đây là quy ước giữa gateway và trang web, không phải năng lực gốc của ComfyUI, cần tự cấu hình gateway hỗ trợ. Request HTTP tiếp tục dùng Bearer Authorization.
 
-不要将令牌放进 URL、截图或日志。没有配置此约定的网关，应先核对其实际认证方式；HTTP 测试连接成功也不能替代 WebSocket 握手验证。
+Không đưa token vào URL, ảnh chụp màn hình hay log. Gateway chưa cấu hình quy ước này thì kiểm tra trước cách xác thực thực tế của nó; test kết nối HTTP thành công cũng không thay thế việc xác minh bắt tay WebSocket.

@@ -17,8 +17,8 @@ export function ComfyConnectionStatus({ compact = false }: { compact?: boolean }
     {!compact && <>
       {info && status === 'connected' && <span>{info}</span>}
       {error && <span className="break-words text-destructive">{error}</span>}
-      <span className="text-muted-foreground">{checkedAt ? `最近检测 ${new Date(checkedAt).toLocaleTimeString()}` : '尚无检测记录'}；HTTP 检测不代表任务 WebSocket 已连接</span>
+      <span className="text-muted-foreground">{checkedAt ? `Kiểm tra gần nhất ${new Date(checkedAt).toLocaleTimeString()}` : 'Chưa có lần kiểm tra nào'}; kiểm tra HTTP không có nghĩa là task WebSocket đã kết nối</span>
     </>}
-    <Button type="button" size="sm" variant="outline" className="min-h-11" disabled={status === 'checking'} onClick={() => void checkComfyConnection(true)}>检测连接</Button>
+    <Button type="button" size="sm" variant="outline" className="min-h-11" disabled={status === 'checking'} onClick={() => void checkComfyConnection(true)}>Kiểm tra kết nối</Button>
   </div>
 }

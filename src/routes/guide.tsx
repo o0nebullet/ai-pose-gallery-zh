@@ -4,77 +4,77 @@ import { PageHeader } from '@/components/common/PageHeader'
 import { Badge } from '@/components/ui/badge'
 
 export const Route = createFileRoute('/guide')({
-  staticData: { title: '使用指南与免责声明' },
+  staticData: { title: 'Hướng dẫn sử dụng và tuyên bố miễn trừ trách nhiệm' },
   component: GuidePage,
 })
 
 function GuidePage() {
   return (
     <>
-      <PageHeader title="使用指南与免责声明" />
+      <PageHeader title="Hướng dẫn sử dụng và tuyên bố miễn trừ trách nhiệm" />
 
-      <Section title="角色合成流程" className="@lg/section:grid-cols-3">
+      <Section title="Quy trình tổng hợp nhân vật" className="@lg/section:grid-cols-3">
         <div className="rounded-2xl bg-background p-4">
-          <Badge>1. 人像</Badge>
-          <h3 className="mt-2 text-sm font-semibold">人像颜值库 (1,499)</h3>
+          <Badge>1. Chân dung</Badge>
+          <h3 className="mt-2 text-sm font-semibold">Thư viện chân dung (1,499)</h3>
           <p className="mt-1 text-xs text-muted-foreground">
-            挑选五官与发型参考，或在合成台直接上传自定义人像图，锁定角色面部特征。
+            Chọn tham chiếu ngũ quan và kiểu tóc, hoặc tải trực tiếp ảnh chân dung tùy chỉnh lên bàn tổng hợp để khóa đặc điểm khuôn mặt nhân vật.
           </p>
         </div>
 
         <div className="rounded-2xl bg-background p-4">
-          <Badge>2. 服装</Badge>
-          <h3 className="mt-2 text-sm font-semibold">服装穿搭库 (3,224)</h3>
+          <Badge>2. Trang phục</Badge>
+          <h3 className="mt-2 text-sm font-semibold">Thư viện trang phục (3,224)</h3>
           <p className="mt-1 text-xs text-muted-foreground">
-            按全部 / 现实 / 二次元及来源、分类、标签挑选；含ギア写实 1,407 套、Shisei 中国历代 57 套（227 视角）、ギア动漫 1,320 套与 CharaDB 二次元 440 套。
+            Chọn theo tất cả / thực tế / 2D cùng nguồn, danh mục, thẻ; gồm ギア tả thực 1.407 bộ, Shisei các triều đại Trung Quốc 57 bộ (227 góc nhìn), ギア anime 1.320 bộ và CharaDB 2D 440 bộ.
           </p>
         </div>
 
         <div className="rounded-2xl bg-background p-4">
-          <Badge>3. 姿势 + 附图</Badge>
-          <h3 className="mt-2 text-sm font-semibold">动作姿势库 (1,439)</h3>
+          <Badge>3. Tư thế + ảnh đính kèm</Badge>
+          <h3 className="mt-2 text-sm font-semibold">Thư viện tư thế (1,439)</h3>
           <p className="mt-1 text-xs text-muted-foreground">
-            挑选 5 视角 3D 素体白模或深度图（Depth），结合云端 API 或本地 ComfyUI 一键生成角色立绘。
+            Chọn mẫu trắng 3D 5 góc nhìn hoặc ảnh depth (Depth), kết hợp API đám mây hoặc ComfyUI cục bộ để tạo tranh nhân vật chỉ bằng một cú nhấp.
           </p>
         </div>
       </Section>
 
-      <Section title="免责声明与合规使用规范（必读）" className="@lg/section:grid-cols-1">
+      <Section title="Tuyên bố miễn trừ trách nhiệm và quy tắc sử dụng hợp lệ (bắt buộc đọc)" className="@lg/section:grid-cols-1">
         <div className="space-y-2.5 rounded-2xl bg-background p-4 text-xs leading-relaxed text-muted-foreground">
           <p>
-            <strong className="text-foreground">1. 仅供学习与合法艺术创作（严禁违法）：</strong>
-            本项目（含网页工作台、本地 ComfyUI 插件与工作流模板）
-            <strong className="text-foreground">仅供个人学习、人体结构研究、插画构图参考与技术交流使用</strong>
-            。严禁使用本工具生成、制作或传播任何违反法律法规、淫秽色情、暴力违禁内容，严禁未经他人明确授权上传真实人物照片进行换脸或深伪合成（Deepfake）等侵犯他人肖像权、隐私权与名誉权的行为。
+            <strong className="text-foreground">1. Chỉ dùng cho học tập và sáng tạo nghệ thuật hợp pháp (nghiêm cấm vi phạm pháp luật):</strong>
+            Dự án này (gồm bàn làm việc web, plugin ComfyUI cục bộ và mẫu workflow)
+            <strong className="text-foreground">chỉ dùng cho học tập cá nhân, nghiên cứu cấu trúc cơ thể người, tham chiếu bố cục minh họa và trao đổi kỹ thuật</strong>
+            Nghiêm cấm dùng công cụ này để tạo, sản xuất hay phát tán bất kỳ nội dung nào vi phạm pháp luật, khiêu dâm, bạo lực bị cấm; nghiêm cấm tải ảnh người thật khi chưa được người đó cho phép rõ ràng để hoán đổi khuôn mặt hay tổng hợp deepfake (Deepfake) và các hành vi xâm phạm quyền chân dung, quyền riêng tư và quyền danh dự của người khác.
           </p>
           <p>
-            <strong className="text-foreground">2. NSFW（18+）敏感内容提示：</strong>
-            图库中包含部分成人向 3D 素体姿势（全身单人・性感系、双人缠绵）与内衣/性感穿搭参考，旨在服务绘画与动作设计练习。系统默认开启「安全模式 (SFW)」屏蔽上述分类，
-            <strong className="text-rose-600 dark:text-rose-400">未满 18 周岁的未成年人严禁关闭安全模式或访问相关内容</strong>。
+            <strong className="text-foreground">2. Lưu ý về nội dung nhạy cảm NSFW (18+):</strong>
+            Thư viện có một số tư thế mẫu 3D hướng người lớn (hệ gợi cảm đơn toàn thân, đôi quấn quýt) và tham chiếu trang phục nội y/gợi cảm, nhằm phục vụ luyện vẽ và thiết kế động tác. Hệ thống mặc định bật «Chế độ an toàn (SFW)» để chặn các danh mục trên,
+            <strong className="text-rose-600 dark:text-rose-400">người chưa đủ 18 tuổi nghiêm cấm tắt chế độ an toàn hoặc truy cập nội dung liên quan</strong>.
           </p>
           <p>
-            <strong className="text-foreground">3. 隐私保护与使用者责任归属：</strong>
-            本工作台为纯前端本地应用，所有 AI 生图请求均由使用者自行配置的云端 API Key 或使用者本机 ComfyUI 环境直接执行，平台不收集、不存储任何用户上传的图片或生成结果。
-            <strong className="text-foreground">因使用者违规使用或不当传播所产生的一切法律责任，均由使用者本人独立承担，与本项目及维护者无关。</strong>
+            <strong className="text-foreground">3. Bảo vệ quyền riêng tư và trách nhiệm của người dùng:</strong>
+            Bàn làm việc này là ứng dụng front-end chạy hoàn toàn cục bộ, mọi yêu cầu tạo ảnh bằng AI đều do API Key đám mây mà người dùng tự cấu hình hoặc môi trường ComfyUI trên máy của người dùng thực hiện trực tiếp, nền tảng không thu thập hay lưu trữ bất kỳ ảnh nào người dùng tải lên hay kết quả đã tạo.
+            <strong className="text-foreground">Mọi trách nhiệm pháp lý phát sinh do người dùng sử dụng sai quy định hoặc phát tán không đúng đều do chính người dùng chịu hoàn toàn, không liên quan đến dự án này và người bảo trì.</strong>
           </p>
         </div>
       </Section>
 
-      <Section title="数据来源与版权说明" className="@lg/section:grid-cols-1">
+      <Section title="Nguồn dữ liệu và giải thích bản quyền" className="@lg/section:grid-cols-1">
         <div className="space-y-2.5 rounded-2xl bg-background p-4 text-xs leading-relaxed text-muted-foreground">
           <p>
-            <strong className="text-foreground">• 原作者版权归属：</strong>
-            本仓库原有姿势（<code>ai-pose-gallery.pages.dev</code>、<code>ai-pose-depth-gallery.pages.dev</code>）、现实服装（<code>ai-costume-gallery.pages.dev</code>）、人像（<code>ai-portrait-gallery.pages.dev</code>）参考图与原始元数据源自原作者{' '}
-            <strong className="text-foreground">ギア（@giaaibusi）</strong> 公开站点，著作权归原作者所有。本仓库仅为中文本地化翻译整理与前端工程学习存档，不对原始图片主张任何所有权。
+            <strong className="text-foreground">• Quyền tác giả thuộc về tác giả gốc:</strong>
+            Ảnh tham chiếu tư thế sẵn có trong repo này (<code>ai-pose-gallery.pages.dev</code>, <code>ai-pose-depth-gallery.pages.dev</code>), trang phục thực tế (<code>ai-costume-gallery.pages.dev</code>), chân dung (<code>ai-portrait-gallery.pages.dev</code>) và metadata gốc lấy từ tác giả gốc{' '}
+            <strong className="text-foreground">ギア（@giaaibusi）</strong> trên trang công khai, bản quyền thuộc về tác giả gốc. Repo này chỉ là kho lưu trữ học tập về kỹ thuật front-end sau khi đã dịch và bản địa hóa sang tiếng Trung, không khẳng định bất kỳ quyền sở hữu nào đối với ảnh gốc.
           </p>
           <p>
-            <strong className="text-foreground">• 二次元服装来源：</strong>
-            440 套二次元服装源自 <a className="underline hover:text-foreground" href="https://charadb-2fi.pages.dev/" target="_blank" rel="noopener noreferrer">たき AI · CharaDB</a>（标签与名称遵循 CC0，图片从原站在线加载，仅供学习与生图参考，禁止用于真人/未成年人或将原图二次分发，详见 <a className="underline hover:text-foreground" href="https://github.com/taki-ttt/charadb/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">原作者说明</a>）。
+            <strong className="text-foreground">• Nguồn trang phục 2D:</strong>
+            440 bộ trang phục 2D lấy từ <a className="underline hover:text-foreground" href="https://charadb-2fi.pages.dev/" target="_blank" rel="noopener noreferrer">たき AI · CharaDB</a>(thẻ và tên tuân theo CC0, ảnh tải trực tuyến từ trang gốc, chỉ dùng cho học tập và tham chiếu tạo ảnh, cấm dùng cho người thật/trẻ vị thành niên hoặc phân phối lại ảnh gốc, xem chi tiết tại <a className="underline hover:text-foreground" href="https://github.com/taki-ttt/charadb/blob/main/LICENSE" target="_blank" rel="noopener noreferrer">Giải thích của tác giả gốc</a>).
           </p>
           <p>
-            <strong className="text-foreground">• 使用与分发限制：</strong>
-            人像库遵循 <strong className="text-emerald-600 dark:text-emerald-400">CC0 1.0 协议</strong>；原有姿势库与现实服装库免费供个人学习与 AI 生图参考使用，
-            <strong className="text-foreground">严禁将本图库原始图片打包转售或用于付费分发</strong>。
+            <strong className="text-foreground">• Giới hạn sử dụng và phân phối:</strong>
+            Thư viện chân dung tuân theo <strong className="text-emerald-600 dark:text-emerald-400">giấy phép CC0 1.0</strong>; thư viện tư thế và trang phục thực tế sẵn có được dùng miễn phí cho học tập cá nhân và tham chiếu tạo ảnh bằng AI,
+            <strong className="text-foreground">nghiêm cấm đóng gói ảnh gốc của thư viện này để bán lại hoặc dùng để phân phối có trả phí</strong>.
           </p>
         </div>
       </Section>

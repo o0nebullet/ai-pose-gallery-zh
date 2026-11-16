@@ -1,16 +1,16 @@
-# Shisei 中国历代服装
+# Trang phục các triều đại Trung Quốc Shisei
 
-## Shisei 中国历代服装
+## Trang phục các triều đại Trung Quốc Shisei
 
-- 来源：[wquguru/shisei](https://github.com/wquguru/shisei)，固定修订 `8f61ceab10e45f8d3afd254900903733a0ba76ee`。
-- 仅导入 `data/costumes.json` 的 HC 类服装：60 个候选，C007、C014、C015 没有图片，最终 57 套、227 个有效视角。没有导入 Shisei 姿势。
-- 一级分类为现实，分类为中国历代，ID 为 `shisei-C001` 等。一套一张卡，详情支持正面、斜侧、侧面、背面中实际存在的视角。
-- 标注 **Shisei / wquguru · AI 生成服装参考 · CC0**。这些素材是创作参考，并非专业历史服饰复原。
-- 原项目图片及其自有数据为 CC0 1.0。固定版本的原文 [LICENSE-images](../data/shisei/LICENSE-images) 与 [NOTICE](../data/shisei/NOTICE) 随素材保留。CC0 本身不要求署名，本项目仍展示来源。
-- 收录原始 w300/w900 WebP 各 227 张，共 454 个文件、6,054,726 字节（约 5.77 MiB），不重编码。每个文件的固定来源地址、大小与 SHA-256 记录在 `data/shisei/images-manifest.json`。
+- Nguồn: [wquguru/shisei](https://github.com/wquguru/shisei), bản sửa cố định `8f61ceab10e45f8d3afd254900903733a0ba76ee`.
+- Chỉ import loại HC trong `data/costumes.json`: 60 ứng viên, C007, C014, C015 không có ảnh, cuối cùng 57 bộ, 227 góc nhìn hợp lệ. Không import tư thế Shisei.
+- Phân loại cấp 1 là thực tế, loại là trang phục các triều đại Trung Quốc, ID dạng `shisei-C001` v.v. Một bộ 1 thẻ, trang chi tiết hỗ trợ góc chính diện, chéo bên, bên hông, sau lưng trong các góc thực sự có.
+- Ghi nhãn **Shisei / wquguru · Tham chiếu trang phục do AI tạo · CC0**. Những tư liệu này là tham chiếu sáng tạo, không phải phục dựng trang phục lịch sử chuyên nghiệp.
+- Ảnh của dự án gốc và dữ liệu riêng của nó theo CC0 1.0. Văn bản gốc của phiên bản cố định [LICENSE-images](../data/shisei/LICENSE-images) và [NOTICE](../data/shisei/NOTICE) giữ cùng tư liệu. Bản thân CC0 không yêu cầu ghi nguồn, dự án này vẫn hiển thị nguồn.
+- Thu thập WebP gốc w300/w900, mỗi loại 227 ảnh, tổng 454 file, 6.054.726 byte (khoảng 5,77 MiB), không mã hóa lại. Địa chỉ nguồn cố định, kích thước và SHA-256 của mỗi file ghi trong `data/shisei/images-manifest.json`.
 
-## 更新与复现
+## Cập nhật & tái tạo
 
-运行 `python scripts/import_shisei_costumes.py`，从固定快照重建中文目录及清单，不访问网络。缺图时可加 `--download-shisei`；raw 域不可达可加 `--github-cli /path/to/gh`，经已登录 CLI 获取固定修订的相同文件，不读取或输出令牌。
+Chạy `python scripts/import_shisei_costumes.py`, tái tạo danh mục tiếng Trung và danh sách từ ảnh chụp nhanh cố định, không truy cập mạng. Khi thiếu ảnh có thể thêm `--download-shisei`; khi miền raw không tới được có thể thêm `--github-cli /path/to/gh`, lấy cùng file của bản sửa cố định qua CLI đã đăng nhập, không đọc hay xuất token.
 
-服装总数为 1,904：原写实 1,407、CharaDB 440、中国历代 57；旧 ID 保留。配方保存 selectedView 和兼容的旧图片字段，旧配方仍可读取。ComfyUI 服装和角色配方节点新增可选 costume_view，默认 front；不存在的非默认视角明确报错。更新快照前须审核固定修订、授权与目录数量，再更新脚本的固定哈希。
+Tổng số trang phục là 1.904: thực tế gốc 1.407, CharaDB 440, các triều đại Trung Quốc 57; ID cũ giữ nguyên. Bản lưu công thức giữ selectedView và trường ảnh cũ tương thích, công thức cũ vẫn đọc được. Node trang phục và node công thức nhân vật của ComfyUI thêm costume_view tùy chọn, mặc định front; góc nhìn không phải mặc định mà không tồn tại sẽ báo lỗi rõ ràng. Trước khi cập nhật ảnh chụp nhanh phải kiểm tra bản sửa cố định, giấy phép và số lượng danh mục, rồi cập nhật hash cố định của script.

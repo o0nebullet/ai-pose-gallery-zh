@@ -130,13 +130,13 @@ export function Toaster(props: ToasterProps) {
         richColors={false} closeButton duration={Infinity} visibleToasts={visibleCount} expand={expanded || focused} gap={8}
         offset={{ top: 'calc(64px + env(safe-area-inset-top, 0px))', left: 12, right: 12 }}
         mobileOffset={{ top: 'calc(64px + env(safe-area-inset-top, 0px))', left: 12, right: 12 }}
-        customAriaLabel="操作通知（Alt+T 聚焦，Esc 关闭）"
+        customAriaLabel="Thông báo thao tác (Alt+T để focus, Esc để đóng)"
         hotkey={['altKey', 'KeyT']}
-        toastOptions={{ ...props.toastOptions, closeButtonAriaLabel: '关闭此通知' }}
+        toastOptions={{ ...props.toastOptions, closeButtonAriaLabel: 'Đóng thông báo này' }}
         icons={{ success: <CircleCheckIcon size={18} />, info: <InfoIcon size={18} />, warning: <TriangleAlertIcon size={18} />, error: <OctagonXIcon size={18} /> }} />
       {toasts.length > 1 && <button type="button" className="app-notification-toggle" style={{ top: toggleTop }}
         aria-expanded={expanded || focused} onClick={() => { setFocused(false); setExpanded((current) => !current) }}>
-        {expanded || focused ? '收起通知' : '展开通知'}
+        {expanded || focused ? 'Thu gọn thông báo' : 'Mở rộng thông báo'}
       </button>}
     </div>
   </>

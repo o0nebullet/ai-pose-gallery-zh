@@ -34,7 +34,7 @@ export function AppSidebar() {
                 </div>
                 <div className="grid flex-1 text-left leading-tight">
                   <span className="truncate text-sm font-semibold">POSE &amp; CHARACTER</span>
-                  <span className="truncate text-xs text-muted-foreground">AI 角色三合一参考台</span>
+                  <span className="truncate text-xs text-muted-foreground">Bàn tham chiếu 3-trong-1 nhân vật AI</span>
                 </div>
               </Link>
             </SidebarMenuButton>
@@ -70,22 +70,22 @@ export function AppSidebar() {
       <SidebarFooter>
         <SidebarMenu>
           <SidebarMenuItem>
-            <SidebarMenuButton size="lg" asChild tooltip="当前角色配方">
+            <SidebarMenuButton size="lg" asChild tooltip="Công thức nhân vật hiện tại">
               <Link to="/studio" className="bg-sidebar-accent/70 hover:bg-sidebar-accent">
                 <div className="flex aspect-square size-8 items-center justify-center rounded-lg bg-primary/10 text-primary">
                   <SparklesIcon className="size-4" />
                 </div>
                 <div className="grid flex-1 text-left text-xs leading-tight">
-                  <span className="truncate font-semibold">角色配方槽 ({count}/3)</span>
+                  <span className="truncate font-semibold">Ô công thức nhân vật ({count}/3)</span>
                   <span className="truncate text-[11px] text-muted-foreground">
-                    {count === 0 ? '未选择 · 点击去捏人' : '点击进入 AI 合成台'}
+                    {count === 0 ? 'Chưa chọn · bấm để tạo nhân vật' : 'Bấm để vào bàn tổng hợp AI'}
                   </span>
                 </div>
               </Link>
             </SidebarMenuButton>
           </SidebarMenuItem>
           <SidebarMenuItem>
-            <SidebarMenuButton size="sm" asChild tooltip="访问 GitHub 仓库">
+            <SidebarMenuButton size="sm" asChild tooltip="Truy cập kho GitHub">
               <a
                 href="https://github.com/anhao/ai-pose-gallery-zh"
                 target="_blank"

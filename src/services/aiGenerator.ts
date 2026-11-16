@@ -34,7 +34,7 @@ export const PROVIDER_META: Record<
       { value: 'gemini-3-pro-image-preview', label: 'gemini-3-pro-image-preview' },
       { value: 'gemini-2.5-flash-image', label: 'gemini-2.5-flash-image' },
       { value: 'gemini-2.5-flash-image-preview', label: 'gemini-2.5-flash-image-preview' },
-      { value: 'custom', label: '自定义模型 ID' },
+      { value: 'custom', label: 'ID model tùy chỉnh' },
     ],
   },
   gpt: {
@@ -50,12 +50,12 @@ export const PROVIDER_META: Record<
       { value: 'gpt-image-2', label: 'gpt-image-2' },
       { value: 'gpt-image-1.5', label: 'gpt-image-1.5' },
       { value: 'gpt-image-1', label: 'gpt-image-1' },
-      { value: 'custom', label: '自定义模型 ID' },
+      { value: 'custom', label: 'ID model tùy chỉnh' },
     ],
   },
   qwen: {
     id: 'qwen',
-    name: '阿里云百炼 Qwen',
+    name: 'Alibaba Cloud Bailian Qwen',
     shortName: 'Qwen',
     defaultBaseUrl: 'https://dashscope.aliyuncs.com',
     docUrl: 'https://help.aliyun.com/zh/model-studio/qwen-image-edit-api',
@@ -65,12 +65,12 @@ export const PROVIDER_META: Record<
       { value: 'qwen-image-2.1-turbo', label: 'qwen-image-2.1-turbo' },
       { value: 'qwen-image-2.0-pro', label: 'qwen-image-2.0-pro' },
       { value: 'qwen-image-edit-plus', label: 'qwen-image-edit-plus' },
-      { value: 'custom', label: '自定义模型 ID' },
+      { value: 'custom', label: 'ID model tùy chỉnh' },
     ],
   },
   doubao: {
     id: 'doubao',
-    name: '字节火山方舟 Doubao',
+    name: 'Volcengine Ark Doubao',
     shortName: 'Doubao',
     defaultBaseUrl: 'https://ark.cn-beijing.volces.com',
     docUrl: 'https://www.volcengine.com/docs/82379/1541523',
@@ -80,70 +80,70 @@ export const PROVIDER_META: Record<
       { value: 'doubao-seedream-4-5-251128', label: 'doubao-seedream-4-5-251128' },
       { value: 'doubao-seedream-4-0-250828', label: 'doubao-seedream-4-0-250828' },
       { value: 'doubao-seededit-3-0-i2i-250628', label: 'doubao-seededit-3-0-i2i-250628' },
-      { value: 'custom', label: '自定义模型 ID / Endpoint' },
+      { value: 'custom', label: 'ID model / Endpoint tùy chỉnh' },
     ],
   },
   comfyui: {
     id: 'comfyui',
-    name: '本地 ComfyUI',
+    name: 'ComfyUI cục bộ',
     shortName: 'ComfyUI',
     // 本地开发时走 /comfy 同源代理；线上站点直连 ComfyUI Desktop 默认端口 8000
     defaultBaseUrl: defaultComfyBaseUrl(),
     docUrl: 'https://docs.comfy.org/essentials/comfyui_server',
     models: [
-      { value: 'qwen_image_edit_2509', label: 'qwen_image_edit_2509（由工作流决定）' },
-      { value: 'custom', label: '自定义名称（仅用于记录显示）' },
+      { value: 'qwen_image_edit_2509', label: 'qwen_image_edit_2509 (do workflow quyết định)' },
+      { value: 'custom', label: 'Tên tùy chỉnh (chỉ để hiển thị ghi chú)' },
     ],
   },
 }
 
 export const STYLE_PRESETS: Record<string, { label: string; prompt: string }> = {
   none: {
-    label: '无预设（跟随参考图）',
+    label: 'Không có preset (theo ảnh tham chiếu)',
     prompt: '',
   },
   realistic: {
-    label: '写实人像写真',
+    label: 'Chân dung thực tế',
     prompt: '写实商业摄影级质感，85mm 人像镜头，自然柔和光影，真实肌肤纹理与织物细节，8k 高清画质。',
   },
   fashion: {
-    label: '日韩杂志画报',
+    label: 'Ảnh bìa tạp chí Nhật–Hàn',
     prompt: '日韩时尚穿搭杂志画报风格，干净极简摄影棚背景，高级色调，突出人物颜值与服装剪裁。',
   },
   film: {
-    label: '复古胶片写真',
+    label: 'Ảnh film hoài cổ',
     prompt: '35mm 富士胶片摄影质感，轻微胶片颗粒，柔和复古暖调，自然街拍光影与电影呼吸感。',
   },
   semi_real: {
-    label: '2.5D 游戏原画立绘',
+    label: 'Tranh gốc nhân vật game 2.5D',
     prompt: '2.5D 半写实高精度游戏角色原画，唯美厚涂光影，精致五官与华丽布料金属质感。',
   },
   anime: {
-    label: '日系二次元插画',
+    label: 'Minh họa anime phong cách Nhật',
     prompt: '日系精致二次元插画风格，细腻赛璐璐与厚涂光影过渡，动漫角色立绘质感，色彩通透干净。',
   },
   cel_anime: {
-    label: '新海诚感动画电影',
+    label: 'Phim hoạt hình kiểu Shinkai',
     prompt: '动画电影级画面质感，清澈高饱和光影，细腻体积光与发丝高光，干净唯美的动漫色彩。',
   },
   manga: {
-    label: '日式黑白漫画网点',
+    label: 'Truyện tranh đen trắng kiểu Nhật (screentone)',
     prompt: '日本黑白漫画原稿风格，利落精准的G笔线稿，细腻漫画网点纸阴影与层次对比。',
   },
   render3d: {
-    label: '3D 次世代角色渲染',
+    label: 'Render nhân vật 3D thế hệ mới',
     prompt: 'Unreal Engine 5 / Octane Render 次世代 3D 角色渲染，细腻次表面散射肌肤材质，电影级布光。',
   },
   chibi_box: {
-    label: '3D 潮玩手办质感',
+    label: 'Chất liệu figure đồ chơi 3D',
     prompt: '高品质 PVC 涂装完成品手办质感，柔和摄影棚柔光箱布光，精致材质高光与微距景深。',
   },
   cyberpunk: {
-    label: '赛博朋克霓虹',
+    label: 'Neon cyberpunk',
     prompt: '赛博朋克科幻视觉风格，雨夜霓虹冷暖双色轮廓光，未来感材质反光与电影级氛围。',
   },
   concept_sheet: {
-    label: '角色设定集立绘（纯白底）',
+    label: 'Tranh đứng bộ thiết lập nhân vật (nền trắng tinh)',
     prompt: '标准角色设定集全身立绘，纯白干净无杂物背景，均匀漫反射布光，清晰展示全身服装结构与配饰细节。',
   },
 }
@@ -215,7 +215,7 @@ export function buildRecipePrompt(recipe: RecipeState, stylePreset = 'realistic'
   }
 
   if (clauses.length === 0) {
-    return '请先选择人像/服装/姿势或上传附加参考图。'
+    return 'Hãy chọn chân dung/trang phục/tư thế hoặc tải lên ảnh tham chiếu bổ sung trước.'
   }
 
   const lines = [
@@ -232,7 +232,7 @@ export function buildRecipePrompt(recipe: RecipeState, stylePreset = 'realistic'
 export function fileToDataUrl(file: File): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
-    reader.onerror = () => reject(new Error('读取文件失败'))
+    reader.onerror = () => reject(new Error('Đọc file thất bại'))
     reader.onload = () => {
       const img = new Image()
       img.onload = () => {
@@ -244,7 +244,7 @@ export function fileToDataUrl(file: File): Promise<string> {
         c.getContext('2d')!.drawImage(img, 0, 0, c.width, c.height)
         resolve(c.toDataURL('image/png'))
       }
-      img.onerror = () => reject(new Error('解析图片失败'))
+      img.onerror = () => reject(new Error('Phân tích ảnh thất bại'))
       img.src = reader.result as string
     }
     reader.readAsDataURL(file)
@@ -256,7 +256,7 @@ function loadImage(src: string): Promise<HTMLImageElement> {
     const img = new Image()
     img.crossOrigin = 'anonymous'
     img.onload = () => resolve(img)
-    img.onerror = () => reject(new Error(`加载图片失败: ${src}`))
+    img.onerror = () => reject(new Error(`Tải ảnh thất bại: ${src}`))
     img.src = referenceImageUrl(src)
   })
 }
@@ -267,35 +267,35 @@ export async function stitchRecipeCanvas(recipe: RecipeState): Promise<string> {
 
   if (recipe.portrait) {
     list.push({
-      tag: `图${idx++} · 人像`,
+      tag: `Ảnh ${idx++} · Chân dung`,
       sub: recipe.portrait.标题,
       src: recipe.portrait.原图 || recipe.portrait.缩略图,
     })
   }
   if (recipe.costume) {
     list.push({
-      tag: `图${idx++} · 服装`,
+      tag: `Ảnh ${idx++} · Trang phục`,
       sub: `${recipe.costume.分类} · ${recipe.costume.服装名称}`,
       src: recipe.costume.预览图 || recipe.costume.原图 || recipe.costume.缩略图,
     })
   }
   if (recipe.pose) {
     list.push({
-      tag: `图${idx++} · 姿势`,
-      sub: `${recipe.pose.姿势名称}（${recipe.pose.角度}${recipe.pose.useDepth ? ' · 深度图' : ''}）`,
+      tag: `Ảnh ${idx++} · Tư thế`,
+      sub: `${recipe.pose.姿势名称} (${recipe.pose.角度}${recipe.pose.useDepth ? ' · ảnh depth' : ''})`,
       src: poseImagePath(recipe.pose),
     })
   }
   for (const extra of recipe.extraImages || []) {
     list.push({
-      tag: `图${idx++} · 附加`,
-      sub: extra.name || '自定义参考图',
+      tag: `Ảnh ${idx++} · Bổ sung`,
+      sub: extra.name || 'Ảnh tham chiếu tùy chỉnh',
       src: extra.url,
     })
   }
 
   if (!list.length) {
-    throw new Error('请至少选择或上传 1 张参考图')
+    throw new Error('Hãy chọn hoặc tải lên ít nhất 1 ảnh tham chiếu')
   }
 
   const imgs = await Promise.all(list.map((x) => loadImage(x.src)))
@@ -616,22 +616,22 @@ export const COMFYUI_WORKFLOW_TEMPLATES: Record<
   { label: string; workflow: ComfyWorkflow; defaults: ComfyNodeMappings }
 > = {
   qwen2509_3img: {
-    label: 'Qwen Image Edit 2509 三图合成（人像+服装+姿势）· 推荐',
+    label: 'Qwen Image Edit 2509 Ghép 3 ảnh (chân dung + trang phục + tư thế) · Khuyến nghị',
     workflow: qwen2509ThreeImageWorkflow as ComfyWorkflow,
     defaults: { promptNodeId: '12', portraitNodeId: '1', costumeNodeId: '2', poseNodeId: '3', stitchedNodeId: 'none' },
   },
   qwen2509_2img: {
-    label: 'Qwen Image Edit 2509 双图姿态迁移（人物+姿势）',
+    label: 'Qwen Image Edit 2509 Ghép 2 ảnh chuyển tư thế (nhân vật + tư thế)',
     workflow: buildQwen2509TwoImage(),
     defaults: { promptNodeId: '12', portraitNodeId: '1', costumeNodeId: 'none', poseNodeId: '3', stitchedNodeId: 'none' },
   },
   qwen21_3img: {
-    label: 'Qwen-Image 2.1 三图合成（需另装 2.1 模型）',
+    label: 'Qwen-Image 2.1 Ghép 3 ảnh (cần cài thêm model 2.1)',
     workflow: buildQwen21Workflow(true),
     defaults: { promptNodeId: '9', portraitNodeId: '1', costumeNodeId: '2', poseNodeId: '3', stitchedNodeId: 'none' },
   },
   qwen21_2img: {
-    label: 'Qwen-Image 2.1 双图姿态迁移（需另装 2.1 模型）',
+    label: 'Qwen-Image 2.1 Ghép 2 ảnh chuyển tư thế (cần cài thêm model 2.1)',
     workflow: buildQwen21Workflow(false),
     defaults: { promptNodeId: '9', portraitNodeId: '1', costumeNodeId: 'none', poseNodeId: '2', stitchedNodeId: 'none' },
   },
@@ -647,18 +647,18 @@ export interface ComfyParsedNodes {
 
 export function parseComfyWorkflowNodes(workflowJson: string): ComfyParsedNodes {
   if (!workflowJson.trim()) {
-    return { valid: false, isUiFormat: false, error: '工作流 JSON 为空', imageNodes: [], promptNodes: [] }
+    return { valid: false, isUiFormat: false, error: 'Workflow JSON trống', imageNodes: [], promptNodes: [] }
   }
   try {
     const parsed = JSON.parse(workflowJson)
     if (!parsed || typeof parsed !== 'object' || Array.isArray(parsed)) {
-      return { valid: false, isUiFormat: false, error: '无效的 JSON 对象', imageNodes: [], promptNodes: [] }
+      return { valid: false, isUiFormat: false, error: 'Đối tượng JSON không hợp lệ', imageNodes: [], promptNodes: [] }
     }
     if (Array.isArray(parsed.nodes) && Array.isArray(parsed.links)) {
       return {
         valid: false,
         isUiFormat: true,
-        error: '检测到普通画布格式 JSON，请在 ComfyUI 中使用「工作流 → 导出 (API)」得到 API 格式 JSON',
+        error: 'Đã phát hiện JSON định dạng canvas thông thường, hãy dùng "Workflow → Export (API)" trong ComfyUI để lấy JSON định dạng API',
         imageNodes: [],
         promptNodes: [],
       }
@@ -687,14 +687,14 @@ export function parseComfyWorkflowNodes(workflowJson: string): ComfyParsedNodes 
     }
 
     if (imageNodes.length === 0 && promptNodes.length === 0) {
-      return { valid: false, isUiFormat: false, error: '未在 JSON 中找到任何 ComfyUI 节点', imageNodes, promptNodes }
+      return { valid: false, isUiFormat: false, error: 'Không tìm thấy node ComfyUI nào trong JSON', imageNodes, promptNodes }
     }
     return { valid: true, isUiFormat: false, imageNodes, promptNodes }
   } catch (err: any) {
     return {
       valid: false,
       isUiFormat: false,
-      error: `JSON 解析失败: ${err?.message || '语法错误'}`,
+      error: `Phân tích JSON thất bại: ${err?.message || 'Lỗi cú pháp'}`,
       imageNodes: [],
       promptNodes: [],
     }
@@ -749,23 +749,23 @@ export function normalizeComfyBase(baseUrl: string): string {
 
 function describeComfyNetworkError(baseUrl: string, timedOut: boolean): string {
   if (timedOut) {
-    return `[ComfyUI] 请求 ${baseUrl} 超时：ComfyUI 可能正忙或无响应，请查看 ComfyUI 终端日志。`
+    return `[ComfyUI] Yêu cầu ${baseUrl} hết thời gian chờ: ComfyUI có thể đang bận hoặc không phản hồi, hãy xem nhật ký terminal của ComfyUI.`
   }
   if (baseUrl.startsWith('/')) {
-    return `[ComfyUI] 本地代理 ${baseUrl} 无法连通 ComfyUI：请确认 ComfyUI 已启动，且端口与启动网页时的 COMFYUI_URL 一致（默认 http://127.0.0.1:8000）。`
+    return `[ComfyUI] Proxy cục bộ ${baseUrl} không kết nối được tới ComfyUI: hãy xác nhận ComfyUI đã khởi động, và cổng khớp với COMFYUI_URL lúc mở trang web (mặc định http://127.0.0.1:8000).`
   }
   const origin = typeof window !== 'undefined' ? window.location.origin : ''
   const reasons = [
-    `① ComfyUI 未启动，或地址/端口不对（Desktop 版默认 8000，便携版默认 8188）`,
-    `② 跨域 (CORS) 被拦截：ComfyUI 启动参数需包含 --enable-cors-header "${origin}"（该参数只能填一个来源）`,
+    `① ComfyUI chưa khởi động, hoặc địa chỉ/cổng sai (bản Desktop mặc định 8000, bản portable mặc định 8188)`,
+    `② Bị chặn cross-origin (CORS): tham số khởi động ComfyUI cần chứa --enable-cors-header "${origin}" (tham số này chỉ điền được một nguồn)`,
   ]
   if (typeof window !== 'undefined' && window.location.protocol === 'https:') {
-    reasons.push('③ 浏览器「本地网络访问」权限被拒绝：请点击地址栏左侧图标允许访问本地设备')
+    reasons.push('③ Quyền "truy cập mạng cục bộ" của trình duyệt bị từ chối: hãy bấm biểu tượng bên trái thanh địa chỉ để cho phép truy cập thiết bị cục bộ')
     if (/^http:/i.test(baseUrl) && !/\/\/(127\.0\.0\.1|localhost|\[::1\])/i.test(baseUrl)) {
-      reasons.push('④ HTTPS 页面不能访问局域网 HTTP 地址（混合内容限制），请改用 127.0.0.1 或本地运行本站')
+      reasons.push('④ Trang HTTPS không truy cập được địa chỉ HTTP trong mạng LAN (giới hạn nội dung hỗn hợp), hãy dùng 127.0.0.1 hoặc chạy trang này cục bộ')
     }
   }
-  return `[ComfyUI] 无法连接 ${baseUrl}。可能原因：\n${reasons.join('\n')}`
+  return `[ComfyUI] Không kết nối được ${baseUrl}. Có thể do:\n${reasons.join('\n')}`
 }
 
 export async function comfyFetch(
@@ -812,15 +812,15 @@ export async function testComfyConnection(baseUrl: string, apiKey = ''): Promise
   const cleanUrl = normalizeComfyBase(baseUrl)
   const res = await comfyFetch(cleanUrl, '/system_stats', {}, apiKey, 8000)
   if (res.status === 401 || res.status === 403) {
-    throw new Error(`[ComfyUI] ${cleanUrl} 拒绝访问 (HTTP ${res.status})，请检查 API Key / 鉴权设置`)
+    throw new Error(`[ComfyUI] ${cleanUrl} bị từ chối truy cập (HTTP ${res.status}), hãy kiểm tra API Key / cài đặt xác thực`)
   }
-  if (!res.ok) throw new Error(`[ComfyUI] ${cleanUrl}/system_stats 返回 HTTP ${res.status}，该地址可能不是 ComfyUI`)
+  if (!res.ok) throw new Error(`[ComfyUI] ${cleanUrl}/system_stats trả về HTTP ${res.status}, địa chỉ này có thể không phải ComfyUI`)
   const data = await readJsonSafe(res)
-  if (!data?.system) throw new Error(`[ComfyUI] ${cleanUrl} 的响应不是 ComfyUI 格式，请检查地址`)
-  const ver = data.system.comfyui_version || '未知版本'
+  if (!data?.system) throw new Error(`[ComfyUI] Phản hồi của ${cleanUrl} không đúng định dạng ComfyUI, hãy kiểm tra địa chỉ`)
+  const ver = data.system.comfyui_version || 'Phiên bản không rõ'
   const dev = data.devices?.[0]
-  const gpu = dev?.name ? String(dev.name).replace(/^cuda:\d+\s*/, '').replace(/\s*:\s*\w+$/, '') : '本地设备'
-  const vram = dev?.vram_total ? ` · 显存 ${(dev.vram_total / 1024 ** 3).toFixed(1)} GB` : ''
+  const gpu = dev?.name ? String(dev.name).replace(/^cuda:\d+\s*/, '').replace(/\s*:\s*\w+$/, '') : 'Thiết bị cục bộ'
+  const vram = dev?.vram_total ? ` · VRAM ${(dev.vram_total / 1024 ** 3).toFixed(1)} GB` : ''
   return `ComfyUI ${ver} · ${gpu}${vram}`
 }
 
@@ -864,13 +864,13 @@ const baseName = (s: string) => s.split(/[\\/]/).pop()!.toLowerCase()
 
 export async function fetchComfyObjectInfo(baseUrl: string, apiKey: string, workflowJson: string): Promise<ComfyObjectInfo> {
   const parsed = parseComfyWorkflowNodes(workflowJson)
-  if (!parsed.valid) throw new Error(parsed.error || '工作流 JSON 无效')
+  if (!parsed.valid) throw new Error(parsed.error || 'Workflow JSON không hợp lệ')
   const workflow: ComfyWorkflow = JSON.parse(workflowJson)
   const base = normalizeComfyBase(baseUrl)
   const classes = Array.from(new Set(Object.values(workflow).map((node) => node.class_type).filter(Boolean)))
   const entries = await Promise.all(classes.map(async (cls) => {
     const res = await comfyFetch(base, `/object_info/${encodeURIComponent(cls)}`, {}, apiKey, 15000)
-    if (!res.ok) throw new Error(`[ComfyUI] 无法读取节点「${cls}」的定义（HTTP ${res.status}），请检查连接地址、访问令牌和网关接口权限。`)
+    if (!res.ok) throw new Error(`[ComfyUI] Không đọc được định nghĩa của node「${cls}」(HTTP ${res.status}), hãy kiểm tra địa chỉ kết nối, token truy cập và quyền giao diện gateway.`)
     const json = await readJsonSafe(res)
     return [cls, json?.[cls]] as const
   }))
@@ -886,7 +886,7 @@ export async function checkComfyWorkflow(
 ): Promise<ComfyCheckResult> {
   const parsedInfo = parseComfyWorkflowNodes(workflowJson)
   if (!parsedInfo.valid) {
-    return { ok: false, errors: [parsedInfo.error || '工作流 JSON 无效'], warnings: [], fixes: [] }
+    return { ok: false, errors: [parsedInfo.error || 'Workflow JSON không hợp lệ'], warnings: [], fixes: [] }
   }
   const wf: ComfyWorkflow = JSON.parse(workflowJson)
   const info = objectInfo ?? await fetchComfyObjectInfo(baseUrl, apiKey, workflowJson)
@@ -903,7 +903,7 @@ export async function checkComfyWorkflow(
     const def = info[node.class_type]
     if (!def) {
       errors.push(
-        `缺少节点「${node.class_type}」（节点 ${id}：${title}）。请在 ComfyUI Manager 安装对应的自定义节点，或升级 ComfyUI。`
+        `Thiếu node「${node.class_type}」(node ${id}: ${title}). Hãy cài custom node tương ứng trong ComfyUI Manager hoặc nâng cấp ComfyUI.`
       )
       continue
     }
@@ -919,13 +919,13 @@ export async function checkComfyWorkflow(
           for (let i = 0; i < (template.min ?? 0); i++) {
             const child = template.names?.[i] ?? `${template.prefix}${i}`
             if (!(`${name}.${child}` in inputs)) {
-              errors.push(`节点 ${id}「${title}」缺少必填输入 ${name}.${child}`)
+              errors.push(`Node ${id}「${title}」thiếu input bắt buộc ${name}.${child}`)
             }
           }
         }
         continue
       }
-      if (!(name in inputs)) errors.push(`节点 ${id}「${title}」缺少必填输入 ${name}`)
+      if (!(name in inputs)) errors.push(`Node ${id}「${title}」thiếu input bắt buộc ${name}`)
     }
 
     for (const [name, value] of Object.entries(inputs)) {
@@ -936,7 +936,7 @@ export async function checkComfyWorkflow(
       if (name === 'image' && mapped.has(id) && imageLoaders.has(id)) continue
       if (node.class_type === 'LoadImage' && name === 'image') {
         if (!mapped.has(id) && !options.includes(value)) {
-          warnings.push(`节点 ${id}「${title}」引用的图片 ${value} 不在 ComfyUI input 目录中，且未映射到人像/服装/姿势槽位`)
+          warnings.push(`Node ${id}「${title}」tham chiếu tới ảnh ${value} không có trong thư mục input của ComfyUI, và chưa được gán vào slot chân dung/trang phục/tư thế`)
         }
         continue
       }
@@ -944,12 +944,12 @@ export async function checkComfyWorkflow(
       const sameFile = options.find((o) => baseName(o) === baseName(value))
       if (sameFile) {
         inputs[name] = sameFile
-        fixes.push(`节点 ${id}「${title}」${name}：${value} → ${sameFile}（自动修正路径）`)
+        fixes.push(`Node ${id}「${title}」${name}: ${value} → ${sameFile} (tự sửa đường dẫn)`)
         continue
       }
       const sample = options.slice(0, 12).join('、')
       errors.push(
-        `节点 ${id}「${title}」的 ${name} = ${value} 在本机不存在（通常是模型文件未安装或路径不同）。本机可选：${sample || '（空）'}${options.length > 12 ? ' …' : ''}`
+        `Node ${id}「${title}」có ${name} = ${value} không tồn tại trên máy này (thường do file model chưa được cài hoặc đường dẫn khác). Có thể chọn trên máy này: ${sample || '(trống)'}${options.length > 12 ? ' …' : ''}`
       )
     }
   }
@@ -967,20 +967,20 @@ function translateNodeError(er: any): string {
   const detail = er?.details ? `（${er.details}）` : ''
   switch (er?.type) {
     case 'value_not_in_list':
-      return `${er.extra_info?.input_name ?? '输入'} 的值不在本机可选列表中${detail}——通常是模型文件不存在或路径不同`
+      return `${er.extra_info?.input_name ?? 'Input'} có giá trị không nằm trong danh sách có thể chọn trên máy này${detail} — thường do file model không tồn tại hoặc đường dẫn khác`
     case 'required_input_missing':
-      return `缺少必填输入 ${er.extra_info?.input_name ?? ''}`
+      return `Thiếu input bắt buộc ${er.extra_info?.input_name ?? ''}`
     case 'invalid_input_type':
     case 'return_type_mismatch':
-      return `节点连线类型不匹配${detail}`
+      return `Kiểu kết nối node không khớp${detail}`
     case 'value_bigger_than_max':
     case 'value_smaller_than_min':
-      return `参数超出范围${detail}`
+      return `Tham số vượt ngoài phạm vi${detail}`
     case 'image_not_found':
     case 'custom_validation_failed':
-      return `${er.message || '校验失败'}${detail}`
+      return `${er.message || 'Kiểm tra thất bại'}${detail}`
     default:
-      return `${er?.message || '校验失败'}${detail}`
+      return `${er?.message || 'Kiểm tra thất bại'}${detail}`
   }
 }
 
@@ -989,9 +989,9 @@ function formatComfyPromptError(json: any, wf: ComfyWorkflow, status: number): s
   const e = json?.error
   if (e) {
     if (e.type === 'missing_node_type' || /does not exist|not found/i.test(String(e.message))) {
-      parts.push(`缺少节点类型：${e.details || e.message}。请在 ComfyUI Manager 安装缺失的自定义节点或升级 ComfyUI`)
+      parts.push(`Thiếu loại node: ${e.details || e.message}. Hãy cài custom node còn thiếu trong ComfyUI Manager hoặc nâng cấp ComfyUI`)
     } else if (e.type === 'prompt_no_outputs') {
-      parts.push('工作流没有输出节点（SaveImage / PreviewImage）')
+      parts.push('Workflow không có node đầu ra (SaveImage / PreviewImage)')
     } else if (e.type !== 'prompt_outputs_failed_validation') {
       parts.push(`${e.message || e.type}${e.details ? `：${e.details}` : ''}`)
     }
@@ -999,11 +999,11 @@ function formatComfyPromptError(json: any, wf: ComfyWorkflow, status: number): s
   for (const [id, ne] of Object.entries<any>(json?.node_errors || {})) {
     const title = wf[id]?._meta?.title || ne?.class_type || id
     for (const er of ne?.errors || []) {
-      parts.push(`节点 ${id}「${title}」：${translateNodeError(er)}`)
+      parts.push(`Node ${id}「${title}」: ${translateNodeError(er)}`)
     }
   }
   if (!parts.length) parts.push(json?._raw || `HTTP ${status}`)
-  return `[ComfyUI] 提交工作流失败：\n${parts.join('\n')}`
+  return `[ComfyUI] Gửi workflow thất bại:\n${parts.join('\n')}`
 }
 
 function formatExecutionError(messages: any[], wf: ComfyWorkflow): { text: string; oom: boolean } {
@@ -1015,25 +1015,25 @@ function formatExecutionError(messages: any[], wf: ComfyWorkflow): { text: strin
       return {
         oom: true,
         text:
-          `[ComfyUI] 显存不足（节点 ${errMsg.node_id}「${title}」）。已请求 ComfyUI 释放显存。\n` +
-          '建议：关闭其他占用显卡的程序；在工作流中把「按姿势图比例确定输出尺寸」节点的 megapixels 从 1.0 调低到 0.6；然后重试。',
+          `[ComfyUI] Không đủ VRAM (node ${errMsg.node_id}「${title}」). Đã yêu cầu ComfyUI giải phóng VRAM.\n` +
+          'Gợi ý: đóng các chương trình khác đang dùng card đồ họa; trong workflow, hạ megapixels của node "按姿势图比例确定输出尺寸" từ 1.0 xuống 0.6; rồi thử lại.',
       }
     }
     return {
       oom: false,
-      text: `[ComfyUI] 执行出错（节点 ${errMsg.node_id}「${title}」）：${String(errMsg.exception_message || raw).trim().slice(0, 400)}`,
+      text: `[ComfyUI] Lỗi khi thực thi (node ${errMsg.node_id}「${title}」): ${String(errMsg.exception_message || raw).trim().slice(0, 400)}`,
     }
   }
   if ((messages || []).some((m) => m?.[0] === 'execution_interrupted')) {
-    return { oom: false, text: '[ComfyUI] 任务已被中断（可能在 ComfyUI 界面中点击了取消）' }
+    return { oom: false, text: '[ComfyUI] Nhiệm vụ đã bị hủy (có thể đã bấm hủy trong giao diện ComfyUI)' }
   }
-  return { oom: false, text: `[ComfyUI] 工作流执行出错：${JSON.stringify(messages || '').slice(0, 300)}` }
+  return { oom: false, text: `[ComfyUI] Lỗi thực thi workflow: ${JSON.stringify(messages || '').slice(0, 300)}` }
 }
 
 function blobToDataUrl(blob: Blob): Promise<string> {
   return new Promise((resolve, reject) => {
     const reader = new FileReader()
-    reader.onerror = () => reject(new Error('读取生成结果失败'))
+    reader.onerror = () => reject(new Error('Đọc kết quả tạo thất bại'))
     reader.onload = () => resolve(reader.result as string)
     reader.readAsDataURL(blob)
   })
@@ -1049,7 +1049,7 @@ async function uploadImageToComfy(
   try {
     dataUrl = await srcToPngDataUrl(src)
   } catch {
-    throw new Error(`读取参考图失败：${src.slice(0, 80)}`)
+    throw new Error(`Đọc ảnh tham chiếu thất bại: ${src.slice(0, 80)}`)
   }
   const form = new FormData()
   form.append('image', dataUrlToBlob(dataUrl), `${filenamePrefix}_${Date.now()}.png`)
@@ -1058,7 +1058,7 @@ async function uploadImageToComfy(
 
   const res = await comfyFetch(baseUrl, '/upload/image', { method: 'POST', body: form }, apiKey, 60000)
   if (!res.ok) {
-    throw new Error(`[ComfyUI] 上传参考图失败 (HTTP ${res.status})：${(await res.text()).slice(0, 200)}`)
+    throw new Error(`[ComfyUI] Tải ảnh tham chiếu lên thất bại (HTTP ${res.status}): ${(await res.text()).slice(0, 200)}`)
   }
   const json = await res.json()
   return json.subfolder ? `${json.subfolder}/${json.name}` : json.name
@@ -1093,7 +1093,7 @@ export class ComfySubmissionRejectedError extends Error {
 
 export class ComfySubmissionUnknownError extends Error {
   constructor() {
-    super('[ComfyUI] 提交结果未知：服务端可能已接受任务，请先检查队列与历史记录，勿直接重复提交。')
+    super('[ComfyUI] Kết quả gửi chưa rõ: máy chủ có thể đã nhận nhiệm vụ, hãy kiểm tra hàng đợi và lịch sử trước, đừng gửi lại ngay.')
     this.name = 'ComfySubmissionUnknownError'
   }
 }
@@ -1109,7 +1109,7 @@ export interface GenerationProgress {
 type GenerationResult = { imageUrl: string; modelUsed: string; providerUsed: ImageProviderId }
 
 function checkTrackingSignal(signal?: AbortSignal) {
-  if (signal?.aborted) throw new DOMException('已停止跟踪，后台任务继续执行', 'AbortError')
+  if (signal?.aborted) throw new DOMException('Đã dừng theo dõi, nhiệm vụ nền vẫn tiếp tục chạy', 'AbortError')
 }
 
 interface ComfySocketSession {
@@ -1202,7 +1202,7 @@ async function trackComfyTask(params: {
   signal?.addEventListener('abort', abort, { once: true })
   if (signal?.aborted) abort()
   const deadline = setTimeout(abort, Math.max(1, params.timeoutSec || 600) * 1000)
-  let progress: GenerationProgress = { stage: 'queue', message: '正在确认 ComfyUI 任务状态…', connection: 'connecting' }
+  let progress: GenerationProgress = { stage: 'queue', message: 'Đang xác nhận trạng thái nhiệm vụ ComfyUI…', connection: 'connecting' }
   const report = (next: Partial<GenerationProgress>) => {
     progress = { ...progress, ...next }
     params.onProgress?.(progress)
@@ -1224,7 +1224,7 @@ async function trackComfyTask(params: {
     return new Promise((resolve, reject) => {
       const done = () => { clearTimeout(timer); ctrl.signal.removeEventListener('abort', stop); wakeWait = undefined }
       const finish = () => { done(); wakePending = false; resolve() }
-      const stop = () => { done(); reject(new DOMException('已停止跟踪', 'AbortError')) }
+      const stop = () => { done(); reject(new DOMException('Đã dừng theo dõi', 'AbortError')) }
       const timer = setTimeout(finish, Math.max(0, ms))
       wakeWait = finish
       ctrl.signal.addEventListener('abort', stop, { once: true })
@@ -1242,7 +1242,7 @@ async function trackComfyTask(params: {
       const headers = new Headers()
       if (apiKey.trim()) headers.set('Authorization', `Bearer ${apiKey.trim()}`)
       const res = await fetch(`${task.baseUrl}${path}`, { headers, signal: request.signal })
-      if (res.status === 401 || res.status === 403) throw new ComfyTaskError(`[ComfyUI] 访问被拒绝 (HTTP ${res.status})，请检查凭据和来源后恢复任务。`, task, 'auth')
+      if (res.status === 401 || res.status === 403) throw new ComfyTaskError(`[ComfyUI] Truy cập bị từ chối (HTTP ${res.status}), hãy kiểm tra thông tin xác thực và nguồn rồi khôi phục nhiệm vụ.`, task, 'auth')
       if (!res.ok) throw new Error(`HTTP ${res.status}`)
       return image ? await res.blob() : await res.json()
     } finally { clearTimeout(timer); ctrl.signal.removeEventListener('abort', stop) }
@@ -1260,11 +1260,11 @@ async function trackComfyTask(params: {
       if (!d || d.prompt_id !== task.promptId) return
       if (msg.type === 'executing' && d.node) {
         const title = workflow[d.node]?._meta?.title || workflow[d.node]?.class_type || d.node
-        report({ stage: 'running', message: `正在执行：${title}`, percent: undefined })
+        report({ stage: 'running', message: `Đang thực thi: ${title}`, percent: undefined })
       } else if (msg.type === 'progress' && d.max > 0) {
-        report({ stage: 'running', message: `当前节点（${d.value}/${d.max}）`, percent: Math.round(d.value / d.max * 100) })
+        report({ stage: 'running', message: `Node hiện tại (${d.value}/${d.max})`, percent: Math.round(d.value / d.max * 100) })
       } else if (msg.type === 'execution_start' || msg.type === 'execution_cached' || msg.type === 'executed') {
-        report({ stage: 'running', message: msg.type === 'execution_cached' ? '正在复用已缓存节点…' : msg.type === 'executed' ? '节点已完成，继续执行工作流…' : 'ComfyUI 开始执行任务…', percent: undefined })
+        report({ stage: 'running', message: msg.type === 'execution_cached' ? 'Đang dùng lại node đã lưu trong cache…' : msg.type === 'executed' ? 'Node đã xong, tiếp tục chạy workflow…' : 'ComfyUI bắt đầu thực thi nhiệm vụ…', percent: undefined })
       }
       if (['execution_success', 'execution_error', 'execution_interrupted'].includes(msg.type) || (msg.type === 'executing' && d.node === null)) {
         if (msg.type === 'execution_error' || msg.type === 'execution_interrupted') terminalFailure = [[msg.type, d]]
@@ -1290,7 +1290,7 @@ async function trackComfyTask(params: {
         try { item = (await read(`/history/${encodeURIComponent(task.promptId)}`))?.[task.promptId] } catch (error) {
           if (error instanceof ComfyTaskError) throw error
           checkTrackingSignal(ctrl.signal)
-          report({ message: '任务状态查询暂时失败，正在重试…' })
+          report({ message: 'Truy vấn trạng thái nhiệm vụ tạm thời thất bại, đang thử lại…' })
           nextHistoryAt = Math.min(nextHistoryAt, Date.now() + 3000)
         }
         if (item?.status?.status_str === 'error') throw new ComfyTaskError(formatExecutionError(item.status.messages, workflow).text, task, 'failed')
@@ -1310,23 +1310,23 @@ async function trackComfyTask(params: {
             }
           }
           if (!outImg) {
-            if (item.status?.completed) throw new ComfyTaskError('[ComfyUI] 工作流完成但没有输出图片，请检查 SaveImage 节点。', task, 'failed')
+            if (item.status?.completed) throw new ComfyTaskError('[ComfyUI] Workflow đã xong nhưng không có ảnh đầu ra, hãy kiểm tra node SaveImage.', task, 'failed')
             nextHistoryAt = Math.min(nextHistoryAt, Date.now() + 3000)
           } else {
-            report({ stage: 'download', message: '正在获取生成结果…', percent: undefined })
+            report({ stage: 'download', message: 'Đang lấy kết quả tạo…', percent: undefined })
             const qs = new URLSearchParams({ filename: outImg.filename, subfolder: outImg.subfolder || '', type: outImg.type || 'output' })
             let blob: Blob | undefined
             try { blob = await read(`/view?${qs.toString()}`, true) } catch (error) {
               if (error instanceof ComfyTaskError) throw error
               checkTrackingSignal(ctrl.signal)
-              report({ message: '图片下载暂时失败，正在重试…' })
+              report({ message: 'Tải ảnh xuống tạm thời thất bại, đang thử lại…' })
               nextHistoryAt = Math.min(nextHistoryAt, Date.now() + 3000)
             }
             if (blob) {
-              if (!blob.size || !blob.type.startsWith('image/')) throw new ComfyTaskError('[ComfyUI] 生成结果不是有效图片，可恢复后重新下载。', task)
+              if (!blob.size || !blob.type.startsWith('image/')) throw new ComfyTaskError('[ComfyUI] Kết quả tạo không phải ảnh hợp lệ, có thể tải xuống lại sau khi khôi phục.', task)
               const imageUrl = await blobToDataUrl(blob)
               checkTrackingSignal(ctrl.signal)
-              return { imageUrl, modelUsed: 'ComfyUI 工作流', providerUsed: 'comfyui' }
+              return { imageUrl, modelUsed: 'Workflow ComfyUI', providerUsed: 'comfyui' }
             }
           }
         }
@@ -1337,14 +1337,14 @@ async function trackComfyTask(params: {
         try {
           const q = await read('/queue')
           const pending = (q?.queue_pending || []).findIndex((x: any) => x?.[1] === task.promptId)
-          if (pending >= 0) report({ stage: 'queue', message: `排队中，前方还有 ${pending + (q.queue_running?.length || 0)} 个任务`, percent: undefined })
+          if (pending >= 0) report({ stage: 'queue', message: `Đang xếp hàng, còn ${pending + (q.queue_running?.length || 0)} nhiệm vụ phía trước`, percent: undefined })
           else if ((q?.queue_running || []).some((x: any) => x?.[1] === task.promptId)) {
-            if (progress.stage !== 'running') report({ stage: 'running', message: 'ComfyUI 正在执行任务…', percent: undefined })
-          } else report({ message: '暂未在队列或历史中找到任务，继续确认…', percent: undefined })
+            if (progress.stage !== 'running') report({ stage: 'running', message: 'ComfyUI đang thực thi nhiệm vụ…', percent: undefined })
+          } else report({ message: 'Chưa thấy nhiệm vụ trong hàng đợi hoặc lịch sử, đang tiếp tục xác nhận…', percent: undefined })
         } catch (error) {
           if (error instanceof ComfyTaskError) throw error
           checkTrackingSignal(ctrl.signal)
-          report({ message: '队列查询暂时失败，正在等待任务状态…' })
+          report({ message: 'Truy vấn hàng đợi tạm thời thất bại, đang chờ trạng thái nhiệm vụ…' })
         }
       }
       await wait(Math.min(nextHistoryAt, queueRequested ? nextQueueAt : Infinity) - Date.now())
@@ -1352,8 +1352,8 @@ async function trackComfyTask(params: {
   } catch (error) {
     if (error instanceof ComfyTaskError) throw error
     const message = ctrl.signal.aborted
-      ? signal?.aborted ? '[ComfyUI] 已停止跟踪，后台任务继续执行，可恢复查看。' : '[ComfyUI] 等待结果超时，后台任务继续执行，可恢复查看。'
-      : error instanceof Error ? error.message : '[ComfyUI] 跟踪任务失败，可恢复查看。'
+      ? signal?.aborted ? '[ComfyUI] Đã dừng theo dõi, nhiệm vụ nền vẫn tiếp tục chạy, có thể khôi phục để xem.' : '[ComfyUI] Hết thời gian chờ kết quả, nhiệm vụ nền vẫn tiếp tục chạy, có thể khôi phục để xem.'
+      : error instanceof Error ? error.message : '[ComfyUI] Theo dõi nhiệm vụ thất bại, có thể khôi phục để xem.'
     throw new ComfyTaskError(message, task, ctrl.signal.aborted && !signal?.aborted ? 'timeout' : 'tracking')
   } finally {
     socket?.close()
@@ -1381,11 +1381,11 @@ async function generateWithComfyUi(params: {
   const timeoutSec = Math.max(60, cp.timeoutSec || 600)
   const parsedInfo = parseComfyWorkflowNodes(cp.workflowJson)
   if (!parsedInfo.valid) {
-    throw new Error(`[ComfyUI] ${parsedInfo.error || '工作流 JSON 无效'}`)
+    throw new Error(`[ComfyUI] ${parsedInfo.error || 'Workflow JSON không hợp lệ'}`)
   }
 
   // 0. 预检：服务在线 + 节点/模型与本机匹配
-  report({ stage: 'check', message: '正在检查 ComfyUI 服务与模型…' })
+  report({ stage: 'check', message: 'Đang kiểm tra dịch vụ và model ComfyUI…' })
   await testComfyConnection(baseUrl, apiKey)
   const schemas = await fetchComfyObjectInfo(baseUrl, apiKey, cp.workflowJson)
   const extraImageNodes = getWorkflowImages(cp.workflowJson, [cp.portraitNodeId, cp.costumeNodeId, cp.poseNodeId, cp.stitchedNodeId], schemas)
@@ -1399,7 +1399,7 @@ async function generateWithComfyUi(params: {
     ...extraImageNodes.filter((node) => extraImages[node.nodeId]?.url || (node.optional && node.role === 'character_sheet')).map((node) => node.nodeId),
   ], schemas)
   if (!check.ok) {
-    throw new Error(`[ComfyUI] 工作流与本机不匹配：\n${check.errors.join('\n')}`)
+    throw new Error(`[ComfyUI] Workflow không khớp với máy này:\n${check.errors.join('\n')}`)
   }
   const workflow: ComfyWorkflow = JSON.parse(check.fixedJson ?? selectedJson)
 
@@ -1409,19 +1409,19 @@ async function generateWithComfyUi(params: {
       nodeId: cp.portraitNodeId,
       src: recipe.portrait ? recipe.portrait.原图 || recipe.portrait.缩略图 : null,
       prefix: 'studio_portrait',
-      label: '人像',
+      label: 'Chân dung',
     },
     {
       nodeId: cp.costumeNodeId,
       src: recipe.costume ? recipe.costume.预览图 || recipe.costume.原图 || recipe.costume.缩略图 : null,
       prefix: 'studio_costume',
-      label: '服装',
+      label: 'Trang phục',
     },
     {
       nodeId: cp.poseNodeId,
       src: recipe.pose ? poseImagePath(recipe.pose) : null,
       prefix: 'studio_pose',
-      label: '姿势',
+      label: 'Tư thế',
     },
   ]
   const combinationError = validateReferenceCombinations(cp.workflowJson, [
@@ -1432,11 +1432,11 @@ async function generateWithComfyUi(params: {
 
   const invalidSlots = slotUploads.filter((slot) => slot.nodeId && slot.nodeId !== 'none' && !parsedInfo.imageNodes.some((node) => node.id === slot.nodeId))
   if (invalidSlots.length) {
-    throw new Error(`[ComfyUI] ${invalidSlots.map((slot) => slot.label).join('、')}节点映射已失效，请重新识别或选择节点`)
+    throw new Error(`[ComfyUI] Ánh xạ node ${invalidSlots.map((slot) => slot.label).join(', ')} đã hết hiệu lực, hãy nhận diện lại hoặc chọn node khác`)
   }
   const missingSlots = slotUploads.filter((slot) => slot.nodeId && slot.nodeId !== 'none' && !slot.src && parsedInfo.imageNodes.find((node) => node.id === slot.nodeId)?.emptyValue === undefined)
   if (missingSlots.length) {
-    throw new Error(`[ComfyUI] 请先选择或上传：${missingSlots.map((slot) => slot.label).join('、')}`)
+    throw new Error(`[ComfyUI] Hãy chọn hoặc tải lên trước: ${missingSlots.map((slot) => slot.label).join(', ')}`)
   }
 
   for (const slot of slotUploads) {
@@ -1447,9 +1447,9 @@ async function generateWithComfyUi(params: {
         workflow[slot.nodeId].inputs.image = emptyValue
         continue
       }
-      throw new Error(`当前工作流需要「${slot.label}」参考图（节点 ${slot.nodeId}），请先在图库中选择`)
+      throw new Error(`Workflow hiện tại cần ảnh tham chiếu「${slot.label}」(node ${slot.nodeId}), hãy chọn trước trong thư viện`)
     }
-    report({ stage: 'upload', message: `正在上传${slot.label}参考图…` })
+    report({ stage: 'upload', message: `Đang tải ảnh tham chiếu ${slot.label} lên…` })
     workflow[slot.nodeId].inputs.image = await uploadImageToComfy(baseUrl, slot.src, slot.prefix, apiKey)
   }
 
@@ -1459,12 +1459,12 @@ async function generateWithComfyUi(params: {
       if (node.optional && node.role === 'character_sheet') workflow[node.nodeId].inputs.image = '无'
       continue
     }
-    report({ stage: 'upload', message: `正在上传${node.label}…` })
+    report({ stage: 'upload', message: `Đang tải ${node.label} lên…` })
     workflow[node.nodeId].inputs.image = await uploadImageToComfy(baseUrl, image.url, 'studio_reference', apiKey)
   }
 
   if (cp.stitchedNodeId && cp.stitchedNodeId !== 'none' && workflow[cp.stitchedNodeId]?.inputs) {
-    report({ stage: 'upload', message: '正在上传参考拼图…' })
+    report({ stage: 'upload', message: 'Đang tải ảnh ghép tham chiếu lên…' })
     const stitchedDataUrl = await stitchRecipeCanvas(recipe)
     workflow[cp.stitchedNodeId].inputs.image = await uploadImageToComfy(baseUrl, stitchedDataUrl, 'studio_stitched', apiKey)
   }
@@ -1496,7 +1496,7 @@ async function generateWithComfyUi(params: {
   checkTrackingSignal(params.signal)
   const clientId = `pose_studio_${crypto.randomUUID()}`
   const submittedAt = Date.now()
-  report({ stage: 'queue', message: '正在提交工作流…' })
+  report({ stage: 'queue', message: 'Đang gửi workflow…' })
   // Subscribe before submission; HTTP reconciliation covers events received before prompt_id is known.
   const socket = openComfySocket({ baseUrl, clientId }, apiKey)
   try {
@@ -1527,7 +1527,7 @@ async function generateWithComfyUi(params: {
     if (typeof promptJson?.prompt_id !== 'string' || !promptJson.prompt_id) throw new ComfySubmissionUnknownError()
     const task: ComfyTaskHandle = { promptId: promptJson.prompt_id, clientId, baseUrl, submittedAt }
     try { await params.onSubmitted?.(task) } catch {
-      throw new ComfyTaskError('[ComfyUI] 任务已提交，但保存恢复记录失败。请保留任务编号后恢复，勿重复提交。', task, 'storage')
+      throw new ComfyTaskError('[ComfyUI] Nhiệm vụ đã được gửi nhưng lưu bản ghi khôi phục thất bại. Hãy giữ lại mã nhiệm vụ rồi khôi phục, đừng gửi lại.', task, 'storage')
     }
     return await trackComfyTask({ task, apiKey, timeoutSec, onProgress: params.onProgress, signal: params.signal }, workflow, socket)
   } finally { socket.close() }
@@ -1548,7 +1548,7 @@ export async function generateCharacterImage(params: {
   const apiKey = pCfg.apiKey.trim()
 
   if (provider !== 'comfyui' && !apiKey) {
-    throw new Error(`请先配置 ${PROVIDER_META[provider].name} 的 API Key`)
+    throw new Error(`Hãy cấu hình API Key của ${PROVIDER_META[provider].name} trước`)
   }
 
   const rawSources = [
@@ -1561,12 +1561,12 @@ export async function generateCharacterImage(params: {
   ].filter(Boolean) as string[]
 
   if (!rawSources.length) {
-    throw new Error('请先选择或上传至少 1 张参考图')
+    throw new Error('Hãy chọn hoặc tải lên ít nhất 1 ảnh tham chiếu trước')
   }
 
   const model = pCfg.model === 'custom' ? pCfg.customModel.trim() : pCfg.model
   if (provider !== 'comfyui' && !model) {
-    throw new Error('请选择或填写有效的模型名称')
+    throw new Error('Hãy chọn hoặc nhập tên model hợp lệ')
   }
 
   const baseUrl = (pCfg.baseUrl.trim() || PROVIDER_META[provider].defaultBaseUrl).replace(/\/+$/, '')
@@ -1864,7 +1864,7 @@ export async function generateCharacterImage(params: {
       json?.error?.message ||
       json?.message ||
       json?.code ||
-      `请求失败 (HTTP ${res.status})`
+      `Yêu cầu thất bại (HTTP ${res.status})`
     throw new Error(`[${PROVIDER_META[provider].shortName}] ${errMsg}`)
   }
 
@@ -1874,7 +1874,7 @@ export async function generateCharacterImage(params: {
       json?.choices?.[0]?.message?.content ||
       json?.output?.choices?.[0]?.message?.content?.[0]?.text ||
       JSON.stringify(json).slice(0, 260)
-    throw new Error(`接口已响应但未解析到图片输出：${fallbackText}`)
+    throw new Error(`API đã phản hồi nhưng không phân tích được ảnh đầu ra: ${fallbackText}`)
   }
 
   return { imageUrl, modelUsed: model, providerUsed: provider }

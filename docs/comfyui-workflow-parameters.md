@@ -1,12 +1,12 @@
-# ComfyUI 工作流高级参数
+# Tham số nâng cao workflow ComfyUI
 
-导入 API 工作流并连接 ComfyUI 后，高级区会根据实际节点定义识别可编辑的布尔、数值、字符串和枚举。连线、隐藏输入及强制连接的输入不生成编辑控件。
+Sau khi import workflow API và kết nối ComfyUI, khu vực nâng cao sẽ nhận diện các tham số boolean, số, chuỗi và enum có thể chỉnh sửa theo định nghĩa node thực tế. Đầu vào đã nối dây, đầu vào ẩn và đầu vào bắt buộc phải kết nối sẽ không sinh control chỉnh sửa.
 
-未修改的参数沿用原工作流。修改只应用于提交和导出的副本，不改写导入原文；可以逐项或全部恢复。切换工作流不会把旧节点编号对应的覆盖值误用到新图。
+Tham số chưa sửa dùng nguyên workflow gốc. Chỉnh sửa chỉ áp dụng cho bản sao lúc gửi và lúc export, không ghi đè lên bản import gốc; có thể khôi phục từng mục hoặc tất cả. Chuyển workflow sẽ không áp nhầm giá trị ghi đè theo số node cũ sang ảnh mới.
 
-## 可选的显示声明
+## Khai báo hiển thị tùy chọn
 
-以下 `studio` 元数据是本项目的扩展约定，不是 ComfyUI 标准。未声明的普通 API 仍可识别其可编辑参数。
+Metadata `studio` dưới đây là quy ước mở rộng của dự án này, không phải chuẩn ComfyUI. API thường không có khai báo vẫn nhận diện được tham số có thể chỉnh của nó.
 
 ```json
 {
@@ -32,28 +32,28 @@
 }
 ```
 
-`controls` 将真实已有字段列为推荐参数，并可提供名称、说明、分组和枚举标签；它不能创建不存在的字段、改变连接类型或绕过节点定义的值域。没有推荐声明的可编辑字段进入折叠的“其他参数”。`hiddenInputs` 可列出不希望显示或覆盖的字段名，例如内部路由的比较符、正则表达式及固定配置。
+`controls` liệt kê trường đã thực sự tồn tại thành tham số khuyên dùng, và có thể cung cấp tên, mô tả, nhóm và nhãn enum; nó không thể tạo trường không tồn tại, đổi loại kết nối hay vượt qua miền giá trị của định nghĩa node. Trường có thể chỉnh mà không có khai báo khuyên dùng sẽ vào mục gấp "Tham số khác". `hiddenInputs` có thể liệt kê tên trường không muốn hiển thị hoặc ghi đè, vd toán tử so sánh của routing nội bộ, biểu thức chính quy và cấu hình cố định.
 
-自动计算的布尔连线不会变成手动开关。工作流若需“自动／开启／关闭”，应提供真实的模式常量，并在图内实现对应分支。
+Đường nối boolean tự tính toán sẽ không biến thành công tắc chỉnh tay. Workflow cần "tự động / bật / tắt" thì nên cung cấp hằng số chế độ thực sự, và triển khai nhánh tương ứng trong ảnh.
 
-## 高级参考图片
+## Ảnh tham chiếu nâng cao
 
-未绑定到主三槽或参考拼图映射的图片加载节点，可在高级区上传替换图片。普通图片节点未上传时保留原工作流图片；支持空值的设定集节点未提供时明确清空。
+Node tải ảnh chưa gắn với 3 ô chính hoặc mapping ảnh ghép tham chiếu có thể tải ảnh thay thế trong khu vực nâng cao. Node ảnh thường khi chưa tải lên sẽ giữ ảnh gốc của workflow; node bộ thiết lập hỗ trợ giá trị rỗng khi chưa cung cấp sẽ được xóa rõ ràng.
 
-为完整设定集加载节点添加 `_meta.studio.imageRole: "character_sheet"` 后，它会显示为角色设定集入口，不参与主三槽的自动映射。上传图片沿用最长边1024的读取方式，保存在 IndexedDB；localStorage 配方备份不包含这些图片。
+Sau khi thêm `_meta.studio.imageRole: "character_sheet"` cho node tải bộ thiết lập đầy đủ, nó sẽ hiển thị thành cổng vào bộ thiết lập nhân vật, không tham gia mapping tự động của 3 ô chính. Ảnh tải lên dùng cách đọc theo cạnh dài nhất 1024, lưu trong IndexedDB; bản sao lưu công thức trong localStorage không chứa các ảnh này.
 
-设定集作为输入和设定页作为输出是不同用途。元数据只描述入口和控件，实际生成能力必须由 API 内的节点与连接实现。
+Bộ thiết lập làm đầu vào và trang thiết lập làm đầu ra là 2 mục đích khác nhau. Metadata chỉ mô tả cổng vào và control, khả năng tạo thực tế phải do node và kết nối trong API triển khai.
 
-## 允许的参考组合
+## Tổ hợp tham chiếu cho phép
 
-工作流可在一个节点的 `_meta.studio.referenceCombinations` 声明允许输入的节点集合，例如：
+Workflow có thể khai báo tập hợp node đầu vào được phép trong `_meta.studio.referenceCombinations` của 1 node, ví dụ:
 
 ```json
 [["1", "2"], ["1", "3"], ["2", "3"], ["1", "2", "3"], ["31"]]
 ```
 
-网页按用户实际提供的图片精确匹配集合；JSON 残留图片不算用户已提供。不声明此字段的旧工作流仍遵循原有映射与必填检查。
+Trang web khớp chính xác tập hợp theo ảnh mà người dùng thực sự cung cấp; ảnh dư trong JSON không tính là người dùng đã cung cấp. Workflow cũ không khai báo trường này vẫn theo mapping gốc và kiểm tra bắt buộc.
 
-“导出当前 API”包括选定的高级参数和当前提示词；图片上传发生在提交时，导出不会把浏览器里的图片打包进 JSON。也可从 JSON 编辑窗口导出原始 API。
+"Export API hiện tại" gồm tham số nâng cao đã chọn và prompt hiện tại; ảnh tải lên diễn ra lúc gửi, export sẽ không đóng gói ảnh trong trình duyệt vào JSON. Cũng có thể export API gốc từ cửa sổ chỉnh JSON.
 
-部分 ComfyUI 画布转 API 工具只保留节点标题，会丢弃自定义 `studio` 元数据。需要保留推荐控件和组合声明时，请使用包含该声明的 API 文件。
+Một số công cụ chuyển canvas ComfyUI sang API chỉ giữ tiêu đề node, sẽ làm mất metadata `studio` tùy chỉnh. Muốn giữ control khuyên dùng và khai báo tổ hợp, hãy dùng file API có chứa khai báo đó.

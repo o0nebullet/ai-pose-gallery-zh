@@ -31,7 +31,7 @@ import { useStudio } from '@/store/studioStore'
 import type { CostumeItem } from '@/types/gallery'
 
 export const Route = createFileRoute('/costumes')({
-  staticData: { title: '服装穿搭库' },
+  staticData: { title: 'Thư viện trang phục' },
   loader: ({ context }) => context.queryClient.ensureQueryData(costumesQuery),
   pendingComponent: () => <Skeleton className="h-[540px] rounded-[22px]" />,
   component: CostumesPage,
@@ -41,7 +41,7 @@ function CostumeThumbnail({ item, onOpen, picked, onToggle }: { item: CostumeIte
   const [failed, setFailed] = useState(false)
   const openButton = useRef<HTMLButtonElement>(null)
   return <div className="relative aspect-2/3 w-full shrink-0 overflow-hidden rounded-2xl bg-background">
-    <button ref={openButton} type="button" aria-label={`查看 ${item.id} 大图`} onClick={onOpen} className="relative block h-full w-full cursor-zoom-in focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
+    <button ref={openButton} type="button" aria-label={`Xem ảnh lớn ${item.id}`} onClick={onOpen} className="relative block h-full w-full cursor-zoom-in focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-ring">
       {!failed && <img src={referenceImageUrl(item.缩略图)} alt={item.服装名称} loading="lazy" onError={() => setFailed(true)} className="h-full w-full object-contain transition duration-300 group-hover:scale-105" />}
       <span className="absolute inset-x-2 top-2 flex items-center justify-between gap-1">
         <span className="rounded-md bg-black/70 px-1.5 py-0.5 font-mono text-[10px] font-bold text-white">{item.id}</span>
@@ -53,11 +53,11 @@ function CostumeThumbnail({ item, onOpen, picked, onToggle }: { item: CostumeIte
       picked ? 'bg-emerald-600' : 'bg-black/75 hover:bg-primary'
     )}>
       {picked ? <CheckIcon className="size-3" /> : <PlusIcon className="size-3" />}
-      {picked ? '已选' : '加入配方'}
+      {picked ? 'Đã chọn' : 'Thêm vào công thức'}
     </button>
     {failed && <div className="pointer-events-none absolute inset-0 flex flex-col items-center justify-center gap-2 bg-background/90 p-2 text-center">
-      <p role="status" className="text-xs text-muted-foreground">图片加载失败</p>
-      <Button type="button" variant="outline" className="pointer-events-auto min-h-11" aria-label={`重新加载 ${item.id} 缩略图`} onClick={() => { setFailed(false); openButton.current?.focus() }}>重新加载</Button>
+      <p role="status" className="text-xs text-muted-foreground">Tải ảnh thất bại</p>
+      <Button type="button" variant="outline" className="pointer-events-auto min-h-11" aria-label={`Tải lại ảnh thu nhỏ ${item.id}`} onClick={() => { setFailed(false); openButton.current?.focus() }}>Tải lại</Button>
     </div>}
   </div>
 }
@@ -123,9 +123,9 @@ function CostumesPage() {
 
   return (
     <>
-      <PageHeader title="服装穿搭库" />
+      <PageHeader title="Thư viện trang phục" />
 
-      <div className="flex flex-wrap items-center justify-between gap-2" aria-label="服装一级分类">
+      <div className="flex flex-wrap items-center justify-between gap-2" aria-label="Danh mục trang phục cấp 1">
         <div className="flex flex-wrap gap-2">
           {['全部', '现实', '二次元'].map((value) => (
             <Button key={value} variant={kind === value ? 'default' : 'outline'} aria-pressed={kind === value} onClick={() => {
@@ -134,15 +134,15 @@ function CostumesPage() {
           ))}
         </div>
         <Select value={source} onValueChange={(value) => { setSource(value); setCategory(''); setTag('all'); setShown(60); setViewerIndex(null) }}>
-          <SelectTrigger aria-label="服装来源" className="w-56"><SelectValue placeholder="全部来源" /></SelectTrigger>
-          <SelectContent><SelectItem value="all">全部来源</SelectItem>{COSTUME_SOURCES.map((entry) => <SelectItem key={entry.id} value={entry.id}>{entry.label}</SelectItem>)}</SelectContent>
+          <SelectTrigger aria-label="Nguồn trang phục" className="w-56"><SelectValue placeholder="Tất cả nguồn" /></SelectTrigger>
+          <SelectContent><SelectItem value="all">Tất cả nguồn</SelectItem>{COSTUME_SOURCES.map((entry) => <SelectItem key={entry.id} value={entry.id}>{entry.label}</SelectItem>)}</SelectContent>
         </Select>
       </div>
 
       <div className="space-y-1 text-xs text-muted-foreground">
         {COSTUME_SOURCES.filter((entry) => (source === 'all' || source === entry.id) && (kind === '全部' || (['gia-anime', 'charadb'].includes(entry.id) ? '二次元' : '现实') === kind)).map((entry) => <p key={entry.id}><a href={entry.url} target="_blank" rel="noopener noreferrer" className="underline">{entry.label}</a>：{entry.notice}</p>)}
       </div>
-      {/* 分类筛选药丸 */}
+      {/* Nút lọc danh mục */}
       <div className="flex gap-2 overflow-x-auto pb-1 sm:flex-wrap sm:pb-0">
         <button
           type="button"
@@ -156,7 +156,7 @@ function CostumesPage() {
             activeCategory === '' ? 'bg-primary text-primary-foreground' : 'bg-muted text-muted-foreground hover:text-foreground'
           )}
         >
-          全部穿搭 ({baseCostumes.length})
+          Tất cả trang phục ({baseCostumes.length})
         </button>
         {categories.map((c) => {
           const cnt = baseCostumes.filter((x) => x.分类 === c).length
@@ -191,12 +191,12 @@ function CostumesPage() {
             }
             className="shrink-0 rounded-full border border-dashed border-rose-500/40 bg-rose-500/5 px-3.5 py-1.5 text-sm font-medium text-rose-600 transition-colors hover:bg-rose-500/10 dark:text-rose-400"
           >
-            🔒 解锁 18+ 敏感服装 ({hiddenNsfwCount})
+            🔒 Mở khóa 18+ trang phục nhạy cảm ({hiddenNsfwCount})
           </button>
         )}
       </div>
 
-      {/* 搜索与单品筛选栏 */}
+      {/* Thanh tìm kiếm và lọc món đồ */}
       <div className="grid gap-3 rounded-[22px] bg-muted p-4 @xl/main:grid-cols-2 @3xl/main:grid-cols-[minmax(0,1fr)_220px_auto]">
         <div className="relative">
           <SearchIcon className="pointer-events-none absolute top-1/2 left-3 size-4 -translate-y-1/2 text-muted-foreground" />
@@ -206,7 +206,7 @@ function CostumesPage() {
               setQuery(e.target.value)
               setShown(60)
             }}
-            placeholder="搜索服装款式、颜色、材质、英文词条 (如 denim, lace, 针织, 迷你裙)…"
+            placeholder="Tìm kiểu trang phục, màu sắc, chất liệu, từ tiếng Anh (vd denim, lace, dệt kim, chân váy ngắn)…"
             className="bg-background pl-9"
           />
         </div>
@@ -219,10 +219,10 @@ function CostumesPage() {
           }}
         >
           <SelectTrigger className="w-full bg-background">
-            <SelectValue placeholder="单品/颜色标签" />
+            <SelectValue placeholder="Thẻ món đồ/màu sắc" />
           </SelectTrigger>
           <SelectContent>
-            <SelectItem value="all">全部单品与颜色标签</SelectItem>
+            <SelectItem value="all">Tất cả thẻ món đồ và màu sắc</SelectItem>
             {allTags.map((t) => (
               <SelectItem key={t} value={t}>
                 {t}
@@ -245,12 +245,12 @@ function CostumesPage() {
           }}
         >
           <RotateCcwIcon className="size-3.5" />
-          重置
+          Đặt lại
         </Button>
       </div>
 
       {filtered.length === 0 ? (
-        <EmptyState title="没有找到匹配的服装穿搭" description="试试更换搜索词或切换分类" />
+        <EmptyState title="Không tìm thấy trang phục phù hợp" description="Thử đổi từ khóa tìm kiếm hoặc chuyển danh mục" />
       ) : (
         <div className="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5">
           {filtered.slice(0, shown).map((item, idx) => {
@@ -285,12 +285,12 @@ function CostumesPage() {
       {shown < filtered.length && (
         <div className="flex justify-center pt-2">
           <Button variant="outline" onClick={() => setShown((s) => s + 60)}>
-            加载更多（剩余 {filtered.length - shown} 套）
+            Tải thêm (còn {filtered.length - shown} bộ)
           </Button>
         </div>
       )}
 
-      {/* 服装详情弹窗 */}
+      {/* Hộp thoại chi tiết trang phục */}
       <Dialog open={viewerIndex !== null} onOpenChange={(o) => !o && setViewerIndex(null)}>
         <DialogContent className="max-h-[90dvh] w-[95vw] max-w-4xl overflow-y-auto p-0 sm:max-w-4xl">
           {currentItem && viewerIndex !== null && (() => {
@@ -302,7 +302,7 @@ function CostumesPage() {
                   <Button
                     variant="secondary"
                     size="icon"
-                    aria-label="上一张图片" className="absolute top-1/2 left-3 min-h-11 min-w-11 -translate-y-1/2 rounded-full shadow"
+                    aria-label="Ảnh trước" className="absolute top-1/2 left-3 min-h-11 min-w-11 -translate-y-1/2 rounded-full shadow"
                     onClick={() => setViewerIndex((viewerIndex - 1 + filtered.length) % filtered.length)}
                   >
                     <ChevronLeftIcon className="size-4" />
@@ -310,7 +310,7 @@ function CostumesPage() {
                   <Button
                     variant="secondary"
                     size="icon"
-                    aria-label="下一张图片" className="absolute top-1/2 right-3 min-h-11 min-w-11 -translate-y-1/2 rounded-full shadow"
+                    aria-label="Ảnh sau" className="absolute top-1/2 right-3 min-h-11 min-w-11 -translate-y-1/2 rounded-full shadow"
                     onClick={() => setViewerIndex((viewerIndex + 1) % filtered.length)}
                   >
                     <ChevronRightIcon className="size-4" />
@@ -325,21 +325,21 @@ function CostumesPage() {
                         <Badge variant="outline">{currentItem.id}</Badge>
                       </div>
                       <DialogTitle className="mt-2 text-base leading-snug">{currentItem.服装名称}</DialogTitle>
-                      <p className="text-xs text-muted-foreground">来源：{currentItem.来源 || 'ギア（@giaaibusi）'}</p>
+                      <p className="text-xs text-muted-foreground">Nguồn: {currentItem.来源 || 'ギア（@giaaibusi）'}</p>
                       {currentItem.source === 'shisei' && <div className="space-y-2 text-xs text-muted-foreground">
-                        <p>Shisei / wquguru · CC0 · AI 生成服装参考，并非专业复原。</p>
-                        <div className="flex flex-wrap gap-x-3 gap-y-2" aria-label="Shisei 来源与许可">
-                          <a className="underline" href={SHISEI_SOURCE_URLS.repository} target="_blank" rel="noopener noreferrer">原仓库</a>
-                          <a className="underline" href={SHISEI_SOURCE_URLS.catalog} target="_blank" rel="noopener noreferrer">条目目录（{currentItem.id.replace('shisei-', '')}，固定版本）</a>
-                          <a className="underline" href={SHISEI_SOURCE_URLS.license} target="_blank" rel="noopener noreferrer">图片许可证（CC0）</a>
+                        <p>Shisei / wquguru · CC0 · Tham chiếu trang phục do AI tạo, không phải phục dựng chuyên nghiệp.</p>
+                        <div className="flex flex-wrap gap-x-3 gap-y-2" aria-label="Nguồn và giấy phép Shisei">
+                          <a className="underline" href={SHISEI_SOURCE_URLS.repository} target="_blank" rel="noopener noreferrer">Repo gốc</a>
+                          <a className="underline" href={SHISEI_SOURCE_URLS.catalog} target="_blank" rel="noopener noreferrer">Danh mục mục ({currentItem.id.replace('shisei-', '')}, phiên bản cố định)</a>
+                          <a className="underline" href={SHISEI_SOURCE_URLS.license} target="_blank" rel="noopener noreferrer">Giấy phép ảnh (CC0)</a>
                         </div>
                       </div>}
-                      {currentItem.source === 'charadb' && <a className="text-xs underline" href={CHARADB_NOTICE_URL} target="_blank" rel="noopener noreferrer">图片仅作参考，禁止真人、未成年人及再分发；查看原作者条件</a>}
+                      {currentItem.source === 'charadb' && <a className="text-xs underline" href={CHARADB_NOTICE_URL} target="_blank" rel="noopener noreferrer">Ảnh chỉ để tham chiếu, cấm dùng cho người thật, trẻ vị thành niên và phân phối lại; xem điều kiện của tác giả gốc</a>}
                     </DialogHeader>
 
-                    {currentItem.views && <div className="flex flex-wrap gap-2" aria-label="服装视角">{currentItem.views.map((entry) => <Button key={entry.id} variant={currentItem.selectedView === entry.id ? 'default' : 'outline'} aria-pressed={currentItem.selectedView === entry.id} onClick={() => setView({ itemId: currentItem.id, id: entry.id })}>{entry.label}</Button>)}</div>}
+                    {currentItem.views && <div className="flex flex-wrap gap-2" aria-label="Góc nhìn trang phục">{currentItem.views.map((entry) => <Button key={entry.id} variant={currentItem.selectedView === entry.id ? 'default' : 'outline'} aria-pressed={currentItem.selectedView === entry.id} onClick={() => setView({ itemId: currentItem.id, id: entry.id })}>{entry.label}</Button>)}</div>}
                     <div>
-                      <div className="mb-1.5 text-xs font-medium text-muted-foreground">中文单品与色彩标签</div>
+                      <div className="mb-1.5 text-xs font-medium text-muted-foreground">Thẻ món đồ và màu sắc (tiếng Trung)</div>
                       <div className="flex flex-wrap gap-1.5">
                         {(currentItem.标签 || []).map((t) => (
                           <Badge key={t} variant="secondary" className="text-xs">
@@ -351,17 +351,17 @@ function CostumesPage() {
 
                     <div>
                       <div className="mb-1.5 flex items-center justify-between text-xs font-medium text-muted-foreground">
-                        <span>英文 Prompt 词条</span>
+                        <span>Từ prompt tiếng Anh</span>
                         <button
                           type="button"
                           onClick={() => {
                             void navigator.clipboard.writeText(currentItem.关键词)
-                            toast.success('已复制英文服装 Prompt')
+                            toast.success('Đã sao chép prompt trang phục tiếng Anh')
                           }}
                           className="flex items-center gap-1 text-primary hover:underline"
                         >
                           <CopyIcon className="size-3" />
-                          复制
+                          Sao chép
                         </button>
                       </div>
                       <div className="rounded-xl bg-muted p-2.5 font-mono text-xs leading-relaxed">
@@ -373,19 +373,19 @@ function CostumesPage() {
                   <div className="flex flex-col gap-2">
                     <Button onClick={() => toggleCostume(currentItem)} variant={picked ? 'secondary' : 'default'}>
                       {picked ? <CheckIcon className="size-4" /> : <PlusIcon className="size-4" />}
-                      {picked ? '已在角色配方中（点击移除）' : '加入角色配方'}
+                      {picked ? 'Đã có trong công thức nhân vật (nhấn để gỡ)' : 'Thêm vào công thức nhân vật'}
                     </Button>
                     <div className="grid grid-cols-2 gap-2">
                       <Button variant="outline" size="sm" asChild>
                         <a href={referenceImageUrl(currentItem.原图)} download={['charadb', 'gia-anime'].includes(currentItem.source || '') ? undefined : `${currentItem.id}.webp`} target={['charadb', 'gia-anime'].includes(currentItem.source || '') ? '_blank' : undefined} rel="noopener noreferrer">
                           <DownloadIcon className="size-3.5" />
-                          {['charadb', 'gia-anime'].includes(currentItem.source || '') ? '前往来源原图' : '下载高清原图'}
+                          {['charadb', 'gia-anime'].includes(currentItem.source || '') ? 'Tới ảnh gốc tại nguồn' : 'Tải ảnh gốc HD'}
                         </a>
                       </Button>
                       <Button variant="outline" size="sm" asChild>
                         <a href={currentItem.source === 'shisei' ? referenceImageUrl(currentItem.原图) : currentItem.来源地址 || referenceImageUrl(currentItem.原图)} target="_blank" rel="noopener noreferrer">
                           <ExternalLinkIcon className="size-3.5" />
-                          {['charadb', 'gia-anime'].includes(currentItem.source || '') ? '原作者站点' : '新窗口原图'}
+                          {['charadb', 'gia-anime'].includes(currentItem.source || '') ? 'Trang của tác giả gốc' : 'Ảnh gốc trong cửa sổ mới'}
                         </a>
                       </Button>
                     </div>

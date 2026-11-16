@@ -11,7 +11,7 @@ interface ImageViewerProps extends ZoomViewportProps {
   children?: ReactNode
 }
 
-export function ImageViewer({ open, onOpenChange, title = '图片大图预览', ...viewportProps }: ImageViewerProps) {
+export function ImageViewer({ open, onOpenChange, title = 'Xem trước ảnh lớn', ...viewportProps }: ImageViewerProps) {
   const returnFocus = useRef<HTMLElement | null>(null)
   return <DialogPrimitive.Root open={open} onOpenChange={onOpenChange}>
     <DialogPrimitive.Portal>
@@ -23,8 +23,8 @@ export function ImageViewer({ open, onOpenChange, title = '图片大图预览', 
         className="fixed top-1/2 left-1/2 z-[101] flex h-[92dvh] w-[96vw] max-w-6xl -translate-x-1/2 -translate-y-1/2 flex-col gap-3 rounded-xl bg-background p-3 text-foreground shadow-xl outline-none sm:p-4">
         <div className="flex shrink-0 flex-wrap items-center gap-2">
           <DialogPrimitive.Title className="mr-auto text-lg font-semibold">{title}</DialogPrimitive.Title>
-          {viewportProps.imageUrl && !viewportProps.children && <Button asChild variant="outline" className="min-h-11"><a href={viewportProps.imageUrl} download="image.png"><DownloadIcon className="size-4" />下载原图</a></Button>}
-          <DialogPrimitive.Close asChild><Button variant="ghost" className="min-h-11 min-w-11" aria-label="关闭图片预览"><XIcon className="size-4" /></Button></DialogPrimitive.Close>
+          {viewportProps.imageUrl && !viewportProps.children && <Button asChild variant="outline" className="min-h-11"><a href={viewportProps.imageUrl} download="image.png"><DownloadIcon className="size-4" />Tải xuống ảnh gốc</a></Button>}
+          <DialogPrimitive.Close asChild><Button variant="ghost" className="min-h-11 min-w-11" aria-label="Đóng xem trước ảnh"><XIcon className="size-4" /></Button></DialogPrimitive.Close>
         </div>
         <ZoomViewport {...viewportProps} className="min-h-0 flex-1" />
       </DialogPrimitive.Content>
